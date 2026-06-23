@@ -45,6 +45,7 @@ npm run test:e2e        # Playwright (when UI changed)
 ```
 
 Use global skills: `verification-loop`, `security-review`, `implement` (with `.qa/acceptance/`).
+Issue batch: `@ecc-runner` batch mode (full queue, one report). Debug: `ecc-runner step`.
 Optional security scan: `npx ecc-agentshield scan`
 
 Do not use `git push --no-verify`.
