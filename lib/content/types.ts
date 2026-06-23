@@ -91,9 +91,19 @@ export interface Topic {
   slides: Slide[];
 }
 
+export interface Collection {
+  schemaVersion: 1;
+  id: string;
+  title: string;
+  description: string;
+  locale: string;
+  topicIds: string[];
+}
+
 export interface ContentProvider {
-  listTopics(locale?: string): Promise<Topic[]>;
+  listTopics(locale?: string, collectionId?: string): Promise<Topic[]>;
   getTopic(id: string, locale?: string): Promise<Topic | null>;
+  listCollections?(locale?: string): Promise<Collection[]>;
 }
 
 export interface TutorContext {

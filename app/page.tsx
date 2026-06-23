@@ -6,9 +6,14 @@
 import { VerticalTopicFeed } from "@/components/VerticalTopicFeed";
 import { getContentProvider } from "@/lib/content/contentProvider";
 
-export default async function HomePage() {
+interface HomePageProps {
+  searchParams?: { collection?: string };
+}
+
+export default async function HomePage({ searchParams }: HomePageProps) {
   const provider = getContentProvider();
-  const topics = await provider.listTopics("de");
+  const collectionId = searchParams?.collection;
+  const topics = await provider.listTopics("de", collectionId);
 
   return <VerticalTopicFeed topics={topics} />;
 }
