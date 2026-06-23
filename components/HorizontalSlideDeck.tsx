@@ -5,9 +5,10 @@
 
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import type { Topic } from "@/lib/content/types";
+import { getSavedSlideIndex, saveSlideIndex } from "@/lib/progress/storage";
 import { SlideQuizProvider } from "@/components/tutor/SlideQuizContext";
 import { QuestolinTutorDock } from "@/components/tutor/QuestolinTutorDock";
 import { SlideRenderer } from "./SlideRenderer";
@@ -20,19 +21,35 @@ interface HorizontalSlideDeckProps {
 
 export function HorizontalSlideDeck({ topic, compact = false }: HorizontalSlideDeckProps) {
   const slides = topic.slides;
+  const savedIndex = useMemo(
+    () => getSavedSlideIndex(topic.id, slides.length),
+    [topic.id, slides.length],
+  );
+
   const [emblaRef, emblaApi] = useEmblaCarousel({
     axis: "x",
     align: "start",
     containScroll: "trimSnaps",
     dragFree: false,
+    startIndex: savedIndex,
   });
 
-  const [index, setIndex] = useState(0);
+  const [index, setIndex] = useState(savedIndex);
+
+  useEffect(() => {
+    saveSlideIndex(topic.id, savedIndex, slides.length);
+  }, [savedIndex, slides.length, topic.id]);
 
   const syncIndex = useCallback(() => {
     if (!emblaApi) return;
-    setIndex(emblaApi.selectedScrollSnap());
-  }, [emblaApi]);
+    const next = emblaApi.selectedScrollSnap();
+    setIndex(next);
+    saveSlideIndex(topic.id, next, slides.length);
+  }, [emblaApi, slides.length, topic.id]);
+
+  useEffect(() => {
+    setIndex(savedIndex);
+  }, [savedIndex]);
 
   useEffect(() => {
     if (!emblaApi) return;
@@ -53,7 +70,7 @@ export function HorizontalSlideDeck({ topic, compact = false }: HorizontalSlideD
   const currentSlide = slides[index];
 
   return (
-    <SlideQuizProvider>
+    <SlideQuizProvider topicId={topic.id}>
     <div className="flex flex-col flex-1 min-h-0" data-slide-deck>
       <div className={styles.dots}>
         {slides.map((s, i) => (
