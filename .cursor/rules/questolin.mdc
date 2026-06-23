@@ -1,0 +1,50 @@
+---
+description: Questolin project rules — content layer, UI stack, and architecture boundaries
+alwaysApply: true
+---
+
+# Questolin
+
+Read [AGENTS.md](../../AGENTS.md) for the full project map.
+
+## Stack
+
+- Next.js 14 App Router, React 18, TypeScript, Tailwind CSS 3, DaisyUI 4 (`data-theme="dark"`)
+- Content: JSON under `content/topics/de/` validated with Zod
+- Deployment: Vercel
+
+## Architecture layers (strict)
+
+1. **Content** (`content/`, `lib/content/`) — no React imports
+2. **Slides** (`components/slides/`) — presentation + local quiz state only
+3. **App routes** (`app/`) — Server Components load topics via `getContentProvider()`
+4. New topic = JSON file; new slide type = component in `components/slides/` + entry in `lib/slides/registry.ts`
+
+## UI rules
+
+- Use DaisyUI components (`btn`, `card`, `badge`, …) before custom CSS
+- UI labels and errors: **German**
+- Code, types, commits: **English**
+- Do not use shadcn as default UI
+- Required states on Feed and Topic routes: loading, empty, error
+- Touch targets ≥ 44px; follow [docs/UI_STYLEGUIDE.md](../../docs/UI_STYLEGUIDE.md)
+
+## Content rules
+
+- Never hardcode learning content in React — use JSON decks
+- Run `npm run validate:content` after changing topics
+- Schema reference: `content/schema/v1/README.md`
+
+## Quality workflow
+
+Before push or PR:
+
+```bash
+npm run checks          # validate:content → lint → build
+npm run test:e2e        # Playwright (when UI changed)
+```
+
+Use global skills: `verification-loop`, `security-review`, `implement` (with `.qa/acceptance/`).
+Optional security scan: `npx ecc-agentshield scan`
+
+Do not use `git push --no-verify`.

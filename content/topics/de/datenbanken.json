@@ -1,0 +1,108 @@
+{
+  "schemaVersion": 1,
+  "id": "datenbanken",
+  "title": "Was ist eine Datenbank?",
+  "category": "Grundlagen",
+  "locale": "de",
+  "tags": ["datenbank", "sql", "backend", "speicher"],
+  "difficulty": "beginner",
+  "estimatedMinutes": 5,
+  "prerequisites": [],
+  "slides": [
+    {
+      "id": "db-hook",
+      "type": "hook",
+      "order": 0,
+      "title": "Die Frage",
+      "content": {
+        "body": "Was ist eine Datenbank — und warum braucht fast jede App eine?",
+        "subtitle": "Nicht Excel auf dem Server. Strukturierter Speicher mit Regeln."
+      }
+    },
+    {
+      "id": "db-explanation",
+      "type": "explanation",
+      "order": 1,
+      "title": "Einfach erklärt",
+      "content": {
+        "body": "Eine Datenbank speichert Daten **dauerhaft** und **strukturiert** — in Tabellen, Dokumenten oder Graphen.\n\nApps lesen und schreiben über die API oder ein ORM. Die Datenbank sorgt für Konsistenz, Indizes und Transaktionen.",
+        "subtitle": "DB = langfristiges Gedächtnis der Anwendung"
+      }
+    },
+    {
+      "id": "db-real-world",
+      "type": "real_world",
+      "order": 2,
+      "title": "Beispiel aus der Realität",
+      "content": {
+        "body": "Ein Notizblock auf dem Küchentisch = flüchtiger Speicher im RAM.\n\nEin **Ordner im Aktenschrank** mit Registerkarten = Datenbank: jede Karte hat einen festen Platz, du findest Einträge wieder.",
+        "analogy": "Aktenschrank = Datenbank · Register = Schema/Tabellen · Karte = Zeile/Datensatz"
+      }
+    },
+    {
+      "id": "db-scenario-1",
+      "type": "scenario",
+      "order": 3,
+      "title": "Szenario: Nutzer registrieren",
+      "content": {
+        "body": "Ein Nutzer füllt ein Registrierungsformular aus.\n\nDie API schreibt in die Tabelle `users`:\n\n`INSERT INTO users (email, password_hash) VALUES (...)`\n\nDie Datenbank prüft Unique-Constraints und speichert dauerhaft.",
+        "subtitle": "Schreiben = INSERT · Lesen = SELECT"
+      }
+    },
+    {
+      "id": "db-scenario-2",
+      "type": "scenario",
+      "order": 4,
+      "title": "Szenario: Bestellhistorie laden",
+      "content": {
+        "body": "Im Profil soll „Meine Bestellungen“ erscheinen.\n\nDie API fragt die DB:\n\n`SELECT * FROM orders WHERE user_id = ? ORDER BY created_at DESC`\n\nNur die Bestellungen dieses Nutzers — gefiltert in der Abfrage, nicht im Frontend.",
+        "subtitle": "Filter und Sortierung gehören in die Query"
+      }
+    },
+    {
+      "id": "db-beginner-mistake",
+      "type": "beginner_mistake",
+      "order": 5,
+      "title": "Typischer Anfängerfehler",
+      "content": {
+        "body": "Viele speichern wichtige Daten nur im **localStorage** oder in einer JSON-Datei auf dem Client.",
+        "mistake": "Client-seitige Speicherung für kritische Daten — oder SQL per String-Konkatenation bauen.",
+        "whyDangerous": "Client-Daten sind manipulierbar und nicht shared. SQL-Injection entsteht, wenn User-Input ungefiltert in Queries landet.",
+        "codeExample": "// Gefährlich — Injection!\nconst q = `SELECT * FROM users WHERE email = '${input}'`;\n\n// Sicher — Prepared Statement\nconst q = 'SELECT * FROM users WHERE email = ?';"
+      }
+    },
+    {
+      "id": "db-quiz",
+      "type": "quiz",
+      "order": 6,
+      "title": "Mini-Quiz",
+      "content": {
+        "questions": [
+          {
+            "id": "db-q1",
+            "kind": "multiple_choice",
+            "question": "Wofür ist eine Datenbank primär da?",
+            "options": [
+              "Dauerhaft strukturierte Daten speichern und abfragen",
+              "HTML-Seiten rendern",
+              "CSS-Animationen steuern",
+              "Nur temporäre Session-Daten im Browser"
+            ],
+            "correctAnswer": "Dauerhaft strukturierte Daten speichern und abfragen",
+            "feedbackCorrect": "Genau — persistent und strukturiert.",
+            "feedbackWrong": "Rendering macht das Frontend. Die DB ist der Speicher dahinter."
+          },
+          {
+            "id": "db-q2",
+            "kind": "true_false",
+            "question": "User-Input sollte nie direkt in SQL-Strings eingefügt werden.",
+            "options": ["Wahr", "Falsch"],
+            "correctAnswer": "Wahr",
+            "feedbackCorrect": "Richtig — Prepared Statements oder ORM nutzen.",
+            "feedbackWrong": "Ungefilterter Input in SQL ist ein klassisches Sicherheitsrisiko."
+          }
+        ]
+      }
+    }
+  ]
+}

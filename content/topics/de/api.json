@@ -1,0 +1,122 @@
+{
+  "schemaVersion": 1,
+  "id": "api",
+  "title": "Was ist eine API?",
+  "category": "Grundlagen",
+  "locale": "de",
+  "tags": ["api", "backend", "frontend", "http"],
+  "difficulty": "beginner",
+  "estimatedMinutes": 5,
+  "prerequisites": [],
+  "slides": [
+    {
+      "id": "api-hook",
+      "type": "hook",
+      "order": 0,
+      "title": "Die Frage",
+      "content": {
+        "body": "Was ist eine API — und warum reden Entwickler ständig davon?",
+        "subtitle": "Kein Buzzword. Eine Schnittstelle, über die Programme miteinander sprechen."
+      }
+    },
+    {
+      "id": "api-explanation",
+      "type": "explanation",
+      "order": 1,
+      "title": "Einfach erklärt",
+      "content": {
+        "body": "Eine API (Application Programming Interface) ist eine **definierte Schnittstelle**, über die ein Programm einem anderen sagt, was es tun soll und was zurückkommt.\n\nDas Frontend fragt nicht direkt die Datenbank. Es ruft die API auf. Die API prüft, rechnet, speichert — und antwortet mit Daten (meist JSON).",
+        "subtitle": "API = vertraglich festgelegter Eingang zum System"
+      }
+    },
+    {
+      "id": "api-real-world",
+      "type": "real_world",
+      "order": 2,
+      "title": "Beispiel aus der Realität",
+      "content": {
+        "body": "Du bestellst im Restaurant nicht direkt in der Küche. Du sagst dem **Kellner**, was du willst. Der Kellner gibt es an die Küche weiter und bringt dir das Ergebnis.",
+        "analogy": "Kellner = API · Küche = Backend + Datenbank · Du = Frontend oder App"
+      }
+    },
+    {
+      "id": "api-scenario-1",
+      "type": "scenario",
+      "order": 3,
+      "title": "Szenario: Bestellung absenden",
+      "content": {
+        "body": "Dein Online-Shop zeigt einen Button **„Bestellung absenden“**.\n\nBeim Klick ruft das Frontend die API auf:\n\n`POST /orders`\n\nMit JSON im Body: Kunde, Produkte, Menge.\n\nDas Backend prüft Lager, berechnet Preis, speichert die Bestellung und antwortet:\n\n`{ \"success\": true, \"orderId\": \"ord_123\" }`",
+        "subtitle": "Frontend = UI · API = Tür · Backend = Logik + Speicher"
+      }
+    },
+    {
+      "id": "api-scenario-2",
+      "type": "scenario",
+      "order": 4,
+      "title": "Szenario: Kundenliste laden",
+      "content": {
+        "body": "Ein Admin-Dashboard soll alle Kunden anzeigen.\n\nDas Frontend ruft auf:\n\n`GET /customers`\n\nDie API prüft: Ist der Nutzer eingeloggt? Hat er Admin-Rechte? Dann holt sie die Daten aus der Datenbank und liefert eine Liste zurück.\n\nOhne API müsste das Frontend direkt auf die Datenbank zugreifen — das wäre unsicher und chaotisch.",
+        "subtitle": "Lesen = GET · Erstellen = POST"
+      }
+    },
+    {
+      "id": "api-beginner-mistake",
+      "type": "beginner_mistake",
+      "order": 5,
+      "title": "Typischer Anfängerfehler",
+      "content": {
+        "body": "Viele denken: „Die API **ist** die Datenbank.“",
+        "mistake": "API und Datenbank verwechseln — oder annehmen, dass ein versteckter Button im Frontend die Sicherheit übernimmt.",
+        "whyDangerous": "Die API ist nur der Eingang. Die Datenbank liegt dahinter. Sicherheit (Login, Rechte, Validierung) muss im Backend passieren — das Frontend kann jeder manipulieren.",
+        "codeExample": "// Frontend — manipulierbar!\nif (user.isAdmin) showDeleteButton();\n\n// Backend — Pflicht!\nif (user.role !== 'admin') return res.status(403);"
+      }
+    },
+    {
+      "id": "api-quiz",
+      "type": "quiz",
+      "order": 6,
+      "title": "Mini-Quiz",
+      "content": {
+        "questions": [
+          {
+            "id": "api-q1",
+            "kind": "multiple_choice",
+            "question": "Was ist eine API in einfachen Worten?",
+            "options": [
+              "Eine Schnittstelle, über die Programme miteinander kommunizieren",
+              "Eine Datenbank zum Speichern von Tabellen",
+              "Ein Button im Frontend",
+              "Ein Browser-Plugin"
+            ],
+            "correctAnswer": "Eine Schnittstelle, über die Programme miteinander kommunizieren",
+            "feedbackCorrect": "Genau. Die API ist der Kellner zwischen Client und System.",
+            "feedbackWrong": "Nicht ganz. Eine Datenbank speichert — die API ist die definierte Tür davor."
+          },
+          {
+            "id": "api-q2",
+            "kind": "multiple_choice",
+            "question": "Wo muss geprüft werden, ob ein Nutzer Admin ist?",
+            "options": [
+              "Im Backend / in der API",
+              "Nur im Frontend, wenn der Button versteckt ist",
+              "In der CSS-Datei",
+              "Gar nicht — JWT reicht allein"
+            ],
+            "correctAnswer": "Im Backend / in der API",
+            "feedbackCorrect": "Richtig. Das Frontend kann umgangen werden.",
+            "feedbackWrong": "Gefährlich. Jeder kann Requests direkt an die API schicken."
+          },
+          {
+            "id": "api-q3",
+            "kind": "true_false",
+            "question": "GET /customers ist eine typische API-Anfrage zum Lesen von Daten.",
+            "options": ["Wahr", "Falsch"],
+            "correctAnswer": "Wahr",
+            "feedbackCorrect": "Ja — GET liest, POST erstellt.",
+            "feedbackWrong": "GET wird zum Lesen verwendet. POST wäre zum Erstellen."
+          }
+        ]
+      }
+    }
+  ]
+}
