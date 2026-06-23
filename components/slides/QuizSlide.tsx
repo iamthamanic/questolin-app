@@ -5,9 +5,10 @@
 
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { QuizContent, QuizQuestion } from "@/lib/content/types";
 import type { SlideComponentProps } from "@/lib/slides/registry";
+import { useSlideQuiz } from "@/components/tutor/SlideQuizContext";
 import { SlideShell } from "./SlideShell";
 import styles from "./slideContent.module.css";
 
@@ -93,6 +94,17 @@ export function QuizSlide({ slide, topicTitle }: SlideComponentProps) {
 
   const answeredCount = Object.values(answers).filter((a) => a.answered).length;
   const correctCount = Object.values(answers).filter((a) => a.correct).length;
+  const quizCtx = useSlideQuiz();
+
+  useEffect(() => {
+    if (
+      quizCtx &&
+      answeredCount === content.questions.length &&
+      content.questions.length > 0
+    ) {
+      quizCtx.markQuizCompleted(slide.id);
+    }
+  }, [answeredCount, content.questions.length, quizCtx, slide.id]);
 
   return (
     <SlideShell slide={slide} topicTitle={topicTitle}>
