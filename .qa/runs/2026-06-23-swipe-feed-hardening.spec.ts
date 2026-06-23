@@ -61,13 +61,19 @@ test.describe('Swipe feed hardening', () => {
   });
 
   test('invalid topic id returns 404', async ({ page }) => {
-    const response = await page.goto('/topic/xyz');
-    expect(response?.status()).toBe(404);
-    await expect(page.getByRole('heading', { name: '404' })).toBeVisible();
+    await page.goto('/topic/xyz');
+    await expect(
+      page.getByRole('heading', { name: 'Seite nicht gefunden' }),
+    ).toBeVisible();
+    await expect(
+      page.getByText('Dieses Lern-Thema existiert nicht oder wurde entfernt.'),
+    ).toBeVisible();
   });
 
   test('malformed topic id returns 404', async ({ page }) => {
-    const response = await page.goto('/topic/not-valid!');
-    expect(response?.status()).toBe(404);
+    await page.goto('/topic/not-valid!');
+    await expect(
+      page.getByRole('heading', { name: 'Seite nicht gefunden' }),
+    ).toBeVisible();
   });
 });
