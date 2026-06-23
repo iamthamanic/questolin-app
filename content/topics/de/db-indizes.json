@@ -1,0 +1,122 @@
+{
+  "schemaVersion": 1,
+  "id": "db-indizes",
+  "title": "Datenbank-Indizes — schneller suchen",
+  "category": "Grundlagen",
+  "locale": "de",
+  "tags": ["datenbank", "index", "sql", "performance", "backend"],
+  "difficulty": "beginner",
+  "estimatedMinutes": 5,
+  "prerequisites": ["datenbanken"],
+  "slides": [
+    {
+      "id": "db-indizes-hook",
+      "type": "hook",
+      "order": 0,
+      "title": "Die Frage",
+      "content": {
+        "body": "Deine App hat 2 Millionen Nutzer — warum dauert `SELECT * FROM users WHERE email = ?` plötzlich ewig?",
+        "subtitle": "Ohne Index sucht die DB jede Zeile. Mit Index springt sie direkt hin."
+      }
+    },
+    {
+      "id": "db-indizes-explanation",
+      "type": "explanation",
+      "order": 1,
+      "title": "Einfach erklärt",
+      "content": {
+        "body": "Ein **Index** ist eine sortierte **Hilfsstruktur** — wie ein Stichwortverzeichnis im Buch. Die Datenbank kann Einträge über indizierte Spalten schneller finden, statt die ganze Tabelle zu scannen.\n\nTypisch indiziert man Spalten, nach denen oft **gefiltert** oder **sortiert** wird: `email`, `user_id`, `created_at`.\n\nTrade-off: Indizes beschleunigen Lesen, kosten aber Speicher und verlangsamen Schreibvorgänge leicht.",
+        "subtitle": "Index = Register für schnelle Lookups"
+      }
+    },
+    {
+      "id": "db-indizes-real-world",
+      "type": "real_world",
+      "order": 2,
+      "title": "Beispiel aus der Realität",
+      "content": {
+        "body": "Im **Telefonbuch** sind Namen alphabetisch sortiert — du findest „Müller“ schnell.\n\nOhne Sortierung müsstest du **jede Seite** durchblättern (Full Table Scan).\n\nEin Index auf `last_name` ist dieses alphabetische Register für die Datenbank.",
+        "analogy": "Telefonbuch-Sortierung = B-Tree-Index · Durchblättern = Full Scan"
+      }
+    },
+    {
+      "id": "db-indizes-scenario-1",
+      "type": "scenario",
+      "order": 3,
+      "title": "Szenario: Login per E-Mail",
+      "content": {
+        "body": "Login-Query:\n\n`SELECT id, password_hash FROM users WHERE email = 'anna@example.com'`\n\n**Ohne Index** auf `email`: DB scannt alle Zeilen — bei 2 Mio. Nutzern langsam.\n\n**Mit Index**:\n\n`CREATE INDEX idx_users_email ON users(email);`\n\nLookup in Millisekunden statt Sekunden.",
+        "subtitle": "Unique-Index auf email schützt oft auch vor Duplikaten"
+      }
+    },
+    {
+      "id": "db-indizes-scenario-2",
+      "type": "scenario",
+      "order": 4,
+      "title": "Szenario: Bestellungen eines Nutzers",
+      "content": {
+        "body": "Profilseite lädt Bestellungen:\n\n`SELECT * FROM orders WHERE user_id = 42 ORDER BY created_at DESC`\n\n**Composite Index** hilft beiden Teilen:\n\n`CREATE INDEX idx_orders_user_created ON orders(user_id, created_at DESC);`\n\nFilter auf `user_id` + sortierte Ergebnisse — ein Scan statt Sortieren großer Mengen im RAM.",
+        "subtitle": "Composite Index = mehrere Spalten in fester Reihenfolge"
+      }
+    },
+    {
+      "id": "db-indizes-beginner-mistake",
+      "type": "beginner_mistake",
+      "order": 5,
+      "title": "Typischer Anfängerfehler",
+      "content": {
+        "body": "Viele indizieren **jede Spalte** — oder erwarten, dass ein Index bei `WHERE LOWER(email) = ...` automatisch greift.",
+        "mistake": "Index-Spamm (zu viele Indizes) oder Funktionen auf indizierten Spalten in WHERE ohne passenden Index.",
+        "whyDangerous": "Zu viele Indizes verlangsamen INSERT/UPDATE und fressen Speicher. `LOWER(email)` nutzt einen normalen Index auf `email` oft nicht — dann brauchst du einen passenden Index oder schreibst die Query um.",
+        "codeExample": "-- Index wird oft NICHT genutzt:\nSELECT * FROM users WHERE LOWER(email) = 'anna@example.com';\n\n-- Besser: normalisierte Spalte oder funktionaler Index (DB-abhängig)"
+      }
+    },
+    {
+      "id": "db-indizes-quiz",
+      "type": "quiz",
+      "order": 6,
+      "title": "Mini-Quiz",
+      "content": {
+        "questions": [
+          {
+            "id": "db-indizes-q1",
+            "kind": "multiple_choice",
+            "question": "Wofür ist ein Datenbank-Index primär da?",
+            "options": [
+              "Abfragen auf bestimmten Spalten schneller zu machen",
+              "Daten automatisch zu verschlüsseln",
+              "Tabellen zu löschen",
+              "Frontend-Code zu cachen"
+            ],
+            "correctAnswer": "Abfragen auf bestimmten Spalten schneller zu machen",
+            "feedbackCorrect": "Genau — schnelleres Suchen und Sortieren.",
+            "feedbackWrong": "Indizes sind Performance-Hilfen, keine Verschlüsselung."
+          },
+          {
+            "id": "db-indizes-q2",
+            "kind": "true_false",
+            "question": "Mehr Indizes können Schreibvorgänge (INSERT/UPDATE) etwas verlangsamen.",
+            "options": ["Wahr", "Falsch"],
+            "correctAnswer": "Wahr",
+            "feedbackCorrect": "Richtig — jeder Index muss mitgepflegt werden.",
+            "feedbackWrong": "Indizes haben Trade-offs — nicht alles indizieren."
+          },
+          {
+            "id": "db-indizes-q3",
+            "kind": "multiple_choice",
+            "question": "Welche Spalte eignet sich typischerweise gut für einen Index?",
+            "options": [
+              "email — oft in WHERE beim Login",
+              "Eine Spalte, die nie in Queries vorkommt",
+              "Der gesamte JSON-Blob ohne Struktur",
+              "Nur Spalten, die sich jede Sekunde ändern, ohne Filter"
+            ],
+            "correctAnswer": "email — oft in WHERE beim Login",
+            "feedbackCorrect": "Korrekt — häufig gefilterte Spalten profitieren.",
+            "feedbackWrong": "Indizes lohnen sich für Spalten, die regelmäßig in WHERE/JOIN/ORDER BY vorkommen."
+          }
+        ]
+      }
+    }
+  ]
+}

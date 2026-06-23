@@ -1,0 +1,122 @@
+{
+  "schemaVersion": 1,
+  "id": "git",
+  "title": "Git — Grundlagen",
+  "category": "Grundlagen",
+  "locale": "de",
+  "tags": ["git", "version-control", "github", "workflow"],
+  "difficulty": "beginner",
+  "estimatedMinutes": 5,
+  "prerequisites": [],
+  "slides": [
+    {
+      "id": "git-hook",
+      "type": "hook",
+      "order": 0,
+      "title": "Die Frage",
+      "content": {
+        "body": "Du änderst Code — und plötzlich funktioniert nichts mehr. Wie kommst du zurück?",
+        "subtitle": "Git ist die Zeitmaschine für deinen Quellcode."
+      }
+    },
+    {
+      "id": "git-explanation",
+      "type": "explanation",
+      "order": 1,
+      "title": "Einfach erklärt",
+      "content": {
+        "body": "**Git** ist ein **Versionskontrollsystem**. Es speichert Snapshots deines Projekts (Commits) mit Nachricht und Autor.\n\nDu arbeitest in **Branches** (Zweige), z.B. `main` für stabil und `feature/login` für neue Arbeit. Änderungen landen erst im **Staging** (`git add`), dann im Commit (`git commit`).\n\nRemote-Repos (GitHub, GitLab) teilen den Stand im Team.",
+        "subtitle": "Commit = gespeicherter Meilenstein im Projektverlauf"
+      }
+    },
+    {
+      "id": "git-real-world",
+      "type": "real_world",
+      "order": 2,
+      "title": "Beispiel aus der Realität",
+      "content": {
+        "body": "Du schreibst einen Roman in **Google Docs mit Versionsverlauf**. Jede Speicherung ist ein Punkt, zu dem du zurückspringen kannst. Parallel kann ein Co-Autor in einer Kopie schreiben — später merged ihr die Kapitel.",
+        "analogy": "Versionen = Commits · Kopie für Experimente = Branch · Zusammenführen = Merge"
+      }
+    },
+    {
+      "id": "git-scenario-1",
+      "type": "scenario",
+      "order": 3,
+      "title": "Szenario: Feature entwickeln",
+      "content": {
+        "body": "Du startest ein neues Feature:\n\n`git checkout -b feature/dark-mode`\n\nDu änderst CSS, testest lokal:\n\n`git add .`\n`git commit -m \"Add dark mode toggle\"`\n\n`main` bleibt unberührt, bis du mergst oder einen Pull Request öffnest.",
+        "subtitle": "Branch isoliert Arbeit vom stabilen Stand"
+      }
+    },
+    {
+      "id": "git-scenario-2",
+      "type": "scenario",
+      "order": 4,
+      "title": "Szenario: Mit dem Team synchronisieren",
+      "content": {
+        "body": "Kollegin hat auf `main` gepusht. Du holst Updates:\n\n`git pull origin main`\n\nKonflikt in `App.tsx`? Git markiert beide Versionen. Du löst manuell, dann:\n\n`git add App.tsx`\n`git commit -m \"Resolve merge conflict\"`\n\nErst danach pushst du wieder.",
+        "subtitle": "Pull holt · Push teilt · Konflikte löst du bewusst"
+      }
+    },
+    {
+      "id": "git-beginner-mistake",
+      "type": "beginner_mistake",
+      "order": 5,
+      "title": "Typischer Anfängerfehler",
+      "content": {
+        "body": "Viele committen **alles auf main**, ohne Branches — oder pushen mit `--force` auf geteilte Branches.",
+        "mistake": "Keine kleinen Commits, keine aussagekräftigen Messages, `git push --force` auf `main` im Team.",
+        "whyDangerous": "Ohne Branches bricht ein Experiment den stabilen Stand. Force-Push überschreibt fremde Commits — Kolleg:innen verlieren Arbeit.",
+        "codeExample": "// Gefährlich im Team\n git push --force origin main\n\n// Besser\n git checkout -b fix/typo\n git commit -m \"Fix navbar typo\"\n git push -u origin fix/typo"
+      }
+    },
+    {
+      "id": "git-quiz",
+      "type": "quiz",
+      "order": 6,
+      "title": "Mini-Quiz",
+      "content": {
+        "questions": [
+          {
+            "id": "git-q1",
+            "kind": "multiple_choice",
+            "question": "Was ist ein Git-Commit?",
+            "options": [
+              "Ein gespeicherter Snapshot des Projekts mit Metadaten",
+              "Ein Backup auf der Festplatte des Servers",
+              "Ein npm-Paket",
+              "Eine CSS-Klasse"
+            ],
+            "correctAnswer": "Ein gespeicherter Snapshot des Projekts mit Metadaten",
+            "feedbackCorrect": "Genau — Commit = festgehaltener Stand.",
+            "feedbackWrong": "Ein Commit ist kein externes Backup, sondern ein Eintrag in der Git-Historie."
+          },
+          {
+            "id": "git-q2",
+            "kind": "true_false",
+            "question": "Mit Branches kannst du parallel an Features arbeiten, ohne main sofort zu verändern.",
+            "options": ["Wahr", "Falsch"],
+            "correctAnswer": "Wahr",
+            "feedbackCorrect": "Richtig — Branches isolieren Arbeit.",
+            "feedbackWrong": "Genau das ist ein Hauptgrund für Branches."
+          },
+          {
+            "id": "git-q3",
+            "kind": "multiple_choice",
+            "question": "Was macht `git pull` typischerweise?",
+            "options": [
+              "Holt Änderungen vom Remote und merged sie lokal",
+              "Löscht alle lokalen Commits",
+              "Erstellt automatisch einen Pull Request",
+              "Deployed die App auf Vercel"
+            ],
+            "correctAnswer": "Holt Änderungen vom Remote und merged sie lokal",
+            "feedbackCorrect": "Korrekt — fetch + merge (oder rebase).",
+            "feedbackWrong": "Pull holt Remote-Änderungen — es löscht nichts und deployed nicht."
+          }
+        ]
+      }
+    }
+  ]
+}

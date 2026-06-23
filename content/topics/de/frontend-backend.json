@@ -1,0 +1,122 @@
+{
+  "schemaVersion": 1,
+  "id": "frontend-backend",
+  "title": "Frontend vs. Backend",
+  "category": "Grundlagen",
+  "locale": "de",
+  "tags": ["frontend", "backend", "fullstack", "architektur", "web"],
+  "difficulty": "beginner",
+  "estimatedMinutes": 5,
+  "prerequisites": [],
+  "slides": [
+    {
+      "id": "frontend-backend-hook",
+      "type": "hook",
+      "order": 0,
+      "title": "Die Frage",
+      "content": {
+        "body": "React, Node, Datenbank — was läuft wo, und warum trennt man das überhaupt?",
+        "subtitle": "Zwei Seiten einer App: sichtbar vs. unsichtbar."
+      }
+    },
+    {
+      "id": "frontend-backend-explanation",
+      "type": "explanation",
+      "order": 1,
+      "title": "Einfach erklärt",
+      "content": {
+        "body": "**Frontend** = alles, was im Browser oder in der App läuft: UI, Interaktion, Darstellung (HTML, CSS, React).\n\n**Backend** = Server-Logik: API, Authentifizierung, Business-Regeln, Datenbankzugriff.\n\nDer Nutzer sieht nur das Frontend. Das Backend arbeitet dahinter — oft auf Vercel, AWS oder einem VPS.",
+        "subtitle": "Frontend = Bühne · Backend = Kulisse + Regie"
+      }
+    },
+    {
+      "id": "frontend-backend-real-world",
+      "type": "real_world",
+      "order": 2,
+      "title": "Beispiel aus der Realität",
+      "content": {
+        "body": "In einem **Restaurant** siehst du die Speisekarte, bestellst am Tisch, isst das Essen — das ist Frontend.\n\nIn der **Küche** werden Rezepte befolgt, Vorräte geprüft, Hygiene eingehalten — das ist Backend. Gäste betreten die Küche normalerweise nicht.",
+        "analogy": "Speisekarte & Service = Frontend · Küche & Lager = Backend · Kellner = API"
+      }
+    },
+    {
+      "id": "frontend-backend-scenario-1",
+      "type": "scenario",
+      "order": 3,
+      "title": "Szenario: Formular absenden",
+      "content": {
+        "body": "Registrierungsformular in **Next.js** (Frontend):\n\n- Validierung für UX (E-Mail-Format)\n- Button „Registrieren“ disabled während Request\n\nBeim Submit: `fetch('/api/register', { method: 'POST', body: ... })`\n\n**Backend** prüft Duplikate, hasht Passwort, speichert in DB, sendet ggf. E-Mail.",
+        "subtitle": "Frontend = Eingabe & Feedback · Backend = echte Regeln"
+      }
+    },
+    {
+      "id": "frontend-backend-scenario-2",
+      "type": "scenario",
+      "order": 4,
+      "title": "Szenario: Admin-Bereich",
+      "content": {
+        "body": "Frontend zeigt Admin-Dashboard nur, wenn `user.role === 'admin'` — **für UX**.\n\nJeder API-Call (`GET /admin/users`) prüft im **Backend** erneut das JWT und die Rolle.\n\nOhne Backend-Check könnte jemand die API direkt aufrufen und alle Nutzerdaten lesen.",
+        "subtitle": "UI verstecken ≠ schützen"
+      }
+    },
+    {
+      "id": "frontend-backend-beginner-mistake",
+      "type": "beginner_mistake",
+      "order": 5,
+      "title": "Typischer Anfängerfehler",
+      "content": {
+        "body": "Geheime API-Keys oder DB-Passwörter ins **Frontend** packen — „weil es schneller geht“.",
+        "mistake": "Alles in eine React-App: DB-Connection-String, Stripe Secret Key, Admin-Logik nur clientseitig.",
+        "whyDangerous": "Frontend-Code ist für jeden einsehbar (DevTools, Bundle). Secrets und kritische Logik müssen serverseitig bleiben.",
+        "codeExample": "// NIEMALS im Client!\nconst db = connect(process.env.DATABASE_URL);\n\n// Richtig: Route Handler / API Route\n// app/api/users/route.ts — nur auf dem Server"
+      }
+    },
+    {
+      "id": "frontend-backend-quiz",
+      "type": "quiz",
+      "order": 6,
+      "title": "Mini-Quiz",
+      "content": {
+        "questions": [
+          {
+            "id": "frontend-backend-q1",
+            "kind": "multiple_choice",
+            "question": "Was beschreibt das Frontend am besten?",
+            "options": [
+              "UI und Interaktion, die der Nutzer sieht und bedient",
+              "Die Datenbank auf dem Server",
+              "Nur der HTML-Quelltext ohne JavaScript",
+              "Das Deployment auf Vercel"
+            ],
+            "correctAnswer": "UI und Interaktion, die der Nutzer sieht und bedient",
+            "feedbackCorrect": "Genau — sichtbare Schicht der App.",
+            "feedbackWrong": "Datenbank und Server-Logik gehören zum Backend."
+          },
+          {
+            "id": "frontend-backend-q2",
+            "kind": "true_false",
+            "question": "Sensible Geheimnisse (API-Keys, DB-Passwörter) dürfen nicht im Frontend-Code stehen.",
+            "options": ["Wahr", "Falsch"],
+            "correctAnswer": "Wahr",
+            "feedbackCorrect": "Richtig — Client-Code ist öffentlich einsehbar.",
+            "feedbackWrong": "Secrets gehören nur auf den Server oder in sichere Env-Variablen serverseitig."
+          },
+          {
+            "id": "frontend-backend-q3",
+            "kind": "multiple_choice",
+            "question": "Wo sollte geprüft werden, ob ein Nutzer eine Bestellung stornieren darf?",
+            "options": [
+              "Im Backend — mit gültiger Session und Business-Regeln",
+              "Nur im Frontend, wenn der Button sichtbar ist",
+              "In der Tailwind-Konfiguration",
+              "Im Browser-Cache"
+            ],
+            "correctAnswer": "Im Backend — mit gültiger Session und Business-Regeln",
+            "feedbackCorrect": "Korrekt — das Frontend kann umgangen werden.",
+            "feedbackWrong": "Sichtbarer Button schützt nicht — API-Checks sind Pflicht."
+          }
+        ]
+      }
+    }
+  ]
+}
