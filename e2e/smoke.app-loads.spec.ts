@@ -16,7 +16,7 @@ test('app loads without console errors', async ({ page }) => {
 
   await page.goto('/');
   const api = topicPanel(page, /Was ist eine API/i);
-  await expect(api.getByText('Questolin')).toBeVisible();
+  await expect(api.locator('header p').filter({ hasText: 'Questolin' })).toBeVisible();
   await expect(api.getByRole('heading', { level: 1, name: /Was ist eine API/i })).toBeVisible();
 
   await page.screenshot({
