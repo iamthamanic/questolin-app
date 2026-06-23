@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "id": "grundlagen",
+  "title": "IT-Grundlagen",
+  "description": "Einstieg in APIs, HTTP, Git, Sicherheit und mehr — die Kern-Themen für den Start.",
+  "locale": "de",
+  "topicIds": [
+    "api",
+    "auth",
+    "datenbanken",
+    "db-indizes",
+    "frontend-backend",
+    "git",
+    "http",
+    "security"
+  ]
+}

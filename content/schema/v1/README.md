@@ -77,3 +77,28 @@ content/topics/de/datenbanken.json
 ## Versionierung
 
 `schemaVersion: 1` — bei Breaking Changes v2 einführen und Loader unterstützt beide.
+
+## Collections
+
+Sammlungen gruppieren Topics ohne App-Rewrite:
+
+```
+content/collections/de/grundlagen.json
+```
+
+```json
+{
+  "schemaVersion": 1,
+  "id": "grundlagen",
+  "title": "IT-Grundlagen",
+  "description": "Kurzbeschreibung",
+  "locale": "de",
+  "topicIds": ["api", "http", "git"]
+}
+```
+
+- `topicIds` müssen existierende Topic-IDs referenzieren
+- Feed: `/?collection=grundlagen` filtert nach Sammlung (Reihenfolge aus `topicIds`)
+- Ohne Parameter: alle Topics alphabetisch (wie bisher)
+
+Validierung: `npm run validate:content` prüft Topics und Collections.
