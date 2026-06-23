@@ -1,0 +1,122 @@
+{
+  "schemaVersion": 1,
+  "id": "http",
+  "title": "HTTP und REST — Grundlagen",
+  "category": "Grundlagen",
+  "locale": "de",
+  "tags": ["http", "rest", "api", "backend", "web"],
+  "difficulty": "beginner",
+  "estimatedMinutes": 5,
+  "prerequisites": [],
+  "slides": [
+    {
+      "id": "http-hook",
+      "type": "hook",
+      "order": 0,
+      "title": "Die Frage",
+      "content": {
+        "body": "Was passiert eigentlich, wenn du im Browser auf einen Link klickst?",
+        "subtitle": "Unter der Oberfläche läuft HTTP — das Protokoll des Webs."
+      }
+    },
+    {
+      "id": "http-explanation",
+      "type": "explanation",
+      "order": 1,
+      "title": "Einfach erklärt",
+      "content": {
+        "body": "**HTTP** (Hypertext Transfer Protocol) ist die Sprache, in der Browser und Server miteinander reden.\n\nDer Client schickt eine **Anfrage** (Request) mit Methode, URL und optional Body. Der Server antwortet mit **Statuscode** und **Body** (oft JSON oder HTML).\n\n**REST** ist ein Stil, APIs mit HTTP-Methoden sinnvoll zu nutzen: Ressourcen als URLs, Aktionen über GET, POST, PUT, PATCH, DELETE.",
+        "subtitle": "Request → Server → Response"
+      }
+    },
+    {
+      "id": "http-real-world",
+      "type": "real_world",
+      "order": 2,
+      "title": "Beispiel aus der Realität",
+      "content": {
+        "body": "Du schickst einen **Brief mit Auftragsformular** an eine Firma. Auf dem Umschlag steht die Adresse (URL), im Formular steht, was du willst (Body). Die Firma antwortet mit einer **Eingangsbestätigung** (Status 200) oder „Adresse unbekannt“ (404).",
+        "analogy": "Brief = HTTP-Request · Eingangsbestätigung = Statuscode · Antwortinhalt = Response-Body"
+      }
+    },
+    {
+      "id": "http-scenario-1",
+      "type": "scenario",
+      "order": 3,
+      "title": "Szenario: Produktseite laden",
+      "content": {
+        "body": "Du öffnest `/products/42` im Shop.\n\nDer Browser sendet:\n\n`GET /api/products/42`\n\nDer Server antwortet:\n\n`200 OK`\n\n`{ \"id\": 42, \"name\": \"T-Shirt\", \"price\": 19.99 }`\n\nGET = lesen, ohne etwas zu verändern.",
+        "subtitle": "GET holt Daten — idempotent und sicher zum Wiederholen"
+      }
+    },
+    {
+      "id": "http-scenario-2",
+      "type": "scenario",
+      "order": 4,
+      "title": "Szenario: Neues Produkt anlegen",
+      "content": {
+        "body": "Ein Admin legt ein Produkt an.\n\n`POST /api/products`\n\nBody (JSON):\n\n`{ \"name\": \"Hoodie\", \"price\": 49.99 }`\n\nServer erstellt den Datensatz und antwortet:\n\n`201 Created`\n\n`{ \"id\": 43, \"name\": \"Hoodie\" }`\n\nPOST = neue Ressource erstellen.",
+        "subtitle": "201 Created = erfolgreich angelegt"
+      }
+    },
+    {
+      "id": "http-beginner-mistake",
+      "type": "beginner_mistake",
+      "order": 5,
+      "title": "Typischer Anfängerfehler",
+      "content": {
+        "body": "Viele nutzen **GET zum Löschen** oder mischen Methoden ohne Bedeutung.",
+        "mistake": "Alles per GET machen — z.B. `GET /delete-user?id=5` — oder Statuscodes ignorieren und nur auf den Body schauen.",
+        "whyDangerous": "GET kann von Browsern, Proxies und Crawlern aus Cache oder Links ausgelöst werden. Löschen per GET ist ein klassisches Sicherheitsproblem. Falsche Statuscodes erschweren Debugging und Fehlerbehandlung.",
+        "codeExample": "// Falsch\nGET /api/users/5/delete\n\n// Richtig\nDELETE /api/users/5\n// Antwort: 204 No Content"
+      }
+    },
+    {
+      "id": "http-quiz",
+      "type": "quiz",
+      "order": 6,
+      "title": "Mini-Quiz",
+      "content": {
+        "questions": [
+          {
+            "id": "http-q1",
+            "kind": "multiple_choice",
+            "question": "Welche HTTP-Methode eignet sich zum Lesen von Daten?",
+            "options": [
+              "GET",
+              "POST",
+              "DELETE",
+              "PATCH"
+            ],
+            "correctAnswer": "GET",
+            "feedbackCorrect": "Genau — GET ist zum Lesen gedacht.",
+            "feedbackWrong": "POST erstellt, DELETE löscht, PATCH aktualisiert teilweise. Zum Lesen nutzt du GET."
+          },
+          {
+            "id": "http-q2",
+            "kind": "true_false",
+            "question": "Der Statuscode 404 bedeutet, dass die angeforderte Ressource nicht gefunden wurde.",
+            "options": ["Wahr", "Falsch"],
+            "correctAnswer": "Wahr",
+            "feedbackCorrect": "Richtig — 404 = Not Found.",
+            "feedbackWrong": "404 heißt explizit: die URL/Ressource existiert (so) nicht."
+          },
+          {
+            "id": "http-q3",
+            "kind": "multiple_choice",
+            "question": "Was bedeutet REST in diesem Kontext?",
+            "options": [
+              "Ein Stil, HTTP-APIs mit Ressourcen und Methoden zu strukturieren",
+              "Ein Ersatz für HTTP",
+              "Eine JavaScript-Bibliothek",
+              "Ein Datenbankformat"
+            ],
+            "correctAnswer": "Ein Stil, HTTP-APIs mit Ressourcen und Methoden zu strukturieren",
+            "feedbackCorrect": "Korrekt — REST baut auf HTTP auf.",
+            "feedbackWrong": "REST ersetzt HTTP nicht — es nutzt HTTP sinnvoll für APIs."
+          }
+        ]
+      }
+    }
+  ]
+}

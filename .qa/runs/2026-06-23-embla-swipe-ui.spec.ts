@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import fs from 'fs';
 import path from 'path';
-import { slideCounter, topicPanel } from '../../e2e/helpers/feed';
+import { firstTopicPanel, slideCounter, slideDeck } from '../../e2e/helpers/feed';
 
 const SLUG = 'embla-swipe-ui';
 const EVIDENCE_DIR = `.qa/evidence/${SLUG}`;
@@ -13,10 +13,10 @@ test.beforeAll(() => {
 test.describe('Embla Swipe UI acceptance', () => {
   test('feed shows full-viewport topic with horizontal slide deck', async ({ page }) => {
     await page.goto('/');
-    const api = topicPanel(page, /Was ist eine API/i);
-    await expect(api.locator('header p').filter({ hasText: 'Questolin' })).toBeVisible();
-    await expect(api.getByRole('heading', { level: 1, name: /Was ist eine API/i })).toBeVisible();
-    await expect(slideCounter(api)).toHaveText('1 / 7');
+    const first = firstTopicPanel(page);
+    await expect(first.locator('header p').filter({ hasText: 'Questolin' })).toBeVisible();
+    await expect(first.getByRole('heading', { level: 1 })).toBeVisible();
+    await expect(slideCounter(first)).toHaveText('1 / 7');
 
     await page.screenshot({
       path: path.join(EVIDENCE_DIR, '01-feed-first-slide.png'),
@@ -25,12 +25,12 @@ test.describe('Embla Swipe UI acceptance', () => {
   });
 
   test('horizontal Weiter advances slide counter', async ({ page }) => {
-    await page.goto('/');
-    const api = topicPanel(page, /Was ist eine API/i);
-    const weiter = api.getByRole('button', { name: 'Weiter' });
+    await page.goto('/topic/api');
+    const deck = slideDeck(page);
+    const weiter = deck.getByRole('button', { name: 'Weiter' });
     await expect(weiter).toBeEnabled();
     await weiter.click();
-    await expect(slideCounter(api)).toHaveText('2 / 7');
+    await expect(slideCounter(deck)).toHaveText('2 / 7');
 
     await page.screenshot({
       path: path.join(EVIDENCE_DIR, '02-horizontal-next-slide.png'),
@@ -39,19 +39,19 @@ test.describe('Embla Swipe UI acceptance', () => {
   });
 
   test('horizontal Zurück disabled on first slide', async ({ page }) => {
-    await page.goto('/');
-    const api = topicPanel(page, /Was ist eine API/i);
-    await expect(api.getByRole('button', { name: 'Zurück' })).toBeDisabled();
+    await page.goto('/topic/api');
+    const deck = slideDeck(page);
+    await expect(deck.getByRole('button', { name: 'Zurück' })).toBeDisabled();
   });
 
   test('last slide disables Weiter', async ({ page }) => {
-    await page.goto('/');
-    const api = topicPanel(page, /Was ist eine API/i);
-    const weiter = api.getByRole('button', { name: 'Weiter' });
+    await page.goto('/topic/api');
+    const deck = slideDeck(page);
+    const weiter = deck.getByRole('button', { name: 'Weiter' });
     for (let i = 0; i < 6; i++) {
       await weiter.click();
     }
-    await expect(slideCounter(api)).toHaveText('7 / 7');
+    await expect(slideCounter(deck)).toHaveText('7 / 7');
     await expect(weiter).toBeDisabled();
 
     await page.screenshot({
@@ -61,10 +61,10 @@ test.describe('Embla Swipe UI acceptance', () => {
   });
 
   test('dot navigation jumps to slide', async ({ page }) => {
-    await page.goto('/');
-    const api = topicPanel(page, /Was ist eine API/i);
-    await api.getByRole('button', { name: /Slide 3:/i }).click();
-    await expect(slideCounter(api)).toHaveText('3 / 7');
+    await page.goto('/topic/api');
+    const deck = slideDeck(page);
+    await deck.getByRole('button', { name: /Slide 3:/i }).click();
+    await expect(slideCounter(deck)).toHaveText('3 / 7');
 
     await page.screenshot({
       path: path.join(EVIDENCE_DIR, '04-dot-navigation.png'),
@@ -73,13 +73,13 @@ test.describe('Embla Swipe UI acceptance', () => {
   });
 
   test('quiz slide allows option click without crash', async ({ page }) => {
-    await page.goto('/');
-    const api = topicPanel(page, /Was ist eine API/i);
-    const weiter = api.getByRole('button', { name: 'Weiter' });
+    await page.goto('/topic/api');
+    const deck = slideDeck(page);
+    const weiter = deck.getByRole('button', { name: 'Weiter' });
     for (let i = 0; i < 6; i++) {
       await weiter.click();
     }
-    const option = api.getByRole('button', {
+    const option = deck.getByRole('button', {
       name: /Schnittstelle, über die Programme miteinander kommunizieren/i,
     });
     await option.click();

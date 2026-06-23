@@ -1,0 +1,122 @@
+{
+  "schemaVersion": 1,
+  "id": "security",
+  "title": "Security Basics — OWASP Einführung",
+  "category": "Grundlagen",
+  "locale": "de",
+  "tags": ["security", "owasp", "xss", "injection", "web"],
+  "difficulty": "beginner",
+  "estimatedMinutes": 5,
+  "prerequisites": [],
+  "slides": [
+    {
+      "id": "security-hook",
+      "type": "hook",
+      "order": 0,
+      "title": "Die Frage",
+      "content": {
+        "body": "Deine App ist online — was kann schiefgehen, wenn du Sicherheit „später“ machst?",
+        "subtitle": "Angreifer brauchen keine GUI. Sie testen APIs, Formulare und Konfiguration."
+      }
+    },
+    {
+      "id": "security-explanation",
+      "type": "explanation",
+      "order": 1,
+      "title": "Einfach erklärt",
+      "content": {
+        "body": "**OWASP** (Open Web Application Security Project) sammelt die häufigsten Web-Schwachstellen — die **OWASP Top 10**.\n\nKernidee: **Vertraue nie User-Input**. Validiere serverseitig, escape Output, nutze Prepared Statements, halte Secrets serverseitig.\n\nSecurity ist kein Feature am Ende — sie gehört in API-Design, Auth und Deployment von Anfang an.",
+        "subtitle": "Defense in Depth — mehrere Schichten statt ein Zaun"
+      }
+    },
+    {
+      "id": "security-real-world",
+      "type": "real_world",
+      "order": 2,
+      "title": "Beispiel aus der Realität",
+      "content": {
+        "body": "Ein **Haus** hat nicht nur eine Tür, sondern Schlösser, Alarm, Feuerlöscher und Versicherung. Wenn eine Schicht versagt, fangen andere ab.\n\nIn Apps: HTTPS, Auth, Input-Validierung, Rate Limiting, Logging — Schichten statt „wir haben React, das ist schon sicher“.",
+        "analogy": "Tür = Login · Alarm = Monitoring · Safe = Secrets-Management"
+      }
+    },
+    {
+      "id": "security-scenario-1",
+      "type": "scenario",
+      "order": 3,
+      "title": "Szenario: SQL Injection",
+      "content": {
+        "body": "Login-Formular, unsichere Query:\n\n`SELECT * FROM users WHERE email = '${input}' AND password = '${pw}'`\n\nInput: `' OR '1'='1` — Query wird wahr, Login ohne Passwort.\n\n**Fix:** Prepared Statements / ORM, Passwort-Hash statt Klartext, minimale Fehlermeldungen nach außen.",
+        "subtitle": "OWASP A03 — Injection"
+      }
+    },
+    {
+      "id": "security-scenario-2",
+      "type": "scenario",
+      "order": 4,
+      "title": "Szenario: XSS (Cross-Site Scripting)",
+      "content": {
+        "body": "Kommentarfeld speichert `<script>steal(document.cookie)</script>`.\n\nSeite rendert HTML unescaped — Script läuft im Browser anderer Nutzer.\n\n**Fix:** Output escapen (React escaped standardmäßig Text), CSP-Header, HttpOnly-Cookies für Sessions, `dangerouslySetInnerHTML` vermeiden.",
+        "subtitle": "OWASP A03 — XSS ist Injection in den Browser"
+      }
+    },
+    {
+      "id": "security-beginner-mistake",
+      "type": "beginner_mistake",
+      "order": 5,
+      "title": "Typischer Anfängerfehler",
+      "content": {
+        "body": "„Wir sind klein, uns hackt keiner“ — und **Security by Obscurity**: Security-Header, Updates und Backend-Checks weglassen.",
+        "mistake": "Bots scannen automatisch alle URLs. Fehlende Rate Limits, Debug-Modus in Production, Default-Passwörter, Secrets in Git.",
+        "whyDangerous": "Angriffe sind skaliert und automatisiert. Ein Leak von `.env` in GitHub kann in Minuten ausgenutzt werden.",
+        "codeExample": "// Production — niemals!\nDEBUG=true\n\n// Git — niemals committen!\nDATABASE_URL=postgres://user:secret@host/db\n\n// Nutze .env.local + .gitignore"
+      }
+    },
+    {
+      "id": "security-quiz",
+      "type": "quiz",
+      "order": 6,
+      "title": "Mini-Quiz",
+      "content": {
+        "questions": [
+          {
+            "id": "security-q1",
+            "kind": "multiple_choice",
+            "question": "Was empfiehlt OWASP als Grundhaltung gegenüber User-Input?",
+            "options": [
+              "Nicht vertrauen — serverseitig validieren und sicher verarbeiten",
+              "Alles im Frontend filtern reicht aus",
+              "Input ignorieren und hoffen",
+              "Nur Großbuchstaben erlauben"
+            ],
+            "correctAnswer": "Nicht vertrauen — serverseitig validieren und sicher verarbeiten",
+            "feedbackCorrect": "Genau — Zero Trust für Input.",
+            "feedbackWrong": "Frontend-Validierung ist UX — Sicherheit passiert serverseitig."
+          },
+          {
+            "id": "security-q2",
+            "kind": "true_false",
+            "question": "SQL Injection entsteht oft, wenn User-Input direkt in SQL-Strings eingebaut wird.",
+            "options": ["Wahr", "Falsch"],
+            "correctAnswer": "Wahr",
+            "feedbackCorrect": "Richtig — Prepared Statements nutzen.",
+            "feedbackWrong": "Ungefilterter Input in Queries ist ein Klassiker unter den Top 10."
+          },
+          {
+            "id": "security-q3",
+            "kind": "multiple_choice",
+            "question": "Was ist XSS?",
+            "options": [
+              "Schadcode, der im Browser anderer Nutzer ausgeführt wird",
+              "Ein schneller CSS-Framework",
+              "Eine Art Datenbank-Index",
+              "Ein OAuth-Flow"
+            ],
+            "correctAnswer": "Schadcode, der im Browser anderer Nutzer ausgeführt wird",
+            "feedbackCorrect": "Korrekt — Cross-Site Scripting.",
+            "feedbackWrong": "XSS nutzt unsicheres Rendern von User-Inhalten im Browser."
+          }
+        ]
+      }
+    }
+  ]
+}
