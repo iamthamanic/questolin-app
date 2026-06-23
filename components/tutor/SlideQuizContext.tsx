@@ -1,5 +1,5 @@
 /**
- * Tracks quiz completion per slide for tutor spoiler mode.
+ * Tracks quiz completion per slide for tutor spoiler mode + local progress.
  * Location: components/tutor/SlideQuizContext.tsx
  */
 
@@ -13,6 +13,10 @@ import {
   useState,
   type ReactNode,
 } from "react";
+import {
+  getCompletedQuizSlideIds,
+  saveQuizCompleted,
+} from "@/lib/progress/storage";
 
 interface SlideQuizContextValue {
   markQuizCompleted: (slideId: string) => void;
@@ -21,17 +25,28 @@ interface SlideQuizContextValue {
 
 const SlideQuizContext = createContext<SlideQuizContextValue | null>(null);
 
-export function SlideQuizProvider({ children }: { children: ReactNode }) {
-  const [completedIds, setCompletedIds] = useState<Set<string>>(() => new Set());
+interface SlideQuizProviderProps {
+  topicId: string;
+  children: ReactNode;
+}
 
-  const markQuizCompleted = useCallback((slideId: string) => {
-    setCompletedIds((prev) => {
-      if (prev.has(slideId)) return prev;
-      const next = new Set(prev);
-      next.add(slideId);
-      return next;
-    });
-  }, []);
+export function SlideQuizProvider({ topicId, children }: SlideQuizProviderProps) {
+  const [completedIds, setCompletedIds] = useState<Set<string>>(() => {
+    return new Set(getCompletedQuizSlideIds(topicId));
+  });
+
+  const markQuizCompleted = useCallback(
+    (slideId: string) => {
+      setCompletedIds((prev) => {
+        if (prev.has(slideId)) return prev;
+        const next = new Set(prev);
+        next.add(slideId);
+        return next;
+      });
+      saveQuizCompleted(topicId, slideId);
+    },
+    [topicId],
+  );
 
   const isQuizCompleted = useCallback(
     (slideId: string) => completedIds.has(slideId),

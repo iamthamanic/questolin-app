@@ -5,8 +5,10 @@
 
 "use client";
 
+import { useMemo } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import type { Topic } from "@/lib/content/types";
+import { getLastTopicIndex } from "@/lib/progress/storage";
 import { HorizontalSlideDeck } from "./HorizontalSlideDeck";
 import styles from "./feedViewport.module.css";
 
@@ -19,11 +21,17 @@ function isInsideSlideDeck(target: EventTarget | null): boolean {
 }
 
 export function VerticalTopicFeed({ topics }: VerticalTopicFeedProps) {
+  const startIndex = useMemo(
+    () => getLastTopicIndex(topics.map((t) => t.id)),
+    [topics],
+  );
+
   const [emblaRef] = useEmblaCarousel({
     axis: "y",
     align: "start",
     containScroll: "trimSnaps",
     watchDrag: (_emblaApi, evt) => !isInsideSlideDeck(evt.target),
+    startIndex,
   });
 
   if (topics.length === 0) {
