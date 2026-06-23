@@ -87,11 +87,16 @@ Siehe `.env.example`. Keine Secrets committen.
 
 Siehe [AGENTS.md](AGENTS.md).
 
-## Phase 2 (in Arbeit)
+## Phase 2 (lokal — in Arbeit)
+
+Strategie: **local-first** — alles über `npm run dev`, JSON-Content, LocalStorage, Tutor mit `.env` lokal. Vercel/Supabase siehe GitHub Milestone „Later (Cloud)“.
 
 - ✅ Vertikaler TikTok-Feed (`embla-carousel-react`)
-- Questolin KI-Tutor (`/api/tutor`)
+- Questolin KI-Tutor (`/api/tutor`) — lokal mit `OPENAI_API_KEY`
 - LocalStorage Fortschritt
-- Supabase `ContentProvider`
+- Content Collections (LearnHouse-Pattern, JSON)
+- ~~Supabase~~ → später
+
+Roadmap: [GitHub Milestones](https://github.com/iamthamanic/questolin-app/milestones)
 
 Design: `.qa/design/swipe-learning-feed.md`
