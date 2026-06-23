@@ -8,6 +8,8 @@
 import { useCallback, useEffect, useState } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import type { Topic } from "@/lib/content/types";
+import { SlideQuizProvider } from "@/components/tutor/SlideQuizContext";
+import { QuestolinTutorDock } from "@/components/tutor/QuestolinTutorDock";
 import { SlideRenderer } from "./SlideRenderer";
 import styles from "./feedViewport.module.css";
 
@@ -48,8 +50,10 @@ export function HorizontalSlideDeck({ topic, compact = false }: HorizontalSlideD
 
   const atStart = index === 0;
   const atEnd = index === slides.length - 1;
+  const currentSlide = slides[index];
 
   return (
+    <SlideQuizProvider>
     <div className="flex flex-col flex-1 min-h-0" data-slide-deck>
       <div className={styles.dots}>
         {slides.map((s, i) => (
@@ -85,6 +89,9 @@ export function HorizontalSlideDeck({ topic, compact = false }: HorizontalSlideD
           Weiter
         </button>
       </div>
+
+      {currentSlide && <QuestolinTutorDock topic={topic} slide={currentSlide} />}
     </div>
+    </SlideQuizProvider>
   );
 }
