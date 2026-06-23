@@ -83,7 +83,11 @@ Siehe `.env.example`. Keine Secrets committen.
 1. `@project-setup` — Bootstrap (einmalig)
 2. `@pingpong-solution` — Design vor Features
 3. `@implement` — Code + Acceptance
-4. `@verify-ui` — Browser-Verifikation
+4. `@verify-ticket` — Checks + Acceptance-Match
+5. `@verify-ui` — Browser-Verifikation
+6. `@review-ticket` — Code-Review vor PR
+
+**Issue-Queue (batch):** `@ecc-runner` einmal — arbeitet die Queue autonom ab (implement → verify → review → PR), meldet sich erst bei Ende oder Blocker. Debug: `ecc-runner step`.
 
 Siehe [AGENTS.md](AGENTS.md).
 
