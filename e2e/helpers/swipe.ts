@@ -18,6 +18,7 @@ export async function dragSwipe(
 
 export async function swipeHorizontalOnDeck(page: Page, direction: 'left' | 'right') {
   const card = page.locator('[data-slide-deck] article').first();
+  await card.scrollIntoViewIfNeeded();
   const box = await card.boundingBox();
   if (!box) throw new Error('Slide card not found for horizontal swipe');
   const delta = direction === 'left' ? -220 : 220;
