@@ -10,6 +10,7 @@
     "validate:content": "tsx scripts/validate-content.ts",
     "test:unit": "vitest run",
     "checks": "bash scripts/run-checks.sh",
+    "smoke:tutor": "bash scripts/smoke-tutor.sh",
     "test:e2e": "playwright test",
     "prepare": "node scripts/prepare-husky.mjs"
   },

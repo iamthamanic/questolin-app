@@ -46,7 +46,7 @@ Größen über Tailwind/DaisyUI (`text-2xl`, `card-title`, `text-sm`) — keine 
 
 - Max content width: `max-w-lg` (~512px) zentriert
 - Breakpoints: mobile primary; `md:` optional für Desktop
-- Safe area: später `env(safe-area-inset-*)` für PWA
+- Safe area: `env(safe-area-inset-*)` via CSS vars in `app/globals.css` (PWA `viewport-fit=cover`)
 
 ## States (required)
 
