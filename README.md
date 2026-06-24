@@ -13,7 +13,7 @@ Siehe [docs/PRD.md](docs/PRD.md) für Produktscope.
 
 ```bash
 npm install
-cp .env.example .env   # optional — Phase 2 KI-Tutor
+cp .env.example .env   # optional — KI-Tutor (OPENAI_API_KEY)
 npm run validate:content
 ```
 
@@ -23,7 +23,13 @@ npm run validate:content
 npm run dev
 ```
 
-Öffne [http://localhost:3000](http://localhost:3000) → Feed → Thema „Was ist eine API?“
+Öffne [http://localhost:3000](http://localhost:3000) → vertikaler Feed mit 8 Topics.
+
+Beispiel-Deep-Links:
+
+- Feed (alle Topics): `/`
+- Collection „IT-Grundlagen“: `/?collection=grundlagen`
+- Einzelnes Topic: `/topic/api`
 
 ## Checks (quality gate)
 
@@ -31,14 +37,15 @@ npm run dev
 npm run checks
 ```
 
-Runs `validate:content` → `lint` → `build` via `scripts/run-checks.sh`.
+Runs `validate:content` → `test:unit` → `lint` → `build` via `scripts/run-checks.sh`.
 
 Enforced by Husky pre-push (after `git init`) and GitHub Actions (`.github/workflows/checks.yml`).
 
 ```bash
-npm run validate:content   # Zod-Validation aller Topics
-npm run build
+npm run validate:content   # Topics + Collections (Zod)
+npm run test:unit          # Vitest — Schema & Markdown
 npm run lint
+npm run build
 ```
 
 Optional security scan: `npx ecc-agentshield scan`
@@ -46,7 +53,8 @@ Optional security scan: `npx ecc-agentshield scan`
 ## Tests
 
 ```bash
-npm run test:e2e      # Playwright — bootstrap via @verify-ui skill
+npm run test:unit     # Vitest — lib/content schema
+npm run test:e2e      # Playwright — mobile-chrome, in CI
 ```
 
 ## Neues Thema hinzufügen
@@ -54,17 +62,23 @@ npm run test:e2e      # Playwright — bootstrap via @verify-ui skill
 1. Datei anlegen: `content/topics/de/mein-thema.json`
 2. Schema: siehe `content/schema/v1/README.md`
 3. Validieren: `npm run validate:content`
-4. Fertig — erscheint automatisch im Feed
+4. Fertig — erscheint automatisch im Feed (alphabetisch nach Titel)
+
+Optional: Topic in `content/collections/de/grundlagen.json` eintragen.
 
 ## Project structure
 
 ```
 questolin-app/
-├── app/                    # Next.js routes
-├── components/             # UI-Komponenten
-├── content/topics/de/      # Lerninhalte (JSON)
+├── app/                    # Next.js routes (+ loading/not-found)
+├── components/             # UI — Feed, Slides, Tutor
+├── content/
+│   ├── topics/de/          # 8 Lern-Topics (JSON)
+│   └── collections/de/     # Topic-Sammlungen
 ├── docs/PRD.md, UI_STYLEGUIDE.md
-├── lib/content/, lib/slides/
+├── lib/content/, lib/slides/, lib/progress/, lib/tutor/
+├── tests/unit/             # Vitest
+├── e2e/                    # Playwright
 ├── .cursor/rules/, .cursor/skills/   # Agent harness (ECC-aligned)
 ├── .qa/                    # Design, Acceptance, verify-ui
 └── AGENTS.md
@@ -76,7 +90,7 @@ Siehe `.env.example`. Keine Secrets committen.
 
 | Variable | Purpose |
 |----------|---------|
-| `OPENAI_API_KEY` | Phase 2: Questolin KI-Tutor (serverseitig) |
+| `OPENAI_API_KEY` | Questolin KI-Tutor `/api/tutor` (serverseitig) |
 
 ## Agent workflow
 
@@ -87,19 +101,27 @@ Siehe `.env.example`. Keine Secrets committen.
 5. `@verify-ui` — Browser-Verifikation
 6. `@review-ticket` — Code-Review vor PR
 
-**Issue-Queue (batch):** `@ecc-runner` einmal — arbeitet die Queue autonom ab (implement → verify → review → PR), meldet sich erst bei Ende oder Blocker. Debug: `ecc-runner step`.
+**Issue-Queue (batch):** `@ecc-runner` — arbeitet GitHub-Issues autonom ab (implement → verify → review → PR). Debug: `ecc-runner step`.
 
 Siehe [AGENTS.md](AGENTS.md).
 
-## Phase 2 (lokal — in Arbeit)
+## Feature-Stand (lokal, Phase 2)
 
-Strategie: **local-first** — alles über `npm run dev`, JSON-Content, LocalStorage, Tutor mit `.env` lokal. Vercel/Supabase siehe GitHub Milestone „Later (Cloud)“.
+Strategie: **local-first** — `npm run dev`, JSON-Content, LocalStorage, Tutor mit `.env`. Vercel/Supabase: GitHub Milestone „Later (Cloud)“.
 
-- ✅ Vertikaler TikTok-Feed (`embla-carousel-react`)
-- Questolin KI-Tutor (`/api/tutor`) — lokal mit `OPENAI_API_KEY`
-- LocalStorage Fortschritt
-- Content Collections (LearnHouse-Pattern, JSON)
-- ~~Supabase~~ → später
+| Feature | Status |
+|---------|--------|
+| Vertikaler TikTok-Feed (Embla) | ✅ |
+| Questolin KI-Tutor (`/api/tutor`) | ✅ |
+| Chat-UI (FAB + Bottom Sheet) | ✅ |
+| LocalStorage Fortschritt | ✅ |
+| Content Collections | ✅ |
+| 8 IT-Grundlagen-Topics | ✅ |
+| Markdown in Slides | ✅ |
+| Code-Slides (`code_read`, `code_fix`) | ✅ |
+| Unit-Tests (Vitest) + e2e in CI | ✅ |
+| Vercel Deploy | ⏸️ zurückgestellt (#5) |
+| Supabase ContentProvider | 🔜 Phase 3 |
 
 Roadmap: [GitHub Milestones](https://github.com/iamthamanic/questolin-app/milestones)
 

@@ -32,8 +32,8 @@ Implemented (registry in `lib/slides/registry.ts`):
 | `scenario` | `ScenarioSlide` |
 | `beginner_mistake` | `BeginnerMistakeSlide` |
 | `quiz` | `QuizSlide` |
-
-Planned: `code_read`, `code_fix`
+| `code_read` | `CodeReadSlide` |
+| `code_fix` | `CodeFixSlide` |
 
 ## Add a new slide type
 

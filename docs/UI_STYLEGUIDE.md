@@ -52,9 +52,9 @@ Größen über Tailwind/DaisyUI (`text-2xl`, `card-title`, `text-sm`) — keine 
 
 | State | Pattern |
 |-------|---------|
-| Loading | Server Component — Next loading.tsx später |
+| Loading | `app/loading.tsx`, `app/topic/[id]/loading.tsx` (`RouteLoading`) |
 | Empty | `alert` auf Feed wenn keine Topics |
-| Error | Topic not found → `notFound()` |
+| Error | Deutsche `not-found.tsx` + Topic-spezifische Meldung |
 | Quiz feedback | `feedbackOk` / `feedbackBad` in slide CSS module |
 | Disabled | `btn` disabled auf Prev/Next an Deck-Enden |
 

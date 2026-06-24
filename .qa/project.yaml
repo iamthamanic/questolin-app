@@ -7,6 +7,7 @@ devCommand: npm run dev
 devUrl: http://localhost:3000
 
 checksCommand: npm run checks
+unitCommand: npm run test:unit
 e2eCommand: npm run test:e2e
 
 styleguide: docs/UI_STYLEGUIDE.md
@@ -27,5 +28,9 @@ viewports:
 navigation:
   - label: Feed
     path: /
+  - label: Collection Grundlagen
+    path: /?collection=grundlagen
   - label: Topic API
     path: /topic/api
+  - label: Topic Git
+    path: /topic/git
