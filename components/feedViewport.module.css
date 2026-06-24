@@ -68,21 +68,52 @@
 }
 
 .dot {
-  width: 0.625rem;
-  height: 0.625rem;
-  border-radius: 9999px;
+  position: relative;
+  min-width: 2.75rem;
+  min-height: 2.75rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   border: none;
   padding: 0;
   cursor: pointer;
-  transition: background-color 0.2s;
+  background: transparent;
+  border-radius: 9999px;
+  transition: opacity 0.2s;
 }
 
-.dotActive {
-  background: var(--color-primary);
-}
-
-.dotIdle {
+.dot::before {
+  content: "";
+  width: 0.625rem;
+  height: 0.625rem;
+  border-radius: 9999px;
   background: var(--color-base-300);
+  transition: background-color 0.2s, transform 0.2s;
+}
+
+.dotActive::before {
+  background: var(--color-primary);
+  transform: scale(1.15);
+}
+
+.dotIdle::before {
+  background: var(--color-base-300);
+}
+
+.dot:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dot,
+  .dot::before {
+    transition: none;
+  }
+
+  .dotActive::before {
+    transform: none;
+  }
 }
 
 .navRow {

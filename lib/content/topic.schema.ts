@@ -41,6 +41,22 @@ const quizContentSchema = z.object({
   questions: z.array(quizQuestionSchema).min(1),
 });
 
+const codeReadContentSchema = z.object({
+  body: z.string().min(1),
+  subtitle: z.string().optional(),
+  code: z.string().min(1),
+  language: z.string().optional(),
+});
+
+const codeFixContentSchema = z.object({
+  body: z.string().min(1),
+  brokenCode: z.string().min(1),
+  options: z.array(z.string().min(1)).min(2),
+  correctAnswer: z.string().min(1),
+  feedbackCorrect: z.string().min(1),
+  feedbackWrong: z.string().min(1),
+});
+
 const slideSchema = z
   .object({
     id: z.string().min(1),
@@ -57,6 +73,8 @@ const slideSchema = z
       scenario: scenarioContentSchema,
       beginner_mistake: beginnerMistakeContentSchema,
       quiz: quizContentSchema,
+      code_read: codeReadContentSchema,
+      code_fix: codeFixContentSchema,
     };
 
     const validator = validators[slide.type];

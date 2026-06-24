@@ -6,6 +6,8 @@
 import type { ComponentType } from "react";
 import type { Slide, SlideType } from "../content/types";
 import { BeginnerMistakeSlide } from "@/components/slides/BeginnerMistakeSlide";
+import { CodeFixSlide } from "@/components/slides/CodeFixSlide";
+import { CodeReadSlide } from "@/components/slides/CodeReadSlide";
 import { ExplanationSlide } from "@/components/slides/ExplanationSlide";
 import { HookSlide } from "@/components/slides/HookSlide";
 import { QuizSlide } from "@/components/slides/QuizSlide";
@@ -25,6 +27,8 @@ export const IMPLEMENTED_SLIDE_TYPES = [
   "scenario",
   "beginner_mistake",
   "quiz",
+  "code_read",
+  "code_fix",
 ] as const satisfies readonly SlideType[];
 
 export type ImplementedSlideType = (typeof IMPLEMENTED_SLIDE_TYPES)[number];
@@ -39,6 +43,8 @@ export const SLIDE_RENDERERS: Record<
   scenario: ScenarioSlide,
   beginner_mistake: BeginnerMistakeSlide,
   quiz: QuizSlide,
+  code_read: CodeReadSlide,
+  code_fix: CodeFixSlide,
 };
 
 export function isImplementedSlideType(

@@ -20,8 +20,8 @@ content/topics/de/datenbanken.json
 | `scenario` | ✅ | Programmier-Szenario |
 | `beginner_mistake` | ✅ | Typischer Fehler |
 | `quiz` | ✅ | Interaktives Quiz |
-| `code_read` | 🔜 | Code lesen (Phase 2) |
-| `code_fix` | 🔜 | Code reparieren (Phase 2) |
+| `code_read` | ✅ | Code lesen |
+| `code_fix` | ✅ | Code reparieren (Auswahl) |
 
 ## Slide `content` pro Typ
 
@@ -73,6 +73,30 @@ content/topics/de/datenbanken.json
 ```
 
 `kind`: `multiple_choice` | `true_false` (weitere später)
+
+### code_read
+
+```json
+{
+  "body": "...",
+  "subtitle": "optional",
+  "code": "git status",
+  "language": "optional"
+}
+```
+
+### code_fix
+
+```json
+{
+  "body": "...",
+  "brokenCode": "git add .\\n???",
+  "options": ["git commit -m \"...\"", "..."],
+  "correctAnswer": "git commit -m \"...\"",
+  "feedbackCorrect": "...",
+  "feedbackWrong": "..."
+}
+```
 
 ## Versionierung
 
