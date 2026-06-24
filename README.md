@@ -31,6 +31,15 @@ Beispiel-Deep-Links:
 - Collection „IT-Grundlagen“: `/?collection=grundlagen`
 - Einzelnes Topic: `/topic/api`
 
+## Persönliche Nutzung (Mac + Handy)
+
+Siehe **[docs/personal-use.md](docs/personal-use.md)** — Tutor (Ollama), Smoke-Test, Handy-Zugriff (LAN / Deploy / HTTPS für PWA).
+
+```bash
+# Tutor-Smoke (Dev-Server + Ollama müssen laufen)
+bash scripts/smoke-tutor.sh
+```
+
 ## Checks (quality gate)
 
 ```bash
@@ -75,7 +84,7 @@ questolin-app/
 ├── content/
 │   ├── topics/de/          # 8 Lern-Topics (JSON)
 │   └── collections/de/     # Topic-Sammlungen
-├── docs/PRD.md, UI_STYLEGUIDE.md
+├── docs/PRD.md, personal-use.md, UI_STYLEGUIDE.md
 ├── lib/content/, lib/slides/, lib/progress/, lib/tutor/
 ├── tests/unit/             # Vitest
 ├── e2e/                    # Playwright
@@ -110,23 +119,25 @@ Siehe `.env.example`. Keine Secrets committen.
 
 Siehe [AGENTS.md](AGENTS.md).
 
-## Feature-Stand (lokal, Phase 2)
+## Feature-Stand (lokal)
 
-Strategie: **local-first** — `npm run dev`, JSON-Content, LocalStorage, Tutor mit `.env`. Vercel/Supabase: GitHub Milestone „Later (Cloud)“.
+Strategie: **local-first** — `npm run dev`, JSON-Content, LocalStorage, Tutor mit Ollama. Deploy/PWA optional.
 
 | Feature | Status |
 |---------|--------|
 | Vertikaler TikTok-Feed (Embla) | ✅ |
-| Questolin KI-Tutor (`/api/tutor`) | ✅ |
+| Feed-Virtualisierung (active ± 1) | ✅ |
+| Questolin KI-Tutor (Ollama/OpenAI) | ✅ |
 | Chat-UI (FAB + Bottom Sheet) | ✅ |
 | LocalStorage Fortschritt | ✅ |
 | Content Collections | ✅ |
 | 8 IT-Grundlagen-Topics | ✅ |
-| Markdown in Slides | ✅ |
-| Code-Slides (`code_read`, `code_fix`) | ✅ |
+| Markdown + Code-Slides | ✅ |
 | Unit-Tests (Vitest) + e2e in CI | ✅ |
-| Vercel Deploy | ⏸️ zurückgestellt (#5) |
-| Supabase ContentProvider | ✅ scaffold (#12) — siehe [docs/supabase-content.md](docs/supabase-content.md) |
+| Supabase ContentProvider | ✅ scaffold — [docs/supabase-content.md](docs/supabase-content.md) |
+| PWA (Home Screen) | ✅ [#33](https://github.com/iamthamanic/questolin-app/issues/33) — [personal-use.md](docs/personal-use.md) |
+| Produktions-Deploy | ⏸️ optional (#5) |
+| Gamification | 🔜 needs-design (#15) |
 
 Roadmap: [GitHub Milestones](https://github.com/iamthamanic/questolin-app/milestones)
 

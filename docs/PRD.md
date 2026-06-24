@@ -23,10 +23,11 @@ Questolin kombiniert TikTok-ähnliches Swipen mit strukturierten Lernkarten und 
 
 - Skill-Tree, Leaderboard, Pattern Cards
 - Admin/CMS UI
-- Supabase Sync (nur `ContentProvider`-Interface vorbereitet)
-- Native iOS/Android
+- Supabase **Live-DB** (Scaffold ✅; Seed/Prod optional)
+- Native iOS/Android (Capacitor/Tauri — erst nach PWA evaluieren)
 - Englische UI
-- Vercel-Produktions-Deploy (bewusst zurückgestellt — local-first)
+- Produktions-Deploy (bewusst zurückgestellt — local-first, #5)
+- PWA (nächstes Ticket nach Doku-Sync)
 
 ## 4. Nutzer / Rollen
 
@@ -58,16 +59,21 @@ Questolin kombiniert TikTok-ähnliches Swipen mit strukturierten Lernkarten und 
 | Feature | Status |
 |---------|--------|
 | Vertikaler Embla-Feed | ✅ |
-| Questolin KI `/api/tutor` | ✅ (serverseitig, Ollama lokal/Cloud oder OpenAI) |
+| Feed-Virtualisierung (active ± 1) | ✅ (#14) |
+| Questolin KI `/api/tutor` | ✅ (Ollama lokal/Cloud oder OpenAI) |
 | Chat-UI (FAB + Bottom Sheet) | ✅ |
 | LocalStorage Fortschritt | ✅ |
 | Content Collections | ✅ |
+| Vitest + Playwright in CI | ✅ |
 
-### D) Phase 3 — geplant
+### D) Phase 3 — teilweise ✅
 
-- Supabase `ContentProvider`
-- Feed-Virtualisierung bei vielen Topics
-- Gamification (XP, Streaks, Skill-Tree)
+| Feature | Status |
+|---------|--------|
+| Supabase `ContentProvider` | ✅ Scaffold + JSON-Fallback (#12) |
+| Gamification (XP, Streaks, Skill-Tree) | 🔜 needs-design (#15) |
+| PWA (Manifest, Icons, Safe Area) | ✅ [#33](https://github.com/iamthamanic/questolin-app/issues/33) |
+| Produktions-Deploy (Vercel/Render) | ⏸️ optional (#5) |
 
 ## 6. Constraints
 
@@ -76,8 +82,9 @@ Questolin kombiniert TikTok-ähnliches Swipen mit strukturierten Lernkarten und 
 | Stack | Next.js 14 App Router, React 18, TypeScript, Tailwind, DaisyUI |
 | Content | JSON im Repo, Zod |
 | Locale (UI) | Deutsch |
-| Deployment | Vercel (Repo-ready, Deploy optional) |
-| Backend (später) | Supabase (Auth, Postgres) |
+| Deployment | Optional (Vercel/Render) — local-first Default |
+| Backend (optional) | Supabase ContentProvider (JSON-Fallback) |
+| LLM (Tutor) | Ollama lokal/Cloud oder OpenAI |
 | Komponenten | `/components` im Repo-Root |
 | Tests | Vitest (Unit) + Playwright (e2e) in CI |
 
@@ -95,9 +102,10 @@ Details: [AGENTS.md](../AGENTS.md)
 ## 8. Offene Fragen
 
 - [ ] Monetization (Post-MVP)
-- [ ] Voll-PRD Mission-Types vs. reine Quiz-Slides — Priorität Phase 3
-- [ ] Wann Vercel-Produktions-Deploy (#5)
+- [ ] Voll-PRD Mission-Types vs. reine Quiz-Slides — Priorität mit #15
+- [ ] Deploy-Plattform für persönliche PWA: Vercel vs. Render (#5)
+- [x] Mobile vor Native: PWA vor Capacitor/Tauri — siehe [docs/personal-use.md](personal-use.md)
 
 ---
 
-**Verwandte Docs:** [AGENTS.md](../AGENTS.md) · [README.md](../README.md) · [.qa/design/swipe-learning-feed.md](../.qa/design/swipe-learning-feed.md)
+**Verwandte Docs:** [AGENTS.md](../AGENTS.md) · [README.md](../README.md) · [personal-use.md](personal-use.md) · [.qa/design/swipe-learning-feed.md](../.qa/design/swipe-learning-feed.md)

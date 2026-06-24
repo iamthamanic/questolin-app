@@ -10,6 +10,7 @@ import type { Slide, Topic } from "@/lib/content/types";
 import { QuestolinChatSheet } from "./QuestolinChatSheet";
 import { QuestolinMascot } from "./QuestolinMascot";
 import { useSlideQuiz } from "./SlideQuizContext";
+import styles from "./tutorDock.module.css";
 
 interface QuestolinTutorDockProps {
   topic: Topic;
@@ -26,7 +27,7 @@ export function QuestolinTutorDock({ topic, slide }: QuestolinTutorDockProps) {
     <>
       <button
         type="button"
-        className="btn btn-primary btn-circle shadow-lg fixed bottom-20 right-4 z-40 min-h-[3rem] min-w-[3rem] p-0"
+        className={`btn btn-primary btn-circle shadow-lg ${styles.fab}`}
         aria-label="Questolin fragen"
         onClick={() => setOpen(true)}
       >

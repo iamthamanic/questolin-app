@@ -1,0 +1,14 @@
+/**
+ * Fixed tutor FAB positioning with PWA safe-area insets.
+ * Location: components/tutor/tutorDock.module.css
+ */
+
+.fab {
+  position: fixed;
+  z-index: 40;
+  right: calc(1rem + var(--safe-right));
+  bottom: calc(5rem + var(--safe-bottom));
+  min-height: 3rem;
+  min-width: 3rem;
+  padding: 0;
+}
