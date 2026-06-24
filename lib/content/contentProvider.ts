@@ -3,46 +3,38 @@
  * Location: lib/content/contentProvider.ts
  */
 
-import type { Collection, ContentProvider, Topic } from "./types";
-import { loadCollection, loadCollections } from "./loadCollections";
-import { loadTopic, loadTopics } from "./loadTopics";
+import type { ContentProvider } from "./types";
+import { JsonContentProvider } from "./jsonContentProvider";
+import { createSupabaseContentProvider } from "./supabaseProvider";
 
-export class JsonContentProvider implements ContentProvider {
-  constructor(private defaultLocale = "de") {}
+export { JsonContentProvider } from "./jsonContentProvider";
 
-  async listTopics(locale?: string, collectionId?: string): Promise<Topic[]> {
-    const loc = locale ?? this.defaultLocale;
-    const topics = await loadTopics(loc);
-
-    if (!collectionId) {
-      return topics;
+/** Resolve provider from env; JSON is the safe default for local dev. */
+export function resolveContentProvider(): ContentProvider {
+  const mode = process.env.CONTENT_PROVIDER?.trim().toLowerCase();
+  if (mode === "supabase") {
+    const url = process.env.SUPABASE_URL?.trim();
+    const key = process.env.SUPABASE_ANON_KEY?.trim();
+    if (url && key) {
+      return createSupabaseContentProvider(url, key);
     }
-
-    const collection = await loadCollection(collectionId, loc);
-    if (!collection) {
-      return topics;
-    }
-
-    const order = new Map(collection.topicIds.map((id, index) => [id, index]));
-    return topics
-      .filter((t) => order.has(t.id))
-      .sort((a, b) => (order.get(a.id) ?? 0) - (order.get(b.id) ?? 0));
+    console.warn(
+      "[content] CONTENT_PROVIDER=supabase but SUPABASE_URL/SUPABASE_ANON_KEY missing — using JSON",
+    );
   }
-
-  getTopic(id: string, locale?: string): Promise<Topic | null> {
-    return loadTopic(id, locale ?? this.defaultLocale);
-  }
-
-  listCollections(locale?: string): Promise<Collection[]> {
-    return loadCollections(locale ?? this.defaultLocale);
-  }
+  return new JsonContentProvider("de");
 }
 
 let defaultProvider: ContentProvider | null = null;
 
 export function getContentProvider(): ContentProvider {
   if (!defaultProvider) {
-    defaultProvider = new JsonContentProvider("de");
+    defaultProvider = resolveContentProvider();
   }
   return defaultProvider;
+}
+
+/** Test helper — reset singleton between unit tests. */
+export function resetContentProviderForTests(): void {
+  defaultProvider = null;
 }

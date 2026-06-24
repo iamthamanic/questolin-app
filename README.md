@@ -90,6 +90,8 @@ Siehe `.env.example`. Keine Secrets committen.
 
 | Variable | Purpose |
 |----------|---------|
+| `CONTENT_PROVIDER` | `json` (default) or `supabase` |
+| `SUPABASE_URL` / `SUPABASE_ANON_KEY` | Supabase ContentProvider (SSR-safe anon key) |
 | `OPENAI_API_KEY` | Questolin KI-Tutor `/api/tutor` (serverseitig) |
 
 ## Agent workflow
@@ -121,7 +123,7 @@ Strategie: **local-first** — `npm run dev`, JSON-Content, LocalStorage, Tutor 
 | Code-Slides (`code_read`, `code_fix`) | ✅ |
 | Unit-Tests (Vitest) + e2e in CI | ✅ |
 | Vercel Deploy | ⏸️ zurückgestellt (#5) |
-| Supabase ContentProvider | 🔜 Phase 3 |
+| Supabase ContentProvider | ✅ scaffold (#12) — siehe [docs/supabase-content.md](docs/supabase-content.md) |
 
 Roadmap: [GitHub Milestones](https://github.com/iamthamanic/questolin-app/milestones)
 
