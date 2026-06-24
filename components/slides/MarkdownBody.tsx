@@ -8,13 +8,15 @@ import styles from "./slideContent.module.css";
 
 interface MarkdownBodyProps {
   text: string;
+  className?: string;
 }
 
-export function MarkdownBody({ text }: MarkdownBodyProps) {
+export function MarkdownBody({ text, className }: MarkdownBodyProps) {
+  const bodyClass = className ? `${styles.body} ${className}` : styles.body;
   return (
     <>
       {splitParagraphs(text).map((block, blockIndex) => (
-        <p key={blockIndex} className={styles.body}>
+        <p key={blockIndex} className={bodyClass}>
           {block.split("\n").map((line, lineIndex) => (
             <span key={lineIndex}>
               {lineIndex > 0 && <br />}

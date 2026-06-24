@@ -34,6 +34,33 @@
   min-height: 0;
 }
 
+.deckOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    color-mix(in oklch, var(--color-base-100) 92%, transparent) 0%,
+    color-mix(in oklch, var(--color-base-100) 55%, transparent) 70%,
+    transparent 100%
+  );
+}
+
+.deckOverlay > * {
+  pointer-events: auto;
+}
+
+.deckSlideArea {
+  flex: 1;
+  min-height: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
 .progressTrack {
   flex-shrink: 0;
   height: 3px;
@@ -86,6 +113,7 @@
   padding: 0;
   box-sizing: border-box;
   overflow-y: auto;
+  padding-top: calc(4.5rem + var(--safe-top));
 }
 
 .deckPlaceholder {

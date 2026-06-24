@@ -10,7 +10,7 @@ test.beforeEach(async ({ page }) => {
   await page.evaluate((key) => localStorage.removeItem(key), ONBOARDING_KEY);
 });
 
-test("immersive feed shows chrome overlay and progress bar", async ({ page }) => {
+test("immersive feed shows chrome overlay and story progress", async ({ page }) => {
   const panel = firstTopicPanel(page);
   await expect(panel.locator("[data-feed-chrome]")).toBeVisible();
   await expect(panel.getByRole("heading", { level: 1 })).toBeVisible();
@@ -36,7 +36,7 @@ test("desktop shows nav buttons", async ({ page }) => {
 
 test("swipe coach hint dismisses after topic change", async ({ page }) => {
   await page.goto("/feed");
-  await expect(page.getByText(/Nächstes Thema/)).toBeVisible();
+  await expect(page.getByText(/Wische ↑↓|Nächstes Thema/)).toBeVisible();
   await swipeVerticalOnHeader(page, "up");
-  await expect(page.getByText(/Nächstes Thema/)).toHaveCount(0);
+  await expect(page.getByText(/Wische ↑↓|Nächstes Thema/)).toHaveCount(0);
 });
