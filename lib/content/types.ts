@@ -12,6 +12,8 @@ export const SLIDE_TYPES = [
   "quiz",
   "code_read",
   "code_fix",
+  "mastery_check",
+  "mini_task",
 ] as const;
 
 export type SlideType = (typeof SLIDE_TYPES)[number];
@@ -75,6 +77,18 @@ export interface CodeFixContent {
   feedbackWrong: string;
 }
 
+export interface MasteryCheckContent {
+  body: string;
+  subtitle?: string;
+  checklist?: string[];
+}
+
+export interface MiniTaskContent {
+  body: string;
+  hint?: string;
+  solution?: string;
+}
+
 export type SlideContent =
   | HookContent
   | ExplanationContent
@@ -84,6 +98,8 @@ export type SlideContent =
   | QuizContent
   | CodeReadContent
   | CodeFixContent
+  | MasteryCheckContent
+  | MiniTaskContent
   | Record<string, unknown>;
 
 export interface Slide {
@@ -106,6 +122,8 @@ export interface Topic {
   difficulty?: TopicDifficulty;
   estimatedMinutes?: number;
   prerequisites?: string[];
+  level?: number;
+  testBlockId?: string;
   slides: Slide[];
 }
 
@@ -118,10 +136,22 @@ export interface Collection {
   topicIds: string[];
 }
 
+export interface Level {
+  schemaVersion: 1;
+  id: string;
+  index: number;
+  title: string;
+  description: string;
+  locale: string;
+  topicIds: string[];
+}
+
 export interface ContentProvider {
   listTopics(locale?: string, collectionId?: string): Promise<Topic[]>;
   getTopic(id: string, locale?: string): Promise<Topic | null>;
   listCollections?(locale?: string): Promise<Collection[]>;
+  listLevels?(locale?: string): Promise<Level[]>;
+  getLevel?(id: string, locale?: string): Promise<Level | null>;
 }
 
 export interface TutorContext {

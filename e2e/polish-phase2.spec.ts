@@ -7,7 +7,7 @@ test("slide progress bar is exposed to assistive tech", async ({ page }) => {
   const deck = slideDeck(page);
   const bar = deck.getByRole("progressbar");
   await expect(bar).toHaveAttribute("aria-valuenow", "1");
-  await expect(bar).toHaveAttribute("aria-valuemax", "7");
+  await expect(bar).toHaveAttribute("aria-valuemax", "9");
 });
 
 test("renders markdown bold in slide body", async ({ page }) => {

@@ -7,7 +7,7 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import useEmblaCarousel from "embla-carousel-react";
-import type { Topic } from "@/lib/content/types";
+import type { Level, Topic } from "@/lib/content/types";
 import { getSavedSlideIndex, saveSlideIndex } from "@/lib/progress/storage";
 import { SlideQuizProvider } from "@/components/tutor/SlideQuizContext";
 import { QuestolinTutorDock } from "@/components/tutor/QuestolinTutorDock";
@@ -20,6 +20,8 @@ import styles from "./feedViewport.module.css";
 interface HorizontalSlideDeckProps {
   topic: Topic;
   compact?: boolean;
+  levels?: Level[];
+  topics?: Topic[];
 }
 
 function useDesktopNav(): boolean {
@@ -39,7 +41,7 @@ function useDesktopNav(): boolean {
   return desktop;
 }
 
-export function HorizontalSlideDeck({ topic, compact = false }: HorizontalSlideDeckProps) {
+export function HorizontalSlideDeck({ topic, compact = false, levels, topics }: HorizontalSlideDeckProps) {
   const showDesktopNav = useDesktopNav();
   const slides = topic.slides;
   const savedIndex = useMemo(
@@ -91,7 +93,7 @@ export function HorizontalSlideDeck({ topic, compact = false }: HorizontalSlideD
   const currentSlide = slides[index];
 
   return (
-    <SlideQuizProvider topicId={topic.id}>
+    <SlideQuizProvider topicId={topic.id} levels={levels} topics={topics}>
       <SlideImmersiveProvider immersive>
         <div className={`flex flex-col flex-1 min-h-0 ${styles.deckRoot}`} data-topic-deck>
           <div className={styles.deckOverlay} aria-hidden={false}>

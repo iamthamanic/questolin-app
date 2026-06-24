@@ -208,3 +208,38 @@
 .feedbackBad {
   background: color-mix(in oklch, var(--color-error) 12%, transparent);
 }
+
+.masteryList {
+  margin-top: 1rem;
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.masteryItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.5rem;
+  background: color-mix(in oklch, var(--color-success) 10%, transparent);
+}
+
+.masteryBullet {
+  color: var(--color-success);
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.miniTaskSection {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.miniTaskToggle {
+  align-self: flex-start;
+}

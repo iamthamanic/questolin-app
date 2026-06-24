@@ -3,8 +3,9 @@
  * Location: lib/content/jsonContentProvider.ts
  */
 
-import type { Collection, ContentProvider, Topic } from "./types";
+import type { Collection, ContentProvider, Level, Topic } from "./types";
 import { loadCollection, loadCollections } from "./loadCollections";
+import { loadLevel, loadLevels } from "./loadLevels";
 import { loadTopic, loadTopics } from "./loadTopics";
 
 export class JsonContentProvider implements ContentProvider {
@@ -35,5 +36,13 @@ export class JsonContentProvider implements ContentProvider {
 
   listCollections(locale?: string): Promise<Collection[]> {
     return loadCollections(locale ?? this.defaultLocale);
+  }
+
+  listLevels(locale?: string): Promise<Level[]> {
+    return loadLevels(locale ?? this.defaultLocale);
+  }
+
+  getLevel(id: string, locale?: string): Promise<Level | null> {
+    return loadLevel(id, locale ?? this.defaultLocale);
   }
 }

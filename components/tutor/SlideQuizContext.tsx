@@ -13,6 +13,8 @@ import {
   useState,
   type ReactNode,
 } from "react";
+import type { Level, Topic } from "@/lib/content/types";
+import { autoAdvanceLevel } from "@/lib/progress/levelProgress";
 import {
   getCompletedQuizSlideIds,
   saveQuizCompleted,
@@ -27,10 +29,12 @@ const SlideQuizContext = createContext<SlideQuizContextValue | null>(null);
 
 interface SlideQuizProviderProps {
   topicId: string;
+  levels?: Level[];
+  topics?: Topic[];
   children: ReactNode;
 }
 
-export function SlideQuizProvider({ topicId, children }: SlideQuizProviderProps) {
+export function SlideQuizProvider({ topicId, levels, topics, children }: SlideQuizProviderProps) {
   const [completedIds, setCompletedIds] = useState<Set<string>>(() => {
     return new Set(getCompletedQuizSlideIds(topicId));
   });
@@ -44,8 +48,11 @@ export function SlideQuizProvider({ topicId, children }: SlideQuizProviderProps)
         return next;
       });
       saveQuizCompleted(topicId, slideId);
+      if (levels?.length && topics?.length) {
+        autoAdvanceLevel(levels, topics);
+      }
     },
-    [topicId],
+    [topicId, levels, topics],
   );
 
   const isQuizCompleted = useCallback(

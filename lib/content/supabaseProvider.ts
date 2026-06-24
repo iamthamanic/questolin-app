@@ -5,7 +5,8 @@
 
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 import { parseCollection } from "./collection.schema";
-import type { Collection, ContentProvider, Topic } from "./types";
+import { parseLevel } from "./level.schema";
+import type { Collection, ContentProvider, Level, Topic } from "./types";
 import { parseTopic } from "./topic.schema";
 
 function sortSlides(topic: Topic): Topic {
@@ -135,6 +136,37 @@ export class SupabaseContentProvider implements ContentProvider {
     } catch {
       return null;
     }
+  }
+
+  async listLevels(locale?: string): Promise<Level[]> {
+    const loc = locale ?? this.defaultLocale;
+    const { data, error } = await this.client
+      .from("questolin_levels")
+      .select("payload")
+      .eq("locale", loc);
+
+    if (error) {
+      console.error("[SupabaseContentProvider] listLevels:", error.message);
+      // Fallback to local JSON so the app keeps working without a DB table.
+      const { loadLevels } = await import("./loadLevels");
+      return loadLevels(loc);
+    }
+
+    const levels: Level[] = [];
+    for (const row of data ?? []) {
+      try {
+        levels.push(parseLevel(row.payload, "supabase") as Level);
+      } catch (err) {
+        console.error("[SupabaseContentProvider] invalid level row:", err);
+      }
+    }
+
+    return levels.sort((a, b) => a.index - b.index);
+  }
+
+  async getLevel(id: string, locale?: string): Promise<Level | null> {
+    const levels = await this.listLevels(locale);
+    return levels.find((l) => l.id === id) ?? null;
   }
 }
 

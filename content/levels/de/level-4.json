@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "id": "level-4",
+  "index": 4,
+  "title": "Level 4 — Stabil, sicher und wartbar",
+  "description": "Du kannst Systeme stabil, sicher und wartbar bauen. Du verstehst Authentifizierung, Autorisierung und gängige Angriffsvektoren.",
+  "locale": "de",
+  "topicIds": ["auth", "security"]
+}

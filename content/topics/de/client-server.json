@@ -1,0 +1,132 @@
+{
+  "schemaVersion": 1,
+  "id": "client-server",
+  "title": "Client und Server",
+  "category": "Grundlagen",
+  "level": 0,
+  "testBlockId": "1",
+  "locale": "de",
+  "tags": ["client", "server", "http", "web", "grundlagen"],
+  "difficulty": "beginner",
+  "estimatedMinutes": 4,
+  "prerequisites": [],
+  "slides": [
+    {
+      "id": "cs-hook",
+      "type": "hook",
+      "order": 0,
+      "title": "Die Frage",
+      "content": {
+        "body": "Was ist ein Client und was ist ein Server?",
+        "subtitle": "Die zwei Rollen, aus denen fast jede Web-App besteht."
+      }
+    },
+    {
+      "id": "cs-explanation",
+      "type": "explanation",
+      "order": 1,
+      "title": "Einfach erklärt",
+      "content": {
+        "body": "Ein **Client** stellt eine Anfrage.\n\nEin **Server** beantwortet sie.\n\nIm Web ist dein Browser oder die App auf deinem Handy der Client. Der Computer oder das Programm, das die Webseite oder die Daten liefert, ist der Server.",
+        "subtitle": "Client fragt · Server antwortet"
+      }
+    },
+    {
+      "id": "cs-real-world",
+      "type": "real_world",
+      "order": 2,
+      "title": "Beispiel aus der Realität",
+      "content": {
+        "body": "Du rufst bei einer Pizzeria an.\n\n**Du = Client** — du bestellst eine Pizza.\n**Pizzeria = Server** — sie nimmt die Bestellung entgegen und liefert sie.\n\nDeine Bestellung ist der **Request**. Die Pizza ist die **Response**.",
+        "analogy": "Du = Client · Pizzeria = Server · Bestellung = Request · Pizza = Response"
+      }
+    },
+    {
+      "id": "cs-scenario-1",
+      "type": "scenario",
+      "order": 3,
+      "title": "Szenario: Website öffnen",
+      "content": {
+        "body": "Du öffnest im Browser:\n\n`https://example.com`\n\nDann passiert grob:\n\n1. Der Browser sucht den passenden Server zur Domain.\n2. Der Browser sendet eine HTTP-Anfrage.\n3. Der Server antwortet mit Dateien oder Daten.\n4. Der Browser zeigt die Seite an.\n\nDer Browser ist der **Client**. Das Programm, das die Seite liefert, ist der **Server**.",
+        "subtitle": "Browser = Client · Webserver = Server"
+      }
+    },
+    {
+      "id": "cs-beginner-mistake",
+      "type": "beginner_mistake",
+      "order": 4,
+      "title": "Typischer Anfängerfehler",
+      "content": {
+        "body": "Viele denken: \"Server\" bedeutet immer ein physisches Gerät.",
+        "mistake": "Annehmen, ein Server sei immer ein großer Rechner im Rechenzentrum.",
+        "whyDangerous": "In der Praxis ist ein Server oft ein Programm, das irgendwo in der Cloud läuft. Das Verwechseln verhindert, dass man versteht, wie APIs, Deployment und Hosting funktionieren."
+      }
+    },
+    {
+      "id": "cs-mastery-check",
+      "type": "mastery_check",
+      "order": 5,
+      "title": "Woran erkenne ich, dass ich es verstanden habe?",
+      "content": {
+        "body": "Du verstehst Client und Server, wenn du das ohne Nachdenken erklären kannst.",
+        "checklist": [
+          "Ich kann in eigenen Worten sagen, wer fragt und wer antwortet.",
+          "Ich kenne mindestens zwei Beispiele für Clients.",
+          "Ich weiß, dass ein Server auch nur ein Programm sein kann."
+        ]
+      }
+    },
+    {
+      "id": "cs-mini-task",
+      "type": "mini_task",
+      "order": 6,
+      "title": "Mini-Aufgabe",
+      "content": {
+        "body": "Suche dir drei Apps oder Webseiten, die du heute genutzt hast.\n\nFür jede: Wer ist der Client? Wer ist wahrscheinlich der Server?",
+        "hint": "Denk an E-Mail, Musik-Streaming, Online-Shopping oder Nachrichten-Apps."
+      }
+    },
+    {
+      "id": "cs-quiz",
+      "type": "quiz",
+      "order": 7,
+      "title": "Mini-Quiz",
+      "content": {
+        "questions": [
+          {
+            "id": "cs-q1",
+            "kind": "true_false",
+            "question": "Chrome ist ein Client, wenn er eine Webseite lädt.",
+            "options": ["Wahr", "Falsch"],
+            "correctAnswer": "Wahr",
+            "feedbackCorrect": "Richtig — Chrome stellt die Anfrage.",
+            "feedbackWrong": "Chrome fragt den Server an, daher ist er der Client."
+          },
+          {
+            "id": "cs-q2",
+            "kind": "multiple_choice",
+            "question": "Was macht ein Server in einer typischen Web-Anfrage?",
+            "options": [
+              "Er empfängt die Anfrage und liefert eine Antwort",
+              "Er zeigt die Webseite auf dem Bildschirm an",
+              "Er ist immer ein physischer Computer beim Nutzer",
+              "Er sendet nur Anfragen an andere Computer"
+            ],
+            "correctAnswer": "Er empfängt die Anfrage und liefert eine Antwort",
+            "feedbackCorrect": "Genau — Server empfangen und antworten.",
+            "feedbackWrong": "Das Anzeigen macht der Client. Der Server empfängt und antwortet."
+          },
+          {
+            "id": "cs-q3",
+            "kind": "true_false",
+            "question": "Ein Server kann auch ein Programm in der Cloud sein, nicht nur ein physischer Rechner.",
+            "options": ["Wahr", "Falsch"],
+            "correctAnswer": "Wahr",
+            "feedbackCorrect": "Korrekt — viele Server sind virtuelle Programme.",
+            "feedbackWrong": "Server müssen nicht physisch sein. Cloud-Server sind Programme auf geteilten Maschinen."
+          }
+        ]
+      }
+    }
+  ]
+}

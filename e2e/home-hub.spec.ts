@@ -1,18 +1,23 @@
 import { test, expect } from "@playwright/test";
 import { useDesktopNav } from "./helpers/viewport";
 
-const PROGRESS_KEY = "questolin.progress.v1";
+const PROGRESS_KEY = "questolin.progress.v2";
+const LEVEL_ONBOARDING_KEY = "questolin.onboarding.level.v1";
 
-test("home shows start screen with collection CTA", async ({ page }) => {
+test.beforeEach(async ({ page }) => {
   await page.goto("/");
+  await page.evaluate((key) => localStorage.setItem(key, "1"), LEVEL_ONBOARDING_KEY);
+  await page.goto("/");
+});
+
+test("home shows start screen with current level CTA", async ({ page }) => {
   await expect(page.getByRole("heading", { name: /Was lernst du heute/i })).toBeVisible();
-  await expect(page.getByTestId("home-collection-grundlagen")).toBeVisible();
+  await expect(page.getByTestId("home-current-level")).toBeVisible();
   await expect(page.getByTestId("home-all-topics")).toBeVisible();
   await expect(page.locator("[data-topic-deck]")).toHaveCount(0);
 });
 
 test("collection CTA opens feed", async ({ page }) => {
-  await page.goto("/");
   await page.getByTestId("home-collection-grundlagen").click();
   await expect(page).toHaveURL(/\/feed\?collection=grundlagen/);
   await expect(page.locator("[data-topic-deck]").first()).toBeVisible();
@@ -29,7 +34,7 @@ test("resume CTA appears after progress", async ({ page }) => {
   await page.getByRole("button", { name: "Weiter" }).click();
   await page.goto("/");
   await expect(page.getByTestId("home-resume")).toBeVisible();
-  await expect(page.getByTestId("home-resume")).toContainText(/Slide 2\/7/);
+  await expect(page.getByTestId("home-resume")).toContainText(/Slide 2\/9/);
 });
 
 test("feed Questolin brand links home", async ({ page }) => {

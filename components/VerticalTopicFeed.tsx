@@ -7,14 +7,15 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import useEmblaCarousel from "embla-carousel-react";
-import type { Topic } from "@/lib/content/types";
+import type { Level, Topic } from "@/lib/content/types";
 import { hasSeenSwipeCoach, markSwipeCoachSeen } from "@/lib/progress/onboarding";
-import { getLastTopicIndex, saveLastTopicId } from "@/lib/progress/storage";
+import { getLastTopicIndex, getUserLevel, saveLastTopicId } from "@/lib/progress/storage";
 import { HorizontalSlideDeck } from "./HorizontalSlideDeck";
 import styles from "./feedViewport.module.css";
 
 interface VerticalTopicFeedProps {
   topics: Topic[];
+  levels?: Level[];
 }
 
 /** How many topic panels above/below the active one keep a mounted slide deck. */
@@ -45,10 +46,27 @@ function useDesktopNav(): boolean {
   return desktop;
 }
 
-export function VerticalTopicFeed({ topics }: VerticalTopicFeedProps) {
+function filterTopicsByLevel(topics: Topic[], levels: Level[] | undefined): Topic[] {
+  if (!levels || levels.length === 0) return topics;
+  const userLevel = getUserLevel();
+  const unlockedLevelIds = new Set(
+    levels.filter((l) => l.index <= userLevel).map((l) => l.id),
+  );
+  const topicIdToMaxLevel = new Map<string, number>();
+  for (const level of levels) {
+    if (!unlockedLevelIds.has(level.id)) continue;
+    for (const topicId of level.topicIds) {
+      topicIdToMaxLevel.set(topicId, Math.max(topicIdToMaxLevel.get(topicId) ?? -1, level.index));
+    }
+  }
+  return topics.filter((t) => topicIdToMaxLevel.has(t.id));
+}
+
+export function VerticalTopicFeed({ topics, levels }: VerticalTopicFeedProps) {
+  const visibleTopics = useMemo(() => filterTopicsByLevel(topics, levels), [topics, levels]);
   const startIndex = useMemo(
-    () => getLastTopicIndex(topics.map((t) => t.id)),
-    [topics],
+    () => getLastTopicIndex(visibleTopics.map((t) => t.id)),
+    [visibleTopics],
   );
 
   const [activeIndex, setActiveIndex] = useState(startIndex);
@@ -65,14 +83,14 @@ export function VerticalTopicFeed({ topics }: VerticalTopicFeedProps) {
   });
 
   useEffect(() => {
-    setShowCoach(topics.length > 1 && !hasSeenSwipeCoach());
-  }, [topics.length]);
+    setShowCoach(visibleTopics.length > 1 && !hasSeenSwipeCoach());
+  }, [visibleTopics.length]);
 
   const syncActiveTopic = useCallback(() => {
     if (!emblaApi) return;
     const index = emblaApi.selectedScrollSnap();
     setActiveIndex(index);
-    const topic = topics[index];
+    const topic = visibleTopics[index];
     if (topic) {
       saveLastTopicId(topic.id);
     }
@@ -80,7 +98,7 @@ export function VerticalTopicFeed({ topics }: VerticalTopicFeedProps) {
       markSwipeCoachSeen();
       setShowCoach(false);
     }
-  }, [emblaApi, topics, showCoach]);
+  }, [emblaApi, visibleTopics, showCoach]);
 
   useEffect(() => {
     setActiveIndex(startIndex);
@@ -98,24 +116,24 @@ export function VerticalTopicFeed({ topics }: VerticalTopicFeedProps) {
     };
   }, [emblaApi, syncActiveTopic]);
 
-  if (topics.length === 0) {
+  if (visibleTopics.length === 0) {
     return (
       <div className="alert alert-warning m-4">
-        <span>Keine Topics in content/topics/de/ gefunden.</span>
+        <span>Keine passenden Topics für dein Level gefunden.</span>
       </div>
     );
   }
 
   return (
     <div className={styles.feedRoot}>
-      <div className={styles.verticalViewport} ref={emblaRef}>
+      <div className={styles.verticalViewport} ref={emblaRef} data-vertical-feed-viewport>
         <div className={styles.verticalContainer}>
-          {topics.map((topic, i) => {
+          {visibleTopics.map((topic, i) => {
             const mounted = shouldMountDeck(i, activeIndex);
             return (
               <section className={styles.verticalSlide} key={topic.id} aria-label={topic.title}>
                 {mounted ? (
-                  <HorizontalSlideDeck topic={topic} compact />
+                  <HorizontalSlideDeck topic={topic} levels={levels} topics={visibleTopics} compact />
                 ) : (
                   <div className={styles.deckPlaceholder} aria-hidden />
                 )}

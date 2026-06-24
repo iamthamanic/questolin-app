@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "id": "level-1",
+  "index": 1,
+  "title": "Level 1 — Grundlagen verstehen",
+  "description": "Du kannst einfache Skripte und Frontend-Änderungen machen. Du verstehst, wie Daten fließen und was ein Bug ist.",
+  "locale": "de",
+  "topicIds": ["frontend-backend"]
+}

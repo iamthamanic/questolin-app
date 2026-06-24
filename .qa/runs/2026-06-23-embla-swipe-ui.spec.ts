@@ -7,9 +7,20 @@ import { useDesktopNav } from '../../e2e/helpers/viewport';
 
 const SLUG = 'embla-swipe-ui';
 const EVIDENCE_DIR = `.qa/evidence/${SLUG}`;
+const ONBOARDING_KEY = 'questolin.onboarding.v1';
+const LEVEL_ONBOARDING_KEY = 'questolin.onboarding.level.v1';
+const FIRST_TOPIC_SLIDE_COUNT = 8;
+const API_SLIDE_COUNT = 9;
 
 test.beforeAll(() => {
   fs.mkdirSync(EVIDENCE_DIR, { recursive: true });
+});
+
+test.beforeEach(async ({ page }) => {
+  await page.goto('/feed');
+  await page.evaluate((key) => localStorage.removeItem(key), ONBOARDING_KEY);
+  await page.evaluate((key) => localStorage.setItem(key, '1'), LEVEL_ONBOARDING_KEY);
+  await page.goto('/feed');
 });
 
 test.describe('Embla Swipe UI acceptance', () => {
@@ -19,7 +30,7 @@ test.describe('Embla Swipe UI acceptance', () => {
     await expect(first.locator('[data-feed-chrome]')).toBeVisible();
     await expect(first.locator('[data-feed-chrome]').getByText('Questolin')).toBeVisible();
     await expect(first.getByRole('heading', { level: 1 })).toBeVisible();
-    await expect(slideCounter(first)).toHaveText('1 / 7');
+    await expect(slideCounter(first)).toHaveText(`1 / ${FIRST_TOPIC_SLIDE_COUNT}`);
 
     await page.screenshot({
       path: path.join(EVIDENCE_DIR, '01-feed-first-slide.png'),
@@ -34,7 +45,7 @@ test.describe('Embla Swipe UI acceptance', () => {
     const weiter = deck.getByRole('button', { name: 'Weiter' });
     await expect(weiter).toBeEnabled();
     await weiter.click();
-    await expect(slideCounter(deck)).toHaveText('2 / 7');
+    await expect(slideCounter(deck)).toHaveText(`2 / ${API_SLIDE_COUNT}`);
 
     await page.screenshot({
       path: path.join(EVIDENCE_DIR, '02-horizontal-next-slide.png'),
@@ -54,10 +65,10 @@ test.describe('Embla Swipe UI acceptance', () => {
     await page.goto('/topic/api');
     const deck = slideDeck(page);
     const weiter = deck.getByRole('button', { name: 'Weiter' });
-    for (let i = 0; i < 6; i++) {
+    for (let i = 0; i < API_SLIDE_COUNT - 1; i++) {
       await weiter.click();
     }
-    await expect(slideCounter(deck)).toHaveText('7 / 7');
+    await expect(slideCounter(deck)).toHaveText(`${API_SLIDE_COUNT} / ${API_SLIDE_COUNT}`);
     await expect(weiter).toBeDisabled();
 
     await page.screenshot({
@@ -70,7 +81,7 @@ test.describe('Embla Swipe UI acceptance', () => {
     await page.goto('/topic/api');
     const deck = slideDeck(page);
     await swipeHorizontalOnDeck(page, 'left');
-    await expect(slideCounter(deck)).toHaveText('2 / 7');
+    await expect(slideCounter(deck)).toHaveText(`2 / ${API_SLIDE_COUNT}`);
     await expect(page.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '2');
 
     await page.screenshot({
@@ -84,7 +95,7 @@ test.describe('Embla Swipe UI acceptance', () => {
     await page.goto('/topic/api');
     const deck = slideDeck(page);
     const weiter = deck.getByRole('button', { name: 'Weiter' });
-    for (let i = 0; i < 6; i++) {
+    for (let i = 0; i < API_SLIDE_COUNT - 1; i++) {
       await weiter.click();
     }
     const option = deck.getByRole('button', {
@@ -104,9 +115,9 @@ test.describe('Embla Swipe UI acceptance', () => {
     await page.goto('/topic/api');
     const deck = slideDeck(page);
     await expect(page.getByRole('link', { name: '← Start' })).toBeVisible();
-    await expect(slideCounter(deck)).toHaveText('1 / 7');
+    await expect(slideCounter(deck)).toHaveText(`1 / ${API_SLIDE_COUNT}`);
     await page.getByRole('button', { name: 'Weiter' }).click();
-    await expect(slideCounter(deck)).toHaveText('2 / 7');
+    await expect(slideCounter(deck)).toHaveText(`2 / ${API_SLIDE_COUNT}`);
 
     await page.screenshot({
       path: path.join(EVIDENCE_DIR, '06-topic-deep-link.png'),
