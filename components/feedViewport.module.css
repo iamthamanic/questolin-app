@@ -59,6 +59,11 @@
   overflow-y: auto;
 }
 
+.deckPlaceholder {
+  flex: 1;
+  min-height: 0;
+}
+
 .dots {
   flex-shrink: 0;
   display: flex;
