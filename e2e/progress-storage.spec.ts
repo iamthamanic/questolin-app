@@ -1,6 +1,8 @@
 import { test, expect } from "@playwright/test";
 import path from "path";
 import fs from "fs";
+import { useDesktopNav } from "./helpers/viewport";
+import { slideDeck } from "./helpers/feed";
 
 const EVIDENCE_DIR = ".qa/evidence/localstorage-progress";
 const PROGRESS_KEY = "questolin.progress.v1";
@@ -10,6 +12,7 @@ test.beforeAll(() => {
 });
 
 test.beforeEach(async ({ page }) => {
+  await useDesktopNav(page);
   await page.goto("/");
   await page.evaluate((key) => localStorage.removeItem(key), PROGRESS_KEY);
 });
@@ -18,7 +21,7 @@ test("restores slide index on topic page after reload", async ({ page }) => {
   await page.goto("/topic/api");
   await expect(page.locator("[data-slide-deck]")).toBeVisible();
 
-  const counter = page.locator("[data-slide-deck]").locator('[class*="topicCounter"]');
+  const counter = slideDeck(page).locator("[data-slide-counter]");
   await expect(counter).toHaveText("1 / 7");
 
   await page.getByRole("button", { name: "Weiter" }).click();
@@ -67,9 +70,9 @@ test("works when localStorage is unavailable", async ({ page }) => {
   await expect(page.locator("[data-slide-deck]")).toBeVisible();
   await page.getByRole("button", { name: "Weiter" }).click();
   await page.reload();
-  await expect(
-    page.locator("[data-slide-deck]").locator('[class*="topicCounter"]'),
-  ).toHaveText("1 / 7");
+  await expect(page.locator("[data-topic-deck]").locator("[data-slide-counter]")).toHaveText(
+    "1 / 7",
+  );
 });
 
 test("stores only progress fields in localStorage", async ({ page }) => {

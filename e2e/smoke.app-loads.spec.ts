@@ -15,7 +15,8 @@ test('app loads without console errors', async ({ page }) => {
 
   await page.goto('/');
   const first = firstTopicPanel(page);
-  await expect(first.locator('header p').filter({ hasText: 'Questolin' })).toBeVisible();
+  await expect(first.locator('[data-feed-chrome]')).toBeVisible();
+  await expect(first.locator('[data-feed-chrome]').getByText('Questolin')).toBeVisible();
   await expect(first.getByRole('heading', { level: 1 })).toBeVisible();
 
   await page.screenshot({

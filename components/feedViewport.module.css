@@ -24,19 +24,47 @@
   min-height: 0;
   display: flex;
   flex-direction: column;
-  padding: 0.75rem 0 1rem;
+  padding: 0;
   box-sizing: border-box;
 }
 
-.panelHeader {
-  flex-shrink: 0;
-  padding: calc(0.5rem + var(--safe-top)) calc(1rem + var(--safe-right)) 0.5rem
-    calc(1rem + var(--safe-left));
+.deckRoot {
+  position: relative;
+  flex: 1;
+  min-height: 0;
 }
 
-.panelMeta {
-  font-size: 0.75rem;
-  opacity: 0.65;
+.progressTrack {
+  flex-shrink: 0;
+  height: 3px;
+  width: 100%;
+  background: color-mix(in oklch, var(--color-base-300) 55%, transparent);
+  padding-top: var(--safe-top);
+  box-sizing: content-box;
+}
+
+.progressFill {
+  height: 100%;
+  background: var(--color-primary);
+  transition: width 0.2s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .progressFill {
+    transition: none;
+  }
+}
+
+.topicPageRoot {
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  background: var(--color-base-100);
+}
+
+.topicPageBack {
+  flex-shrink: 0;
+  padding: calc(0.25rem + var(--safe-top)) calc(0.5rem + var(--safe-left)) 0;
 }
 
 .horizontalViewport {
@@ -55,7 +83,7 @@
   flex: 0 0 100%;
   min-width: 0;
   height: 100%;
-  padding: 0 0.75rem;
+  padding: 0;
   box-sizing: border-box;
   overflow-y: auto;
 }
@@ -63,63 +91,6 @@
 .deckPlaceholder {
   flex: 1;
   min-height: 0;
-}
-
-.dots {
-  flex-shrink: 0;
-  display: flex;
-  justify-content: center;
-  gap: 0.5rem;
-  padding: 0.5rem 0;
-}
-
-.dot {
-  position: relative;
-  min-width: 2.75rem;
-  min-height: 2.75rem;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border: none;
-  padding: 0;
-  cursor: pointer;
-  background: transparent;
-  border-radius: 9999px;
-  transition: opacity 0.2s;
-}
-
-.dot::before {
-  content: "";
-  width: 0.625rem;
-  height: 0.625rem;
-  border-radius: 9999px;
-  background: var(--color-base-300);
-  transition: background-color 0.2s, transform 0.2s;
-}
-
-.dotActive::before {
-  background: var(--color-primary);
-  transform: scale(1.15);
-}
-
-.dotIdle::before {
-  background: var(--color-base-300);
-}
-
-.dot:focus-visible {
-  outline: 2px solid var(--color-primary);
-  outline-offset: 2px;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .dot,
-  .dot::before {
-    transition: none;
-  }
-
-  .dotActive::before {
-    transform: none;
-  }
 }
 
 .navRow {

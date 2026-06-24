@@ -2,6 +2,8 @@ import { test, expect } from '@playwright/test';
 import fs from 'fs';
 import path from 'path';
 import { firstTopicPanel, slideCounter, slideDeck } from '../../e2e/helpers/feed';
+import { swipeHorizontalOnDeck } from '../../e2e/helpers/swipe';
+import { useDesktopNav } from '../../e2e/helpers/viewport';
 
 const SLUG = 'embla-swipe-ui';
 const EVIDENCE_DIR = `.qa/evidence/${SLUG}`;
@@ -14,7 +16,8 @@ test.describe('Embla Swipe UI acceptance', () => {
   test('feed shows full-viewport topic with horizontal slide deck', async ({ page }) => {
     await page.goto('/');
     const first = firstTopicPanel(page);
-    await expect(first.locator('header p').filter({ hasText: 'Questolin' })).toBeVisible();
+    await expect(first.locator('[data-feed-chrome]')).toBeVisible();
+    await expect(first.locator('[data-feed-chrome]').getByText('Questolin')).toBeVisible();
     await expect(first.getByRole('heading', { level: 1 })).toBeVisible();
     await expect(slideCounter(first)).toHaveText('1 / 7');
 
@@ -25,6 +28,7 @@ test.describe('Embla Swipe UI acceptance', () => {
   });
 
   test('horizontal Weiter advances slide counter', async ({ page }) => {
+    await useDesktopNav(page);
     await page.goto('/topic/api');
     const deck = slideDeck(page);
     const weiter = deck.getByRole('button', { name: 'Weiter' });
@@ -39,12 +43,14 @@ test.describe('Embla Swipe UI acceptance', () => {
   });
 
   test('horizontal Zurück disabled on first slide', async ({ page }) => {
+    await useDesktopNav(page);
     await page.goto('/topic/api');
     const deck = slideDeck(page);
     await expect(deck.getByRole('button', { name: 'Zurück' })).toBeDisabled();
   });
 
   test('last slide disables Weiter', async ({ page }) => {
+    await useDesktopNav(page);
     await page.goto('/topic/api');
     const deck = slideDeck(page);
     const weiter = deck.getByRole('button', { name: 'Weiter' });
@@ -60,11 +66,12 @@ test.describe('Embla Swipe UI acceptance', () => {
     });
   });
 
-  test('dot navigation jumps to slide', async ({ page }) => {
+  test('progress bar reflects slide index after swipe', async ({ page }) => {
     await page.goto('/topic/api');
     const deck = slideDeck(page);
-    await deck.getByRole('button', { name: /Slide 3:/i }).click();
-    await expect(slideCounter(deck)).toHaveText('3 / 7');
+    await swipeHorizontalOnDeck(page, 'left');
+    await expect(slideCounter(deck)).toHaveText('2 / 7');
+    await expect(page.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '2');
 
     await page.screenshot({
       path: path.join(EVIDENCE_DIR, '04-dot-navigation.png'),
@@ -73,6 +80,7 @@ test.describe('Embla Swipe UI acceptance', () => {
   });
 
   test('quiz slide allows option click without crash', async ({ page }) => {
+    await useDesktopNav(page);
     await page.goto('/topic/api');
     const deck = slideDeck(page);
     const weiter = deck.getByRole('button', { name: 'Weiter' });
@@ -92,11 +100,13 @@ test.describe('Embla Swipe UI acceptance', () => {
   });
 
   test('topic deep link uses horizontal deck', async ({ page }) => {
+    await useDesktopNav(page);
     await page.goto('/topic/api');
+    const deck = slideDeck(page);
     await expect(page.getByRole('link', { name: '← Feed' })).toBeVisible();
-    await expect(page.getByText('1 / 7')).toBeVisible();
+    await expect(slideCounter(deck)).toHaveText('1 / 7');
     await page.getByRole('button', { name: 'Weiter' }).click();
-    await expect(page.getByText('2 / 7')).toBeVisible();
+    await expect(slideCounter(deck)).toHaveText('2 / 7');
 
     await page.screenshot({
       path: path.join(EVIDENCE_DIR, '06-topic-deep-link.png'),

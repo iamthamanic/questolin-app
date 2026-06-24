@@ -6,6 +6,7 @@
 import type { ReactNode } from "react";
 import type { Slide } from "@/lib/content/types";
 import { MarkdownBody } from "./MarkdownBody";
+import { useSlideImmersive } from "./SlideImmersiveContext";
 import styles from "./slideContent.module.css";
 
 interface SlideShellProps {
@@ -15,6 +16,17 @@ interface SlideShellProps {
 }
 
 export function SlideShell({ slide, topicTitle, children }: SlideShellProps) {
+  const immersive = useSlideImmersive();
+
+  if (immersive) {
+    return (
+      <article className={styles.shellImmersive}>
+        {slide.title && <h2 className={styles.titleImmersive}>{slide.title}</h2>}
+        {children}
+      </article>
+    );
+  }
+
   return (
     <article className={`card bg-base-200 shadow-xl ${styles.shell}`}>
       <div className="card-body">
