@@ -11,9 +11,15 @@ export function firstTopicPanel(page: Page): Locator {
 }
 
 export function slideCounter(panel: Locator): Locator {
-  return panel.locator('[class*="topicCounter"]');
+  return panel.locator("[data-slide-counter]");
 }
 
-export function slideDeck(page: Page): Locator {
-  return page.locator('[data-slide-deck]');
+/** Topic deck wrapper (chrome + slides + FAB). */
+export function slideDeck(scope: Page | Locator): Locator {
+  return scope.locator("[data-topic-deck]");
+}
+
+/** Horizontal slide viewport only (for virtualization counts). */
+export function slideViewport(scope: Page | Locator): Locator {
+  return scope.locator("[data-slide-deck]");
 }

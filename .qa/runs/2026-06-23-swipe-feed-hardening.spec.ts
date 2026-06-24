@@ -6,17 +6,23 @@ import { firstTopicPanel, slideCounter, slideDeck, topicPanel } from '../../e2e/
 
 const SLUG = 'swipe-feed-hardening';
 const EVIDENCE_DIR = `.qa/evidence/${SLUG}`;
+const ONBOARDING_KEY = 'questolin.onboarding.v1';
 
 test.beforeAll(() => {
   fs.mkdirSync(EVIDENCE_DIR, { recursive: true });
+});
+
+test.beforeEach(async ({ page }) => {
+  await page.goto('/');
+  await page.evaluate((key) => localStorage.removeItem(key), ONBOARDING_KEY);
 });
 
 test.describe('Swipe feed hardening', () => {
   test('feed lists multiple topics with swipe hint', async ({ page }) => {
     await page.goto('/');
     const first = firstTopicPanel(page);
+    await expect(first.locator('[data-feed-chrome]')).toBeVisible();
     await expect(first.getByRole('heading', { level: 1 })).toBeVisible();
-    await expect(page.getByText(/Thema 1\/\d+/)).toBeVisible();
     await expect(page.getByText(/↑↓ Nächstes Thema/)).toBeVisible();
 
     await page.screenshot({

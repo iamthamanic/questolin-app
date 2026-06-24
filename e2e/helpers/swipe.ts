@@ -26,9 +26,9 @@ export async function swipeHorizontalOnDeck(page: Page, direction: 'left' | 'rig
 }
 
 export async function swipeVerticalOnHeader(page: Page, direction: 'up' | 'down') {
-  const header = page.locator('section').first().locator('header');
-  const box = await header.boundingBox();
-  if (!box) throw new Error('Topic header not found for vertical swipe');
+  const chrome = page.locator('[data-feed-chrome]').first();
+  const box = await chrome.boundingBox();
+  if (!box) throw new Error('Feed chrome not found for vertical swipe');
   const delta = direction === 'up' ? -280 : 280;
   await dragSwipe(page, box, 0, delta);
 }

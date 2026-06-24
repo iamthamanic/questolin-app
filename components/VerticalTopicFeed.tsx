@@ -5,9 +5,10 @@
 
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import type { Topic } from "@/lib/content/types";
+import { hasSeenSwipeCoach, markSwipeCoachSeen } from "@/lib/progress/onboarding";
 import { getLastTopicIndex, saveLastTopicId } from "@/lib/progress/storage";
 import { HorizontalSlideDeck } from "./HorizontalSlideDeck";
 import styles from "./feedViewport.module.css";
@@ -34,6 +35,8 @@ export function VerticalTopicFeed({ topics }: VerticalTopicFeedProps) {
   );
 
   const [activeIndex, setActiveIndex] = useState(startIndex);
+  const [showCoach, setShowCoach] = useState(false);
+  const coachStartIndex = useRef(startIndex);
 
   const [emblaRef, emblaApi] = useEmblaCarousel({
     axis: "y",
@@ -43,6 +46,10 @@ export function VerticalTopicFeed({ topics }: VerticalTopicFeedProps) {
     startIndex,
   });
 
+  useEffect(() => {
+    setShowCoach(topics.length > 1 && !hasSeenSwipeCoach());
+  }, [topics.length]);
+
   const syncActiveTopic = useCallback(() => {
     if (!emblaApi) return;
     const index = emblaApi.selectedScrollSnap();
@@ -51,10 +58,15 @@ export function VerticalTopicFeed({ topics }: VerticalTopicFeedProps) {
     if (topic) {
       saveLastTopicId(topic.id);
     }
-  }, [emblaApi, topics]);
+    if (showCoach && index !== coachStartIndex.current) {
+      markSwipeCoachSeen();
+      setShowCoach(false);
+    }
+  }, [emblaApi, topics, showCoach]);
 
   useEffect(() => {
     setActiveIndex(startIndex);
+    coachStartIndex.current = startIndex;
   }, [startIndex]);
 
   useEffect(() => {
@@ -84,16 +96,6 @@ export function VerticalTopicFeed({ topics }: VerticalTopicFeedProps) {
             const mounted = shouldMountDeck(i, activeIndex);
             return (
               <section className={styles.verticalSlide} key={topic.id} aria-label={topic.title}>
-                <header className={styles.panelHeader}>
-                  <p className="text-sm text-primary font-medium">Questolin</p>
-                  <h1 className="text-xl font-bold leading-tight mt-0.5">{topic.title}</h1>
-                  <p className={styles.panelMeta}>
-                    {topic.category}
-                    {topic.estimatedMinutes ? ` · ~${topic.estimatedMinutes} Min` : ""}
-                    {topics.length > 1 ? ` · Thema ${i + 1}/${topics.length}` : ""}
-                  </p>
-                </header>
-
                 {mounted ? (
                   <HorizontalSlideDeck topic={topic} compact />
                 ) : (
@@ -105,7 +107,7 @@ export function VerticalTopicFeed({ topics }: VerticalTopicFeedProps) {
         </div>
       </div>
 
-      {topics.length > 1 && (
+      {showCoach && (
         <p className={styles.swipeHint}>↑↓ Nächstes Thema · ←→ Nächster Slide</p>
       )}
     </div>

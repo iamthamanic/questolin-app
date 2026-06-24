@@ -11,7 +11,7 @@
 | App root | `.` |
 | Stack | next (Next.js 14 App Router) |
 | Frontend | yes |
-| Dev URL | http://localhost:3000 |
+| Dev URL | http://localhost:3047 |
 | Locale | de |
 
 ## Artifacts
