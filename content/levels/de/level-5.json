@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "id": "level-5",
+  "index": 5,
+  "title": "Level 5 — Architektur und Führung",
+  "description": "Du kannst Architekturentscheidungen treffen und andere Entwickler führen. Systemdenken, Skalierung und Trade-offs stehen im Mittelpunkt.",
+  "locale": "de",
+  "topicIds": []
+}

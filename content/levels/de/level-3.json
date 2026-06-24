@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "id": "level-3",
+  "index": 3,
+  "title": "Level 3 — Bugs, APIs und Datenbanken",
+  "description": "Du kannst Bugs finden, APIs bauen und Datenbanken modellieren. Du denkst in Datenstrukturen und Queries.",
+  "locale": "de",
+  "topicIds": ["datenbanken", "db-indizes"]
+}

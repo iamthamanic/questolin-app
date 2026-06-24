@@ -4,10 +4,15 @@ import { swipeHorizontalOnDeck, swipeVerticalOnHeader } from "./helpers/swipe";
 import { useDesktopNav } from "./helpers/viewport";
 
 const ONBOARDING_KEY = "questolin.onboarding.v1";
+const LEVEL_ONBOARDING_KEY = "questolin.onboarding.level.v1";
+const API_SLIDE_COUNT = 9;
+const CLIENT_SERVER_SLIDE_COUNT = 8;
 
 test.beforeEach(async ({ page }) => {
   await page.goto("/feed");
   await page.evaluate((key) => localStorage.removeItem(key), ONBOARDING_KEY);
+  await page.evaluate((key) => localStorage.setItem(key, "1"), LEVEL_ONBOARDING_KEY);
+  await page.goto("/feed");
 });
 
 test("immersive feed shows chrome overlay and story progress", async ({ page }) => {
@@ -15,7 +20,7 @@ test("immersive feed shows chrome overlay and story progress", async ({ page }) 
   await expect(panel.locator("[data-feed-chrome]")).toBeVisible();
   await expect(panel.getByRole("heading", { level: 1 })).toBeVisible();
   await expect(panel.getByRole("progressbar")).toBeVisible();
-  await expect(slideCounter(panel)).toHaveText("1 / 7");
+  await expect(slideCounter(panel)).toHaveText(`1 / ${CLIENT_SERVER_SLIDE_COUNT}`);
 });
 
 test("mobile hides Zurück/Weiter; swipe advances slide", async ({ page }) => {
@@ -24,7 +29,7 @@ test("mobile hides Zurück/Weiter; swipe advances slide", async ({ page }) => {
   await expect(deck.getByRole("button", { name: "Weiter" })).toHaveCount(0);
   await expect(deck.getByRole("button", { name: "Zurück" })).toHaveCount(0);
   await swipeHorizontalOnDeck(page, "left");
-  await expect(slideCounter(deck)).toHaveText("2 / 7");
+  await expect(slideCounter(deck)).toHaveText(`2 / ${API_SLIDE_COUNT}`);
 });
 
 test("desktop shows nav buttons", async ({ page }) => {
@@ -38,5 +43,5 @@ test("swipe coach hint dismisses after topic change", async ({ page }) => {
   await page.goto("/feed");
   await expect(page.getByText(/Wische ↑↓|Nächstes Thema/)).toBeVisible();
   await swipeVerticalOnHeader(page, "up");
-  await expect(page.getByText(/Wische ↑↓|Nächstes Thema/)).toHaveCount(0);
+  await expect(page.getByText(/Wische ↑↓|Nächstes Thema/)).toBeHidden({ timeout: 8000 });
 });

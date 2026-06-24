@@ -29,11 +29,12 @@ npm run dev
 | **Port** | `3047` (fest in `package.json` — **nicht** 3000, damit Scriptony/boilerplate parallel laufen können) |
 | **Override** | `PORT` in `.env` oder `npx next dev -p <port>` |
 
-Vertikaler Feed mit 8 Topics. Beispiel-Deep-Links:
+Vertikaler Feed mit Skill-Levels 0–5. Beispiel-Deep-Links:
 
-- Feed (alle Topics): `/feed`
-- Collection „IT-Grundlagen“ (Level 1): `/feed?collection=grundlagen`
+- Feed (aktuelles Level): `/feed`
+- Collection „IT-Grundlagen“: `/feed?collection=grundlagen`
 - Einzelnes Topic: `/topic/api`
+- Onboarding: `/`
 
 **Handy im gleichen WLAN:**
 
@@ -145,8 +146,9 @@ Strategie: **local-first** — `npm run dev`, JSON-Content, LocalStorage, Tutor 
 | Questolin KI-Tutor (Ollama/OpenAI) | ✅ |
 | Chat-UI (FAB + Bottom Sheet) | ✅ |
 | LocalStorage Fortschritt | ✅ |
+| Skill-Level-System 0–5 + Onboarding | ✅ |
 | Content Collections | ✅ |
-| 8 IT-Grundlagen-Topics | ✅ |
+| 9 IT-Grundlagen-Topics (Level 0 ausgebaut) | ✅ |
 | Markdown + Code-Slides | ✅ |
 | Unit-Tests (Vitest) + e2e in CI | ✅ |
 | Supabase ContentProvider | ✅ scaffold — [docs/supabase-content.md](docs/supabase-content.md) |

@@ -4,7 +4,7 @@
  */
 
 import { redirect } from "next/navigation";
-import { HomeScreen } from "@/components/HomeScreen";
+import { OnboardingGate } from "@/components/OnboardingGate";
 import { getContentProvider } from "@/lib/content/contentProvider";
 
 interface HomePageProps {
@@ -20,6 +20,7 @@ export default async function HomePage({ searchParams }: HomePageProps) {
   const provider = getContentProvider();
   const topics = await provider.listTopics("de");
   const collections = (await provider.listCollections?.("de")) ?? [];
+  const levels = (await provider.listLevels?.("de")) ?? [];
 
   const topicTitles = Object.fromEntries(topics.map((t) => [t.id, t.title]));
   const topicSlideCounts = Object.fromEntries(
@@ -27,10 +28,14 @@ export default async function HomePage({ searchParams }: HomePageProps) {
   );
 
   return (
-    <HomeScreen
-      collections={collections}
-      topicTitles={topicTitles}
-      topicSlideCounts={topicSlideCounts}
+    <OnboardingGate
+      levels={levels}
+      homeProps={{
+        levels,
+        collections,
+        topicTitles,
+        topicSlideCounts,
+      }}
     />
   );
 }

@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "id": "level-2",
+  "index": 2,
+  "title": "Level 2 — Features bauen",
+  "description": "Du kannst kleine Features selbstständig bauen. Du arbeitest mit Versionskontrolle und verstehst grundlegende Workflows.",
+  "locale": "de",
+  "topicIds": ["git"]
+}

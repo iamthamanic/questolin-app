@@ -5,7 +5,10 @@ import { useDesktopNav } from "./helpers/viewport";
 import { slideDeck } from "./helpers/feed";
 
 const EVIDENCE_DIR = ".qa/evidence/localstorage-progress";
-const PROGRESS_KEY = "questolin.progress.v1";
+const PROGRESS_KEY = "questolin.progress.v2";
+const LEVEL_ONBOARDING_KEY = "questolin.onboarding.level.v1";
+
+const API_SLIDE_COUNT = 9;
 
 test.beforeAll(() => {
   fs.mkdirSync(EVIDENCE_DIR, { recursive: true });
@@ -15,6 +18,8 @@ test.beforeEach(async ({ page }) => {
   await useDesktopNav(page);
   await page.goto("/feed");
   await page.evaluate((key) => localStorage.removeItem(key), PROGRESS_KEY);
+  await page.evaluate((key) => localStorage.setItem(key, "1"), LEVEL_ONBOARDING_KEY);
+  await page.goto("/feed");
 });
 
 test("restores slide index on topic page after reload", async ({ page }) => {
@@ -22,14 +27,14 @@ test("restores slide index on topic page after reload", async ({ page }) => {
   await expect(page.locator("[data-slide-deck]")).toBeVisible();
 
   const counter = slideDeck(page).locator("[data-slide-counter]");
-  await expect(counter).toHaveText("1 / 7");
+  await expect(counter).toHaveText(`1 / ${API_SLIDE_COUNT}`);
 
   await page.getByRole("button", { name: "Weiter" }).click();
   await page.getByRole("button", { name: "Weiter" }).click();
-  await expect(counter).toHaveText("3 / 7");
+  await expect(counter).toHaveText(`3 / ${API_SLIDE_COUNT}`);
 
   await page.reload();
-  await expect(counter).toHaveText("3 / 7", { timeout: 10_000 });
+  await expect(counter).toHaveText(`3 / ${API_SLIDE_COUNT}`, { timeout: 10_000 });
 
   await page.screenshot({
     path: path.join(EVIDENCE_DIR, "01-after-reload.png"),
@@ -38,14 +43,14 @@ test("restores slide index on topic page after reload", async ({ page }) => {
 });
 
 test("restores last topic on feed after reload", async ({ page }) => {
-  await page.goto("/topic/datenbanken");
+  await page.goto("/topic/client-server");
   await expect(page.locator("[data-slide-deck]")).toBeVisible();
 
   await page.goto("/feed");
-  await expect(page.getByRole("heading", { name: /Was ist eine Datenbank/i })).toBeVisible();
+  await expect(page.getByRole("heading", { name: /Client und Server/i })).toBeVisible();
 
   await page.reload();
-  await expect(page.getByRole("heading", { name: /Was ist eine Datenbank/i })).toBeVisible();
+  await expect(page.getByRole("heading", { name: /Client und Server/i })).toBeVisible();
 });
 
 test("works when localStorage is unavailable", async ({ page }) => {
@@ -71,7 +76,7 @@ test("works when localStorage is unavailable", async ({ page }) => {
   await page.getByRole("button", { name: "Weiter" }).click();
   await page.reload();
   await expect(page.locator("[data-topic-deck]").locator("[data-slide-counter]")).toHaveText(
-    "1 / 7",
+    `1 / ${API_SLIDE_COUNT}`,
   );
 });
 
@@ -82,7 +87,8 @@ test("stores only progress fields in localStorage", async ({ page }) => {
   const raw = await page.evaluate((key) => localStorage.getItem(key), PROGRESS_KEY);
   expect(raw).toBeTruthy();
   const parsed = JSON.parse(raw!);
-  expect(parsed.version).toBe(1);
+  expect(parsed.version).toBe(2);
+  expect(parsed.userLevel).toBe(0);
   expect(parsed.lastTopicId).toBe("api");
   expect(parsed.topics.api.slideIndex).toBe(1);
   expect(JSON.stringify(parsed)).not.toMatch(/password|token|secret|apiKey/i);

@@ -3,6 +3,8 @@
   "id": "http",
   "title": "HTTP und REST — Grundlagen",
   "category": "Grundlagen",
+  "level": 0,
+  "testBlockId": "1",
   "locale": "de",
   "tags": ["http", "rest", "api", "backend", "web"],
   "difficulty": "beginner",
@@ -72,9 +74,34 @@
       }
     },
     {
+      "id": "http-mastery-check",
+      "type": "mastery_check",
+      "order": 6,
+      "title": "Woran erkenne ich, dass ich es verstanden habe?",
+      "content": {
+        "body": "Du verstehst HTTP, wenn du eine Anfrage vom Browser bis zum Server nachvollziehen kannst.",
+        "checklist": [
+          "Ich kenne die Unterschiede zwischen GET, POST, PUT, PATCH und DELETE.",
+          "Ich kann die Bedeutung der Statuscodes 200, 404 und 500 erklären.",
+          "Ich weiß, warum GET nicht zum Löschen verwendet werden sollte."
+        ]
+      }
+    },
+    {
+      "id": "http-mini-task",
+      "type": "mini_task",
+      "order": 7,
+      "title": "Mini-Aufgabe",
+      "content": {
+        "body": "Entwirf die HTTP-Requests für eine einfache Blog-API:\n\n1. Alle Artikel lesen\n2. Einen Artikel erstellen\n3. Einen Artikel teilweise bearbeiten\n4. Einen Artikel löschen",
+        "hint": "Nutze die passenden HTTP-Methoden und gib Beispiel-URLs an.",
+        "solution": "1. GET /articles\n2. POST /articles mit Body { title, body }\n3. PATCH /articles/:id mit Body { title } oder { body }\n4. DELETE /articles/:id\n\nPOST erstellt, PATCH ändert teilweise, DELETE löscht, GET liest."
+      }
+    },
+    {
       "id": "http-quiz",
       "type": "quiz",
-      "order": 6,
+      "order": 8,
       "title": "Mini-Quiz",
       "content": {
         "questions": [

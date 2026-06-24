@@ -57,6 +57,18 @@ const codeFixContentSchema = z.object({
   feedbackWrong: z.string().min(1),
 });
 
+const masteryCheckContentSchema = z.object({
+  body: z.string().min(1),
+  subtitle: z.string().optional(),
+  checklist: z.array(z.string().min(1)).optional(),
+});
+
+const miniTaskContentSchema = z.object({
+  body: z.string().min(1),
+  hint: z.string().optional(),
+  solution: z.string().optional(),
+});
+
 const slideSchema = z
   .object({
     id: z.string().min(1),
@@ -75,6 +87,8 @@ const slideSchema = z
       quiz: quizContentSchema,
       code_read: codeReadContentSchema,
       code_fix: codeFixContentSchema,
+      mastery_check: masteryCheckContentSchema,
+      mini_task: miniTaskContentSchema,
     };
 
     const validator = validators[slide.type];
@@ -110,6 +124,8 @@ export const topicSchema = z.object({
   difficulty: z.enum(["beginner", "intermediate", "advanced"]).optional(),
   estimatedMinutes: z.number().min(1).optional(),
   prerequisites: z.array(z.string()).optional(),
+  level: z.number().int().min(0).max(5).optional(),
+  testBlockId: z.string().optional(),
   slides: z.array(slideSchema).min(1),
 });
 

@@ -3,6 +3,7 @@
  * Location: app/feed/page.tsx
  */
 
+import { LevelBadge } from "@/components/LevelBadge";
 import { VerticalTopicFeed } from "@/components/VerticalTopicFeed";
 import { getContentProvider } from "@/lib/content/contentProvider";
 
@@ -13,7 +14,13 @@ interface FeedPageProps {
 export default async function FeedPage({ searchParams }: FeedPageProps) {
   const provider = getContentProvider();
   const collectionId = searchParams?.collection;
-  const topics = await provider.listTopics("de", collectionId);
+  const allTopics = await provider.listTopics("de", collectionId);
+  const levels = (await provider.listLevels?.("de")) ?? [];
 
-  return <VerticalTopicFeed topics={topics} />;
+  return (
+    <>
+      {levels.length > 0 && <LevelBadge levels={levels} topics={allTopics} />}
+      <VerticalTopicFeed topics={allTopics} levels={levels} />
+    </>
+  );
 }

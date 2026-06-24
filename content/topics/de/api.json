@@ -3,6 +3,8 @@
   "id": "api",
   "title": "Was ist eine API?",
   "category": "Grundlagen",
+  "level": 0,
+  "testBlockId": "1",
   "locale": "de",
   "tags": ["api", "backend", "frontend", "http"],
   "difficulty": "beginner",
@@ -72,9 +74,34 @@
       }
     },
     {
+      "id": "api-mastery-check",
+      "type": "mastery_check",
+      "order": 6,
+      "title": "Woran erkenne ich, dass ich es verstanden habe?",
+      "content": {
+        "body": "Du verstehst APIs wirklich, wenn du nicht nur die Definition kennst, sondern den Datenfluss beschreiben kannst.",
+        "checklist": [
+          "Ich kann erklären, welche Daten vom Frontend ans Backend gehen.",
+          "Ich weiß, was das Backend prüft und was es zurückgibt.",
+          "Ich kann API und Datenbank unterscheiden."
+        ]
+      }
+    },
+    {
+      "id": "api-mini-task",
+      "type": "mini_task",
+      "order": 7,
+      "title": "Mini-Aufgabe",
+      "content": {
+        "body": "Entwirf eine API für \"Kunde erstellen\".\n\nÜberlege: Welche URL? Welche HTTP-Methode? Welche Daten kommen rein? Was kommt zurück?",
+        "hint": "POST /customers mit Body { name, email }. Antwort: 201 Created mit dem neuen Kunden.",
+        "solution": "URL: POST /customers\nPayload: { \"name\": \"Max Mustermann\", \"email\": \"max@example.com\" }\nAntwort: 201 Created mit { \"id\": 1, \"name\": \"Max Mustermann\", \"email\": \"max@example.com\" }\nDas Backend prüft, ob die E-Mail gültig ist, und speichert den Kunden."
+      }
+    },
+    {
       "id": "api-quiz",
       "type": "quiz",
-      "order": 6,
+      "order": 8,
       "title": "Mini-Quiz",
       "content": {
         "questions": [

@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "id": "level-0",
+  "index": 0,
+  "title": "Level 0 — Erste Schritte",
+  "description": "Du kannst Tools benutzen, verstehst aber Code noch kaum. Hier lernst du die Begriffe, die jeder braucht: API, HTTP, Client, Server.",
+  "locale": "de",
+  "topicIds": ["client-server", "api", "http"]
+}

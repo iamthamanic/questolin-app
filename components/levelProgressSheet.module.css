@@ -1,0 +1,94 @@
+.sheet {
+  margin: auto 0 0;
+  padding: 0;
+  width: 100%;
+  max-width: 100%;
+  border: none;
+  background: transparent;
+}
+
+.sheet::backdrop {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.panel {
+  background: var(--color-base-100);
+  border-radius: 1rem 1rem 0 0;
+  padding: 0.75rem 1rem 1.5rem;
+  max-width: 32rem;
+  margin: 0 auto;
+}
+
+.handle {
+  width: 2.5rem;
+  height: 0.25rem;
+  background: color-mix(in oklch, var(--color-base-content) 25%, transparent);
+  border-radius: 9999px;
+  margin: 0 auto 1rem;
+}
+
+.title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.rowHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.rowTitle {
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.rowMeta {
+  font-size: 0.85rem;
+  opacity: 0.7;
+}
+
+.bar {
+  height: 0.5rem;
+}
+
+.locked {
+  font-size: 0.75rem;
+  opacity: 0.6;
+}
+
+.completed {
+  font-size: 0.75rem;
+  color: var(--color-success);
+  font-weight: 600;
+}
+
+@media (min-width: 640px) {
+  .sheet {
+    max-width: 32rem;
+    margin: auto;
+    border-radius: 1rem;
+  }
+
+  .panel {
+    border-radius: 1rem;
+    padding: 1rem 1.25rem 1.5rem;
+  }
+
+  .handle {
+    display: none;
+  }
+}

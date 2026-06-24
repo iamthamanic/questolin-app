@@ -22,6 +22,8 @@ content/topics/de/datenbanken.json
 | `quiz` | ✅ | Interaktives Quiz |
 | `code_read` | ✅ | Code lesen |
 | `code_fix` | ✅ | Code reparieren (Auswahl) |
+| `mastery_check` | ✅ | Selbstcheck: Woran erkenne ich, dass ich es verstanden habe? |
+| `mini_task` | ✅ | Offene Mini-Aufgabe mit optionaler Lösung |
 
 ## Slide `content` pro Typ
 
@@ -98,6 +100,30 @@ content/topics/de/datenbanken.json
 }
 ```
 
+### mastery_check
+
+```json
+{
+  "body": "Du kannst erklären, welche Daten vom Frontend ans Backend gehen, was das Backend prüft und was es zurückgibt.",
+  "subtitle": "optional",
+  "checklist": [
+    "Ich kann Frontend vs. Backend unterscheiden",
+    "Ich kenne mindestens zwei HTTP-Methoden",
+    "Ich kann ein einfaches API-Szenario beschreiben"
+  ]
+}
+```
+
+### mini_task
+
+```json
+{
+  "body": "Entwirf eine API für 'Kunde erstellen'.",
+  "hint": "Denke an POST, Payload und Rückgabe.",
+  "solution": "POST /customers mit Body { name, email } → 201 Created { id, name, email }"
+}
+```
+
 ## Versionierung
 
 `schemaVersion: 1` — bei Breaking Changes v2 einführen und Loader unterstützt beide.
@@ -125,4 +151,28 @@ content/collections/de/grundlagen.json
 - Feed: `/?collection=grundlagen` filtert nach Sammlung (Reihenfolge aus `topicIds`)
 - Ohne Parameter: alle Topics alphabetisch (wie bisher)
 
-Validierung: `npm run validate:content` prüft Topics und Collections.
+## Levels
+
+Levels ordnen Topics einem Skill-Level zu und treiben die Freischaltung:
+
+```
+content/levels/de/level-0.json
+```
+
+```json
+{
+  "schemaVersion": 1,
+  "id": "level-0",
+  "index": 0,
+  "title": "Level 0 — Erste Schritte",
+  "description": "...",
+  "locale": "de",
+  "topicIds": ["api", "http", "client-server"]
+}
+```
+
+- `topicIds` müssen existieren
+- Topics können optional `level`/`testBlockId` enthalten
+- Fortschritt: Level gilt als geschafft, wenn alle zugeordneten Topics abgeschlossen sind
+
+Validierung: `npm run validate:content` prüft Topics, Collections und Levels.

@@ -10,6 +10,8 @@ import { CodeFixSlide } from "@/components/slides/CodeFixSlide";
 import { CodeReadSlide } from "@/components/slides/CodeReadSlide";
 import { ExplanationSlide } from "@/components/slides/ExplanationSlide";
 import { HookSlide } from "@/components/slides/HookSlide";
+import { MasteryCheckSlide } from "@/components/slides/MasteryCheckSlide";
+import { MiniTaskSlide } from "@/components/slides/MiniTaskSlide";
 import { QuizSlide } from "@/components/slides/QuizSlide";
 import { RealWorldSlide } from "@/components/slides/RealWorldSlide";
 import { ScenarioSlide } from "@/components/slides/ScenarioSlide";
@@ -29,6 +31,8 @@ export const IMPLEMENTED_SLIDE_TYPES = [
   "quiz",
   "code_read",
   "code_fix",
+  "mastery_check",
+  "mini_task",
 ] as const satisfies readonly SlideType[];
 
 export type ImplementedSlideType = (typeof IMPLEMENTED_SLIDE_TYPES)[number];
@@ -45,6 +49,8 @@ export const SLIDE_RENDERERS: Record<
   quiz: QuizSlide,
   code_read: CodeReadSlide,
   code_fix: CodeFixSlide,
+  mastery_check: MasteryCheckSlide,
+  mini_task: MiniTaskSlide,
 };
 
 export function isImplementedSlideType(

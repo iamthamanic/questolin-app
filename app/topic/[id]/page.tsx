@@ -17,6 +17,8 @@ export default async function TopicPage({ params }: TopicPageProps) {
   const { id } = params;
   const provider = getContentProvider();
   const topic = await provider.getTopic(id, "de");
+  const levels = (await provider.listLevels?.("de")) ?? [];
+  const allTopics = await provider.listTopics("de");
 
   if (!topic) {
     notFound();
@@ -30,7 +32,7 @@ export default async function TopicPage({ params }: TopicPageProps) {
         </Link>
       </div>
       <div className="flex flex-col flex-1 min-h-0 px-0">
-        <HorizontalSlideDeck topic={topic} />
+        <HorizontalSlideDeck topic={topic} levels={levels} topics={allTopics} />
       </div>
     </main>
   );
