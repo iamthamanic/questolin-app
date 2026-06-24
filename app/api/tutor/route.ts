@@ -1,11 +1,11 @@
 /**
- * POST /api/tutor — Questolin KI-Tutor (server-side OpenAI, spoiler-safe).
+ * POST /api/tutor — Questolin KI-Tutor (OpenAI-compatible LLM, spoiler-safe).
  * Location: app/api/tutor/route.ts
  */
 
 import { getContentProvider } from "@/lib/content/contentProvider";
 import { buildTutorContext } from "@/lib/content/tutorContext";
-import { completeTutorChat } from "@/lib/tutor/openai";
+import { completeTutorChat, isTutorLlmConfigured } from "@/lib/tutor/llm";
 import { buildTutorMessages } from "@/lib/tutor/prompt";
 import {
   checkRateLimit,
@@ -48,10 +48,10 @@ export async function POST(request: Request): Promise<Response> {
     );
   }
 
-  if (!process.env.OPENAI_API_KEY) {
+  if (!isTutorLlmConfigured()) {
     return tutorError(
       "CONFIG_ERROR",
-      "KI-Tutor ist nicht konfiguriert (OPENAI_API_KEY fehlt).",
+      "KI-Tutor ist nicht konfiguriert (TUTOR_LLM_API_KEY, OLLAMA_API_KEY oder OPENAI_API_KEY fehlt).",
       503,
     );
   }
@@ -90,7 +90,7 @@ export async function POST(request: Request): Promise<Response> {
     );
   } catch (err) {
     const code = err instanceof Error ? err.message : "";
-    if (code === "CONFIG_MISSING_OPENAI") {
+    if (code === "CONFIG_MISSING_LLM") {
       return tutorError(
         "CONFIG_ERROR",
         "KI-Tutor ist nicht konfiguriert.",

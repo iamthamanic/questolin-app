@@ -58,7 +58,7 @@ Questolin kombiniert TikTok-ähnliches Swipen mit strukturierten Lernkarten und 
 | Feature | Status |
 |---------|--------|
 | Vertikaler Embla-Feed | ✅ |
-| Questolin KI `/api/tutor` | ✅ (serverseitig, `OPENAI_API_KEY`) |
+| Questolin KI `/api/tutor` | ✅ (serverseitig, Ollama lokal/Cloud oder OpenAI) |
 | Chat-UI (FAB + Bottom Sheet) | ✅ |
 | LocalStorage Fortschritt | ✅ |
 | Content Collections | ✅ |
