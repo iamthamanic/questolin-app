@@ -13,13 +13,13 @@ test.beforeAll(() => {
 });
 
 test.beforeEach(async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/feed');
   await page.evaluate((key) => localStorage.removeItem(key), ONBOARDING_KEY);
 });
 
 test.describe('Swipe feed hardening', () => {
   test('feed lists multiple topics with swipe hint', async ({ page }) => {
-    await page.goto('/');
+    await page.goto('/feed');
     const first = firstTopicPanel(page);
     await expect(first.locator('[data-feed-chrome]')).toBeVisible();
     await expect(first.getByRole('heading', { level: 1 })).toBeVisible();
@@ -32,7 +32,7 @@ test.describe('Swipe feed hardening', () => {
   });
 
   test('vertical swipe switches topic', async ({ page }) => {
-    await page.goto('/');
+    await page.goto('/feed');
     const first = firstTopicPanel(page);
     await expect(first).toBeVisible();
     await swipeVerticalOnHeader(page, 'up');
@@ -64,7 +64,7 @@ test.describe('Swipe feed hardening', () => {
     const deck = slideDeck(page);
     await swipeHorizontalOnDeck(page, 'left');
     await expect(slideCounter(deck)).toHaveText('2 / 7');
-    await expect(page.getByRole('link', { name: '← Feed' })).toBeVisible();
+    await expect(page.getByRole('link', { name: '← Start' })).toBeVisible();
   });
 
   test('invalid topic id returns 404', async ({ page }) => {

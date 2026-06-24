@@ -26,10 +26,12 @@ viewports:
     height: 720
 
 navigation:
-  - label: Feed
+  - label: Start
     path: /
+  - label: Feed
+    path: /feed
   - label: Collection Grundlagen
-    path: /?collection=grundlagen
+    path: /feed?collection=grundlagen
   - label: Topic API
     path: /topic/api
   - label: Topic Git

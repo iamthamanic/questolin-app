@@ -25,14 +25,14 @@ npm run dev
 
 | | |
 |--|--|
-| **Dev-URL** | [http://localhost:3047](http://localhost:3047) |
+| **Dev-URL** | [http://localhost:3047](http://localhost:3047) — **Start** `/` · **Feed** `/feed` |
 | **Port** | `3047` (fest in `package.json` — **nicht** 3000, damit Scriptony/boilerplate parallel laufen können) |
 | **Override** | `PORT` in `.env` oder `npx next dev -p <port>` |
 
 Vertikaler Feed mit 8 Topics. Beispiel-Deep-Links:
 
-- Feed (alle Topics): `/`
-- Collection „IT-Grundlagen“: `/?collection=grundlagen`
+- Feed (alle Topics): `/feed`
+- Collection „IT-Grundlagen“ (Level 1): `/feed?collection=grundlagen`
 - Einzelnes Topic: `/topic/api`
 
 **Handy im gleichen WLAN:**
@@ -150,6 +150,8 @@ Strategie: **local-first** — `npm run dev`, JSON-Content, LocalStorage, Tutor 
 | Markdown + Code-Slides | ✅ |
 | Unit-Tests (Vitest) + e2e in CI | ✅ |
 | Supabase ContentProvider | ✅ scaffold — [docs/supabase-content.md](docs/supabase-content.md) |
+| Feed UI v2 (immersive mobile) | ✅ |
+| Home Hub (Startscreen `/`) | ✅ |
 | PWA (Home Screen) | ✅ [#33](https://github.com/iamthamanic/questolin-app/issues/33) — [personal-use.md](docs/personal-use.md) |
 | Produktions-Deploy | ⏸️ optional (#5) |
 | Gamification | 🔜 needs-design (#15) |

@@ -10,6 +10,6 @@ test("invalid topic shows German 404 (T-06)", async ({ page }) => {
     page.getByText("Dieses Lern-Thema existiert nicht oder wurde entfernt."),
   ).toBeVisible();
   await expect(
-    page.getByRole("link", { name: "Zurück zum Feed" }),
+    page.getByRole("link", { name: "Zurück zur Startseite" }),
   ).toBeVisible();
 });

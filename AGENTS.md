@@ -84,7 +84,7 @@ questolin-app/
 - **Checks:** `npm run checks` (`validate:content` → `test:unit` → lint → build)
 - **Content:** `npm run validate:content`
 - **Unit:** `npm run test:unit`
-- **Dev:** `npm run dev` → http://localhost:3047 (not :3000 — Scriptony/boilerplate)
+- **Dev:** `npm run dev` → http://localhost:3047 — **Start** `/` · **Feed** `/feed`
 - **Build:** `npm run build`
 - **E2E:** `npm run test:e2e` (Playwright, in CI)
 

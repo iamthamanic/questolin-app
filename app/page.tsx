@@ -1,9 +1,10 @@
 /**
- * Feed — vertical TikTok-style topic swipe with horizontal slide decks.
+ * Home Hub — start screen; redirects legacy ?collection= to /feed.
  * Location: app/page.tsx
  */
 
-import { VerticalTopicFeed } from "@/components/VerticalTopicFeed";
+import { redirect } from "next/navigation";
+import { HomeScreen } from "@/components/HomeScreen";
 import { getContentProvider } from "@/lib/content/contentProvider";
 
 interface HomePageProps {
@@ -11,9 +12,25 @@ interface HomePageProps {
 }
 
 export default async function HomePage({ searchParams }: HomePageProps) {
-  const provider = getContentProvider();
   const collectionId = searchParams?.collection;
-  const topics = await provider.listTopics("de", collectionId);
+  if (collectionId) {
+    redirect(`/feed?collection=${encodeURIComponent(collectionId)}`);
+  }
 
-  return <VerticalTopicFeed topics={topics} />;
+  const provider = getContentProvider();
+  const topics = await provider.listTopics("de");
+  const collections = (await provider.listCollections?.("de")) ?? [];
+
+  const topicTitles = Object.fromEntries(topics.map((t) => [t.id, t.title]));
+  const topicSlideCounts = Object.fromEntries(
+    topics.map((t) => [t.id, t.slides.length]),
+  );
+
+  return (
+    <HomeScreen
+      collections={collections}
+      topicTitles={topicTitles}
+      topicSlideCounts={topicSlideCounts}
+    />
+  );
 }

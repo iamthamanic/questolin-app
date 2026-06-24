@@ -19,7 +19,7 @@ export function NotFoundView({
           <h1 className="card-title text-2xl">Seite nicht gefunden</h1>
           <p className="text-base-content/80">{message}</p>
           <Link href="/" className="btn btn-primary min-h-11">
-            Zurück zum Feed
+            Zurück zur Startseite
           </Link>
         </div>
       </div>

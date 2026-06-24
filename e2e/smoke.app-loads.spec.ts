@@ -13,7 +13,7 @@ test('app loads without console errors', async ({ page }) => {
   const errors: string[] = [];
   page.on('pageerror', (e) => errors.push(e.message));
 
-  await page.goto('/');
+  await page.goto('/feed');
   const first = firstTopicPanel(page);
   await expect(first.locator('[data-feed-chrome]')).toBeVisible();
   await expect(first.locator('[data-feed-chrome]').getByText('Questolin')).toBeVisible();

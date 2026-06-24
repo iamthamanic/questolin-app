@@ -6,7 +6,7 @@ import { useDesktopNav } from "./helpers/viewport";
 const ONBOARDING_KEY = "questolin.onboarding.v1";
 
 test.beforeEach(async ({ page }) => {
-  await page.goto("/");
+  await page.goto("/feed");
   await page.evaluate((key) => localStorage.removeItem(key), ONBOARDING_KEY);
 });
 
@@ -35,7 +35,7 @@ test("desktop shows nav buttons", async ({ page }) => {
 });
 
 test("swipe coach hint dismisses after topic change", async ({ page }) => {
-  await page.goto("/");
+  await page.goto("/feed");
   await expect(page.getByText(/Nächstes Thema/)).toBeVisible();
   await swipeVerticalOnHeader(page, "up");
   await expect(page.getByText(/Nächstes Thema/)).toHaveCount(0);
