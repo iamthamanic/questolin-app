@@ -5,7 +5,7 @@
 
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import type { Level } from "@/lib/content/types";
 import {
   hasCompletedLevelOnboarding,
@@ -20,12 +20,11 @@ interface OnboardingGateProps {
 }
 
 export function OnboardingGate({ levels, homeProps }: OnboardingGateProps) {
-  const needsSelector = useMemo(() => {
-    if (typeof window === "undefined") return false;
-    return !hasCompletedLevelOnboarding();
-  }, []);
+  const [selectorDone, setSelectorDone] = useState(true);
 
-  const [selectorDone, setSelectorDone] = useState(!needsSelector);
+  useEffect(() => {
+    setSelectorDone(hasCompletedLevelOnboarding());
+  }, []);
 
   if (!selectorDone) {
     return (

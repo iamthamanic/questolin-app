@@ -9,7 +9,11 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import type { Level, Topic } from "@/lib/content/types";
 import { hasSeenSwipeCoach, markSwipeCoachSeen } from "@/lib/progress/onboarding";
-import { getLastTopicIndex, getUserLevel, saveLastTopicId } from "@/lib/progress/storage";
+import {
+  getLastTopicIndex,
+  getUserLevel,
+  saveLastTopicId,
+} from "@/lib/progress/storage";
 import { HorizontalSlideDeck } from "./HorizontalSlideDeck";
 import styles from "./feedViewport.module.css";
 
@@ -46,9 +50,12 @@ function useDesktopNav(): boolean {
   return desktop;
 }
 
-function filterTopicsByLevel(topics: Topic[], levels: Level[] | undefined): Topic[] {
+function filterTopicsByLevel(
+  topics: Topic[],
+  levels: Level[] | undefined,
+  userLevel: number,
+): Topic[] {
   if (!levels || levels.length === 0) return topics;
-  const userLevel = getUserLevel();
   const unlockedLevelIds = new Set(
     levels.filter((l) => l.index <= userLevel).map((l) => l.id),
   );
@@ -63,7 +70,23 @@ function filterTopicsByLevel(topics: Topic[], levels: Level[] | undefined): Topi
 }
 
 export function VerticalTopicFeed({ topics, levels }: VerticalTopicFeedProps) {
-  const visibleTopics = useMemo(() => filterTopicsByLevel(topics, levels), [topics, levels]);
+  const [userLevel, setUserLevel] = useState(0);
+
+  useEffect(() => {
+    setUserLevel(getUserLevel());
+    const sync = () => setUserLevel(getUserLevel());
+    window.addEventListener("storage", sync);
+    window.addEventListener("questolin:level-changed", sync);
+    return () => {
+      window.removeEventListener("storage", sync);
+      window.removeEventListener("questolin:level-changed", sync);
+    };
+  }, []);
+
+  const visibleTopics = useMemo(
+    () => filterTopicsByLevel(topics, levels, userLevel),
+    [topics, levels, userLevel],
+  );
   const startIndex = useMemo(
     () => getLastTopicIndex(visibleTopics.map((t) => t.id)),
     [visibleTopics],

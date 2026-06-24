@@ -182,6 +182,16 @@ export function maybeAdvanceLevel(maxCompletedLevel: number): void {
   if (next !== store.userLevel) {
     store.userLevel = next;
     writeStore(store);
+    dispatchLevelChanged();
+  }
+}
+
+function dispatchLevelChanged(): void {
+  if (typeof window === "undefined") return;
+  try {
+    window.dispatchEvent(new CustomEvent("questolin:level-changed"));
+  } catch {
+    // ignore
   }
 }
 
