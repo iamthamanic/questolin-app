@@ -1,41 +1,45 @@
 # Acceptance: Swipe Learning Feed
 
-<!-- auto-generated for /implement — checkboxes filled by @verify-ui -->
+<!-- Historical MVP acceptance — updated 2026-06-23 to reflect shipped Phase 2 -->
 
 ## Intent
 
-Questolin MVP content layer: versioniertes Topic/Slide-Schema, deutsches Beispiel-Topic „API“, Zod-Validation, SlideRenderer-Registry mit Stub-Komponenten, JsonContentProvider. Minimale Next.js-Shell lädt Topics.
+Questolin content layer + swipe learning UI: versioniertes Topic/Slide-Schema, JSON-Topics, Zod-Validation, SlideRenderer-Registry, Embla Feed.
 
 ## Happy Path
 
-- [ ] `content/topics/de/api.json` validiert gegen Zod-Schema v1
-- [ ] Topic hat 7 Slides: hook, explanation, real_world, 2× scenario, beginner_mistake, quiz
-- [ ] `loadTopics()` liefert mindestens ein Topic
-- [ ] `SlideRenderer` rendert jeden Slide-Typ ohne Crash
-- [ ] Unbekannter Slide-Typ zeigt `UnsupportedSlide`
-- [ ] `app/page.tsx` listet geladene Topics
+- [x] `content/topics/de/*.json` validiert gegen Zod-Schema v1
+- [x] Topics haben 7+ Slides (hook … quiz; git inkl. code_read/code_fix)
+- [x] `loadTopics()` liefert 8 Topics (alphabetisch nach Titel)
+- [x] `SlideRenderer` rendert alle implementierten Slide-Typen
+- [x] Reservierte Typen ohne Registry → `UnsupportedSlide` (keine mehr für code_read/code_fix)
+- [x] `app/page.tsx` — vertikaler `VerticalTopicFeed`
+- [x] `/topic/[id]` — horizontaler `HorizontalSlideDeck`
 
 ## Edge Cases
 
-- [ ] Fehlende JSON-Datei → leere Liste oder klarer Fehler (kein Silent Fail)
-- [ ] Ungültiges JSON → Validation-Fehler mit Pfad
-- [ ] Quiz ohne `questions` → Validation schlägt fehl
-- [ ] Slide-Typ in Enum reserviert aber nicht implementiert → UnsupportedSlide
+- [x] Fehlende JSON-Datei → Topic nicht in Liste
+- [x] Ungültiges JSON → Validation-Fehler mit Pfad
+- [x] Quiz ohne `questions` → Validation schlägt fehl
+- [x] Ungültige Topic-ID → deutsche 404
 
-## Out of Scope (v1)
+## Shipped beyond original MVP
 
-- Vertical/horizontal Swipe UI (Phase 2)
-- `/api/tutor` Questolin
-- LocalStorage Progress
-- Supabase
+- [x] Vertikaler + horizontaler Embla-Swipe
+- [x] `/api/tutor` + Chat-UI
+- [x] LocalStorage Fortschritt
+- [x] Content Collections (`/?collection=grundlagen`)
+- [x] Loading + not-found States
+
+## Out of Scope (Phase 3)
+
+- Supabase ContentProvider
+- Feed-Virtualisierung
+- Gamification
 
 ## Implementation Notes
 
-- Content layer: `content/schema/v1/`, `content/topics/de/api.json` (7 slides, DE)
-- Zod validation: `lib/content/topic.schema.ts`, `npm run validate:content`
-- `JsonContentProvider` + `SlideRenderer` registry
-- Slide components in `components/slides/` (hook → quiz)
-- `TopicSlideDeck`: horizontal navigation (buttons + swipe + dots)
-- Feed: `app/page.tsx`, detail: `app/topic/[id]/page.tsx`
-- Prior art: `~/.cursor/prior-art/questolin-learning-extensible.md`
-- Build passes (`npm run build`)
+- Feed: `components/VerticalTopicFeed.tsx`
+- Deck: `components/HorizontalSlideDeck.tsx`
+- E2E: `.qa/runs/2026-06-23-embla-swipe-ui.spec.ts`, `e2e/smoke.app-loads.spec.ts`
+- `npm run checks` + `npm run test:e2e` in CI

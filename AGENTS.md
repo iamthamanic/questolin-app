@@ -30,7 +30,8 @@ Lies es zuerst, bevor du Code änderst.
 | Backend | Route Handlers (Phase 2: `/api/tutor`) | Vercel-kompatibel |
 | Styling | Tailwind CSS 3 + DaisyUI 4 | `data-theme="dark"` |
 | Content | JSON + Zod | `npm run validate:content` |
-| Tests | Playwright (`npm run test:e2e`) | Bootstrap via @verify-ui |
+| Unit tests | Vitest | `npm run test:unit` |
+| E2E | Playwright (`npm run test:e2e`) | CI + lokal |
 | Deployment | Vercel | |
 
 **Nicht verwenden:** shadcn als Pflicht-UI (DaisyUI ist Standard); Content hardcoden in React statt JSON
@@ -46,11 +47,15 @@ questolin-app/
 │   └── slides/             # Ein Renderer pro Slide-Typ
 ├── content/
 │   ├── schema/v1/          # JSON Schema + README
-│   └── topics/de/*.json    # Lerninhalte
+│   ├── topics/de/*.json    # Lerninhalte
+│   └── collections/de/     # Topic-Sammlungen
 ├── lib/
 │   ├── content/            # Types, Zod, Provider, Loader
-│   └── slides/             # Registry
-├── scripts/validate-content.ts
+│   ├── progress/           # LocalStorage Fortschritt
+│   ├── slides/             # Registry
+│   └── tutor/              # /api/tutor
+├── tests/unit/             # Vitest
+├── e2e/                    # Playwright
 └── .qa/                    # Design, Acceptance, project.yaml
 ```
 
@@ -76,11 +81,12 @@ questolin-app/
 
 ## Validation
 
-- **Checks:** `npm run checks` (`validate:content` → lint → build)
+- **Checks:** `npm run checks` (`validate:content` → `test:unit` → lint → build)
 - **Content:** `npm run validate:content`
+- **Unit:** `npm run test:unit`
 - **Dev:** `npm run dev` → http://localhost:3000
 - **Build:** `npm run build`
-- **E2E:** `npm run test:e2e` (Playwright via @verify-ui when ready)
+- **E2E:** `npm run test:e2e` (Playwright, in CI)
 
 Run checks before push. Pre-push hook (Husky) and GitHub Actions enforce this. Do not use `git push --no-verify`.
 

@@ -15,18 +15,18 @@ Questolin kombiniert TikTok-ähnliches Swipen mit strukturierten Lernkarten und 
 - IT-Grundlagen in **7-Slide-Decks** pro Thema (Frage → Erklärung → Beispiel → Szenarien → Fehler → Quiz)
 - **Neue Themen nur als JSON** — kein App-Rewrite
 - Mobile-first, Deutsch, Dark UI
-- Später: Gamification (XP, Streaks), Skill-Tree, KI-Tutor — auf gleicher Content-Architektur
+- Später: Gamification (XP, Streaks), Skill-Tree — auf gleicher Content-Architektur
 
 **North Star (Langfrist):** Missions/Topics completed per week per user.
 
-## 3. Non-Goals (v1)
+## 3. Non-Goals (v1 / aktuell)
 
 - Skill-Tree, Leaderboard, Pattern Cards
-- Code-Editor-Missions (6 Mission-Typen aus Voll-PRD)
 - Admin/CMS UI
-- Supabase Sync (nur `ContentProvider`-Interface)
+- Supabase Sync (nur `ContentProvider`-Interface vorbereitet)
 - Native iOS/Android
 - Englische UI
+- Vercel-Produktions-Deploy (bewusst zurückgestellt — local-first)
 
 ## 4. Nutzer / Rollen
 
@@ -34,28 +34,40 @@ Questolin kombiniert TikTok-ähnliches Swipen mit strukturierten Lernkarten und 
 |-------|--------------|
 | Lernender (Primary) | Junior bis Mid — Selbsttest, Commute-Lernen |
 | Content-Autor (Du) | JSON-Topics unter `content/topics/de/` |
-| Gast | Ohne Login, LocalStorage später |
+| Gast | Ohne Login, LocalStorage für Fortschritt |
 
-## 5. Kern-Scope (v1 — implementiert / in Arbeit)
+## 5. Kern-Scope — Ist-Stand
 
 ### A) Content-Layer ✅
 
-- Schema v1 + Zod-Validation
-- `JsonContentProvider`
-- Beispiel-Topic `api.json`
+- Schema v1 + Zod-Validation (Topics + Collections)
+- `JsonContentProvider` mit optionaler Collection-Filterung (`/?collection=grundlagen`)
+- **8 Topics** unter `content/topics/de/` (API, HTTP, Git, Auth, …)
+- Beispiel-Collection `content/collections/de/grundlagen.json`
 
-### B) Lern-UI ✅ (Phase 1)
+### B) Lern-UI ✅
 
-- Feed `/`
-- Topic-Deck `/topic/[id]` — horizontal, Dots, Touch-Swipe
-- Slide-Registry: hook, explanation, real_world, scenario, beginner_mistake, quiz
+- Vertikaler TikTok-Feed `/` (`VerticalTopicFeed` + Embla)
+- Topic-Deck `/topic/[id]` — horizontal, Dots (≥44px Touch), Touch-Swipe
+- Slide-Registry: hook, explanation, real_world, scenario, beginner_mistake, quiz, **code_read**, **code_fix**
+- Markdown in Slide-Body (`**fett**`, `` `code` ``)
+- Loading (`app/loading.tsx`), deutsche 404 (`app/not-found.tsx`)
 
-### C) Phase 2 (geplant)
+### C) Phase 2 — lokal ✅
 
-- Vertikaler TikTok-Feed (`embla-carousel`)
-- Questolin KI `/api/tutor`
-- LocalStorage Fortschritt
+| Feature | Status |
+|---------|--------|
+| Vertikaler Embla-Feed | ✅ |
+| Questolin KI `/api/tutor` | ✅ (serverseitig, `OPENAI_API_KEY`) |
+| Chat-UI (FAB + Bottom Sheet) | ✅ |
+| LocalStorage Fortschritt | ✅ |
+| Content Collections | ✅ |
+
+### D) Phase 3 — geplant
+
 - Supabase `ContentProvider`
+- Feed-Virtualisierung bei vielen Topics
+- Gamification (XP, Streaks, Skill-Tree)
 
 ## 6. Constraints
 
@@ -64,25 +76,27 @@ Questolin kombiniert TikTok-ähnliches Swipen mit strukturierten Lernkarten und 
 | Stack | Next.js 14 App Router, React 18, TypeScript, Tailwind, DaisyUI |
 | Content | JSON im Repo, Zod |
 | Locale (UI) | Deutsch |
-| Deployment | Vercel |
+| Deployment | Vercel (Repo-ready, Deploy optional) |
 | Backend (später) | Supabase (Auth, Postgres) |
 | Komponenten | `/components` im Repo-Root |
+| Tests | Vitest (Unit) + Playwright (e2e) in CI |
 
 Details: [AGENTS.md](../AGENTS.md)
 
 ## 7. UX / Qualität
 
 - Dark-mode first (DaisyUI `dark`)
-- Touch targets ≥ 44px
+- Touch targets ≥ 44px (Dots, Buttons, Quiz)
 - Quiz: Feedback richtig/falsch
-- Loading / empty / error auf Feed
+- Loading / empty / error auf Feed und Topic-Routes
+- `prefers-reduced-motion` auf Dot-Transitions
 - WCAG AA Kontrast (siehe UI Styleguide)
 
 ## 8. Offene Fragen
 
-- [ ] KI-Modell für Questolin-Tutor
 - [ ] Monetization (Post-MVP)
 - [ ] Voll-PRD Mission-Types vs. reine Quiz-Slides — Priorität Phase 3
+- [ ] Wann Vercel-Produktions-Deploy (#5)
 
 ---
 
