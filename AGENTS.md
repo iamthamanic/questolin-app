@@ -84,7 +84,7 @@ questolin-app/
 - **Checks:** `npm run checks` (`validate:content` → `test:unit` → lint → build)
 - **Content:** `npm run validate:content`
 - **Unit:** `npm run test:unit`
-- **Dev:** `npm run dev` → http://localhost:3000
+- **Dev:** `npm run dev` → http://localhost:3047 (not :3000 — Scriptony/boilerplate)
 - **Build:** `npm run build`
 - **E2E:** `npm run test:e2e` (Playwright, in CI)
 
@@ -99,7 +99,8 @@ Lean ECC integration — no full install, no duplicate global skills.
 | Layer | Tool |
 |-------|------|
 | Project rules | `.cursor/rules/questolin.mdc` |
-| Issue orchestration | `@ecc-runner` + `.qa/queue/` (GitHub issues → full pipeline) |
+| Issue orchestration | `@ecc-runner` + `.qa/queue/` (global: `~/.cursor/skills/ecc-runner/`) |
+| Epic intake | `@feature-intake` (global) |
 | Content workflow | `.cursor/skills/questolin-content-layer/` |
 | Implementation | `@implement` + `.qa/acceptance/` |
 | Technical verify | `@verify-ticket` |

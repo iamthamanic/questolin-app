@@ -23,21 +23,35 @@ npm run validate:content
 npm run dev
 ```
 
-Öffne [http://localhost:3000](http://localhost:3000) → vertikaler Feed mit 8 Topics.
+| | |
+|--|--|
+| **Dev-URL** | [http://localhost:3047](http://localhost:3047) |
+| **Port** | `3047` (fest in `package.json` — **nicht** 3000, damit Scriptony/boilerplate parallel laufen können) |
+| **Override** | `PORT` in `.env` oder `npx next dev -p <port>` |
 
-Beispiel-Deep-Links:
+Vertikaler Feed mit 8 Topics. Beispiel-Deep-Links:
 
 - Feed (alle Topics): `/`
 - Collection „IT-Grundlagen“: `/?collection=grundlagen`
 - Einzelnes Topic: `/topic/api`
+
+**Handy im gleichen WLAN:**
+
+```bash
+npm run dev -- -H 0.0.0.0
+# Browser am Handy: http://<deine-mac-ip>:3047
+```
+
+Siehe auch [docs/personal-use.md](docs/personal-use.md) (Tutor, PWA, Firewall).
 
 ## Persönliche Nutzung (Mac + Handy)
 
 Siehe **[docs/personal-use.md](docs/personal-use.md)** — Tutor (Ollama), Smoke-Test, Handy-Zugriff (LAN / Deploy / HTTPS für PWA).
 
 ```bash
-# Tutor-Smoke (Dev-Server + Ollama müssen laufen)
+# Tutor-Smoke (Dev-Server auf :3047 + Ollama müssen laufen)
 bash scripts/smoke-tutor.sh
+# optional: bash scripts/smoke-tutor.sh http://localhost:3047
 ```
 
 ## Checks (quality gate)
@@ -99,6 +113,7 @@ Siehe `.env.example`. Keine Secrets committen.
 
 | Variable | Purpose |
 |----------|---------|
+| `PORT` | Dev/Start-Port (Default **3047** in npm scripts) |
 | `CONTENT_PROVIDER` | `json` (default) or `supabase` |
 | `SUPABASE_URL` / `SUPABASE_ANON_KEY` | Supabase ContentProvider (SSR-safe anon key) |
 | `TUTOR_LLM_BASE_URL` | LLM-Endpoint (Default: `http://localhost:11434/v1` für Ollama lokal) |

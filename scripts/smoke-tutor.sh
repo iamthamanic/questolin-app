@@ -4,7 +4,7 @@
 
 set -euo pipefail
 
-BASE="${1:-http://localhost:3000}"
+BASE="${1:-http://localhost:3047}"
 OLLAMA_URL="${TUTOR_LLM_BASE_URL:-http://localhost:11434/v1}"
 
 echo "==> Questolin tutor smoke (base: ${BASE})"
@@ -33,6 +33,6 @@ if [[ "${HTTP_CODE}" == "200" ]] && echo "${BODY}" | grep -q '"reply"'; then
   exit 0
 fi
 
-echo "fail: HTTP ${HTTP_CODE} — is Questolin running at ${BASE}? (not another app on :3000)"
+echo "fail: HTTP ${HTTP_CODE} — is Questolin running at ${BASE}? (npm run dev → :3047)"
 echo "${BODY}" | head -c 300
 exit 1
