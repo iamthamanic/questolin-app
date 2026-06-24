@@ -72,9 +72,39 @@
       }
     },
     {
+      "id": "git-code-read",
+      "type": "code_read",
+      "order": 6,
+      "title": "Code lesen: Status",
+      "content": {
+        "body": "Mit `git status` siehst du, welche Dateien **geändert**, **gestaged** oder **untracked** sind — bevor du committest.",
+        "subtitle": "Lesen vor Schreiben",
+        "code": "git status\n# On branch main\n# Changes not staged for commit:\n#   modified:   README.md"
+      }
+    },
+    {
+      "id": "git-code-fix",
+      "type": "code_fix",
+      "order": 7,
+      "title": "Code reparieren: Erster Commit",
+      "content": {
+        "body": "Nach dem Stagen brauchst du einen Commit mit Message. Welche Befehlsfolge ist korrekt?",
+        "brokenCode": "git add README.md\n???",
+        "options": [
+          "git commit -m \"Update README\"",
+          "git push --force",
+          "git delete README.md",
+          "npm run commit"
+        ],
+        "correctAnswer": "git commit -m \"Update README\"",
+        "feedbackCorrect": "Genau — add staged, dann commit mit Message.",
+        "feedbackWrong": "Nach `git add` kommt `git commit`, nicht push oder npm."
+      }
+    },
+    {
       "id": "git-quiz",
       "type": "quiz",
-      "order": 6,
+      "order": 8,
       "title": "Mini-Quiz",
       "content": {
         "questions": [

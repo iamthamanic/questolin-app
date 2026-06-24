@@ -5,6 +5,7 @@
 
 import type { ReactNode } from "react";
 import type { Slide } from "@/lib/content/types";
+import { MarkdownBody } from "./MarkdownBody";
 import styles from "./slideContent.module.css";
 
 interface SlideShellProps {
@@ -27,21 +28,8 @@ export function SlideShell({ slide, topicTitle, children }: SlideShellProps) {
   );
 }
 
-function renderParagraphs(text: string) {
-  return text.split("\n\n").map((block, index) => (
-    <p key={index} className={styles.body}>
-      {block.split("\n").map((line, lineIndex) => (
-        <span key={lineIndex}>
-          {lineIndex > 0 && <br />}
-          {line}
-        </span>
-      ))}
-    </p>
-  ));
-}
-
 export function SlideBody({ text }: { text: string }) {
-  return <>{renderParagraphs(text)}</>;
+  return <MarkdownBody text={text} />;
 }
 
 export function SlideSubtitle({ text }: { text: string }) {

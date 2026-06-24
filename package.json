@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "validate:content": "tsx scripts/validate-content.ts",
+    "test:unit": "vitest run",
     "checks": "bash scripts/run-checks.sh",
     "test:e2e": "playwright test",
     "prepare": "node scripts/prepare-husky.mjs"
@@ -32,6 +33,7 @@
     "postcss": "^8.5.3",
     "tailwindcss": "^3.4.17",
     "tsx": "^4.19.3",
-    "typescript": "^5.8.2"
+    "typescript": "^5.8.2",
+    "vitest": "^3.2.6"
   }
 }

@@ -59,6 +59,22 @@ export interface QuizContent {
   questions: QuizQuestion[];
 }
 
+export interface CodeReadContent {
+  body: string;
+  subtitle?: string;
+  code: string;
+  language?: string;
+}
+
+export interface CodeFixContent {
+  body: string;
+  brokenCode: string;
+  options: string[];
+  correctAnswer: string;
+  feedbackCorrect: string;
+  feedbackWrong: string;
+}
+
 export type SlideContent =
   | HookContent
   | ExplanationContent
@@ -66,6 +82,8 @@ export type SlideContent =
   | ScenarioContent
   | BeginnerMistakeContent
   | QuizContent
+  | CodeReadContent
+  | CodeFixContent
   | Record<string, unknown>;
 
 export interface Slide {
