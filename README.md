@@ -90,6 +90,8 @@ Siehe `.env.example`. Keine Secrets committen.
 
 | Variable | Purpose |
 |----------|---------|
+| `CONTENT_PROVIDER` | `json` (default) or `supabase` |
+| `SUPABASE_URL` / `SUPABASE_ANON_KEY` | Supabase ContentProvider (SSR-safe anon key) |
 | `TUTOR_LLM_BASE_URL` | LLM-Endpoint (Default: `http://localhost:11434/v1` für Ollama lokal) |
 | `TUTOR_LLM_API_KEY` / `OLLAMA_API_KEY` | API-Key (Ollama Cloud); lokal optional (`ollama` als Default) |
 | `TUTOR_MODEL` | Modellname (Default: `llama3.2` bzw. `gpt-4o-mini` bei OpenAI) |
@@ -124,7 +126,7 @@ Strategie: **local-first** — `npm run dev`, JSON-Content, LocalStorage, Tutor 
 | Code-Slides (`code_read`, `code_fix`) | ✅ |
 | Unit-Tests (Vitest) + e2e in CI | ✅ |
 | Vercel Deploy | ⏸️ zurückgestellt (#5) |
-| Supabase ContentProvider | 🔜 Phase 3 |
+| Supabase ContentProvider | ✅ scaffold (#12) — siehe [docs/supabase-content.md](docs/supabase-content.md) |
 
 Roadmap: [GitHub Milestones](https://github.com/iamthamanic/questolin-app/milestones)
 
