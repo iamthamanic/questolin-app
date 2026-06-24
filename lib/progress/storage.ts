@@ -112,3 +112,9 @@ export function getLastTopicIndex(topicIds: string[]): number {
   const idx = topicIds.indexOf(lastId);
   return idx >= 0 ? idx : 0;
 }
+
+export function saveLastTopicId(topicId: string): void {
+  const store = readStore();
+  store.lastTopicId = topicId;
+  writeStore(store);
+}
