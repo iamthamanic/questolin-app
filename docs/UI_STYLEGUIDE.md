@@ -40,16 +40,17 @@ Größen über Tailwind/DaisyUI (`text-2xl`, `card-title`, `text-sm`) — keine 
 | SlideRenderer | `components/SlideRenderer.tsx` | Dispatch via Registry |
 | Slide shells | `components/slides/*Slide.tsx` | Ein Typ = eine Datei |
 | VerticalTopicFeed | `components/VerticalTopicFeed.tsx` | TikTok-Feed, vertikal zwischen Topics |
-| HorizontalSlideDeck | `components/HorizontalSlideDeck.tsx` | Horizontal Embla, Progress-Bar, Zurück/Weiter ab `md` |
-| FeedChrome | `components/FeedChrome.tsx` | Overlay: Topic-Titel, Meta, Slide-Zähler (Feed v2) |
+| HorizontalSlideDeck | `components/HorizontalSlideDeck.tsx` | Horizontal Embla, Story-Bar, Zurück/Weiter ab `md` |
+| FeedChrome | `components/FeedChrome.tsx` | Overlay: Topic-Titel (Slide 1), Badge, Slide-Zähler |
+| StoryProgressBar | `components/StoryProgressBar.tsx` | Segmented story progress (Feed v3) |
 
-### Feed v2 (immersive mobile)
+### Feed v3 (TikTok presentation)
 
-- Slides **full-bleed** — `SlideImmersiveContext` + `SlideShell` ohne Card auf Mobile
-- **FeedChrome** Overlay statt fester Topic-Header-Zeile
-- **Progress-Bar** oben (`role="progressbar"`) statt Dot-Navigation
-- **Zurück/Weiter** nur ab `md` (768px); Mobile = Swipe
-- Swipe-Coach-Hinweis einmalig (`lib/progress/onboarding.ts`)
+- **StoryProgressBar** — segmented bars (Instagram Stories), replaces single line
+- **FeedChrome** — absolute overlay; topic title only on slide 1 in feed (`compact`)
+- **HookSlide** — hero question typography; hides generic „Die Frage“ label
+- Swipe coach: gesture copy on mobile, keyboard hint on desktop
+
 
 ## Layout
 

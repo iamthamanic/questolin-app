@@ -28,6 +28,23 @@ function shouldMountDeck(topicIndex: number, activeIndex: number): boolean {
   return Math.abs(topicIndex - activeIndex) <= MOUNT_RADIUS;
 }
 
+function useDesktopNav(): boolean {
+  const [desktop, setDesktop] = useState(
+    () =>
+      typeof window !== "undefined" && window.matchMedia("(min-width: 768px)").matches,
+  );
+
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 768px)");
+    const sync = () => setDesktop(mq.matches);
+    sync();
+    mq.addEventListener("change", sync);
+    return () => mq.removeEventListener("change", sync);
+  }, []);
+
+  return desktop;
+}
+
 export function VerticalTopicFeed({ topics }: VerticalTopicFeedProps) {
   const startIndex = useMemo(
     () => getLastTopicIndex(topics.map((t) => t.id)),
@@ -37,6 +54,7 @@ export function VerticalTopicFeed({ topics }: VerticalTopicFeedProps) {
   const [activeIndex, setActiveIndex] = useState(startIndex);
   const [showCoach, setShowCoach] = useState(false);
   const coachStartIndex = useRef(startIndex);
+  const isDesktop = useDesktopNav();
 
   const [emblaRef, emblaApi] = useEmblaCarousel({
     axis: "y",
@@ -108,7 +126,11 @@ export function VerticalTopicFeed({ topics }: VerticalTopicFeedProps) {
       </div>
 
       {showCoach && (
-        <p className={styles.swipeHint}>↑↓ Nächstes Thema · ←→ Nächster Slide</p>
+        <p className={styles.swipeHint}>
+          {isDesktop
+            ? "↑↓ Nächstes Thema · ←→ Nächster Slide"
+            : "Wische ↑↓ für Themen · ←→ für Slides"}
+        </p>
       )}
     </div>
   );

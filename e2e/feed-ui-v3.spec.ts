@@ -1,0 +1,39 @@
+import { test, expect } from "@playwright/test";
+import { firstTopicPanel, slideCounter, slideDeck } from "./helpers/feed";
+import { swipeHorizontalOnDeck, swipeVerticalOnHeader } from "./helpers/swipe";
+
+const ONBOARDING_KEY = "questolin.onboarding.v1";
+
+test.beforeEach(async ({ page }) => {
+  await page.goto("/feed");
+  await page.evaluate((key) => localStorage.removeItem(key), ONBOARDING_KEY);
+});
+
+test("story segments and overlay chrome on feed", async ({ page }) => {
+  const panel = firstTopicPanel(page);
+  await expect(panel.locator("[data-feed-chrome]")).toBeVisible();
+  await expect(panel.getByRole("progressbar")).toBeVisible();
+  await expect(panel.locator("[data-story-segment]")).toHaveCount(7);
+  await expect(slideCounter(panel)).toHaveText("1 / 7");
+});
+
+test("hook slide hides generic Die Frage label", async ({ page }) => {
+  await page.goto("/topic/auth");
+  const deck = slideDeck(page);
+  await expect(deck.getByText("Die Frage", { exact: true })).toHaveCount(0);
+  await expect(deck.getByText(/wirklich du bist/)).toBeVisible();
+});
+
+test("mobile swipe coach uses gesture copy", async ({ page }) => {
+  await expect(page.getByText(/Wische ↑↓/)).toBeVisible();
+  await swipeVerticalOnHeader(page, "up");
+  await expect(page.getByText(/Wische ↑↓/)).toHaveCount(0);
+});
+
+test("feed chrome hides topic title after first slide", async ({ page }) => {
+  const panel = firstTopicPanel(page);
+  await expect(panel.getByRole("heading", { level: 1 })).toBeVisible();
+  await swipeHorizontalOnDeck(page, "left");
+  await expect(panel.getByRole("heading", { level: 1 })).toHaveCount(0);
+  await expect(slideCounter(panel)).toHaveText("2 / 7");
+});

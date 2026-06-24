@@ -23,7 +23,7 @@ test.describe('Swipe feed hardening', () => {
     const first = firstTopicPanel(page);
     await expect(first.locator('[data-feed-chrome]')).toBeVisible();
     await expect(first.getByRole('heading', { level: 1 })).toBeVisible();
-    await expect(page.getByText(/↑↓ Nächstes Thema/)).toBeVisible();
+    await expect(page.getByText(/Wische ↑↓|Nächstes Thema/)).toBeVisible();
 
     await page.screenshot({
       path: path.join(EVIDENCE_DIR, '01-two-topics-feed.png'),

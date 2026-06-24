@@ -40,8 +40,8 @@ export function SlideShell({ slide, topicTitle, children }: SlideShellProps) {
   );
 }
 
-export function SlideBody({ text }: { text: string }) {
-  return <MarkdownBody text={text} />;
+export function SlideBody({ text, className }: { text: string; className?: string }) {
+  return <MarkdownBody text={text} className={className} />;
 }
 
 export function SlideSubtitle({ text }: { text: string }) {

@@ -14,6 +14,7 @@ import { QuestolinTutorDock } from "@/components/tutor/QuestolinTutorDock";
 import { FeedChrome } from "./FeedChrome";
 import { SlideRenderer } from "./SlideRenderer";
 import { SlideImmersiveProvider } from "./slides/SlideImmersiveContext";
+import { StoryProgressBar } from "./StoryProgressBar";
 import styles from "./feedViewport.module.css";
 
 interface HorizontalSlideDeckProps {
@@ -88,31 +89,22 @@ export function HorizontalSlideDeck({ topic, compact = false }: HorizontalSlideD
   const atStart = index === 0;
   const atEnd = index === slides.length - 1;
   const currentSlide = slides[index];
-  const progressPct = slides.length > 0 ? ((index + 1) / slides.length) * 100 : 0;
 
   return (
     <SlideQuizProvider topicId={topic.id}>
       <SlideImmersiveProvider immersive>
         <div className={`flex flex-col flex-1 min-h-0 ${styles.deckRoot}`} data-topic-deck>
-          <div
-            className={styles.progressTrack}
-            role="progressbar"
-            aria-valuemin={1}
-            aria-valuemax={slides.length}
-            aria-valuenow={index + 1}
-            aria-label={`Slide ${index + 1} von ${slides.length}`}
-          >
-            <div className={styles.progressFill} style={{ width: `${progressPct}%` }} />
+          <div className={styles.deckOverlay} aria-hidden={false}>
+            <StoryProgressBar slideCount={slides.length} slideIndex={index} />
+            <FeedChrome
+              topic={topic}
+              slideIndex={index}
+              slideCount={slides.length}
+              showBrand={compact}
+            />
           </div>
 
-          <FeedChrome
-            topic={topic}
-            slideIndex={index}
-            slideCount={slides.length}
-            showBrand={compact}
-          />
-
-          <div className="flex flex-col flex-1 min-h-0" data-slide-deck>
+          <div className={`flex flex-col flex-1 min-h-0 ${styles.deckSlideArea}`} data-slide-deck>
             <div className={styles.horizontalViewport} ref={emblaRef}>
               <div className={styles.horizontalContainer}>
                 {slides.map((slide) => (
