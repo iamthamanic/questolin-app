@@ -13,7 +13,7 @@ Siehe [docs/PRD.md](docs/PRD.md) für Produktscope.
 
 ```bash
 npm install
-cp .env.example .env   # optional — KI-Tutor (OPENAI_API_KEY)
+cp .env.example .env   # optional — KI-Tutor (Ollama lokal/Cloud oder OpenAI)
 npm run validate:content
 ```
 
@@ -92,7 +92,10 @@ Siehe `.env.example`. Keine Secrets committen.
 |----------|---------|
 | `CONTENT_PROVIDER` | `json` (default) or `supabase` |
 | `SUPABASE_URL` / `SUPABASE_ANON_KEY` | Supabase ContentProvider (SSR-safe anon key) |
-| `OPENAI_API_KEY` | Questolin KI-Tutor `/api/tutor` (serverseitig) |
+| `TUTOR_LLM_BASE_URL` | LLM-Endpoint (Default: `http://localhost:11434/v1` für Ollama lokal) |
+| `TUTOR_LLM_API_KEY` / `OLLAMA_API_KEY` | API-Key (Ollama Cloud); lokal optional (`ollama` als Default) |
+| `TUTOR_MODEL` | Modellname (Default: `llama3.2` bzw. `gpt-4o-mini` bei OpenAI) |
+| `OPENAI_API_KEY` | Legacy — nutzt weiterhin `api.openai.com` |
 
 ## Agent workflow
 
