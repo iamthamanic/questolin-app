@@ -14,7 +14,7 @@ test.beforeAll(() => {
 
 test.describe('Embla Swipe UI acceptance', () => {
   test('feed shows full-viewport topic with horizontal slide deck', async ({ page }) => {
-    await page.goto('/');
+    await page.goto('/feed');
     const first = firstTopicPanel(page);
     await expect(first.locator('[data-feed-chrome]')).toBeVisible();
     await expect(first.locator('[data-feed-chrome]').getByText('Questolin')).toBeVisible();
@@ -103,7 +103,7 @@ test.describe('Embla Swipe UI acceptance', () => {
     await useDesktopNav(page);
     await page.goto('/topic/api');
     const deck = slideDeck(page);
-    await expect(page.getByRole('link', { name: '← Feed' })).toBeVisible();
+    await expect(page.getByRole('link', { name: '← Start' })).toBeVisible();
     await expect(slideCounter(deck)).toHaveText('1 / 7');
     await page.getByRole('button', { name: 'Weiter' }).click();
     await expect(slideCounter(deck)).toHaveText('2 / 7');

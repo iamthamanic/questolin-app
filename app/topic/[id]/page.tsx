@@ -26,7 +26,7 @@ export default async function TopicPage({ params }: TopicPageProps) {
     <main className={styles.topicPageRoot}>
       <div className={styles.topicPageBack}>
         <Link href="/" className="btn btn-ghost btn-sm">
-          ← Feed
+          ← Start
         </Link>
       </div>
       <div className="flex flex-col flex-1 min-h-0 px-0">

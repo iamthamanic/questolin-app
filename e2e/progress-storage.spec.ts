@@ -13,7 +13,7 @@ test.beforeAll(() => {
 
 test.beforeEach(async ({ page }) => {
   await useDesktopNav(page);
-  await page.goto("/");
+  await page.goto("/feed");
   await page.evaluate((key) => localStorage.removeItem(key), PROGRESS_KEY);
 });
 
@@ -41,7 +41,7 @@ test("restores last topic on feed after reload", async ({ page }) => {
   await page.goto("/topic/datenbanken");
   await expect(page.locator("[data-slide-deck]")).toBeVisible();
 
-  await page.goto("/");
+  await page.goto("/feed");
   await expect(page.getByRole("heading", { name: /Was ist eine Datenbank/i })).toBeVisible();
 
   await page.reload();

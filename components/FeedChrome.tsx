@@ -3,6 +3,7 @@
  * Location: components/FeedChrome.tsx
  */
 
+import Link from "next/link";
 import type { Topic } from "@/lib/content/types";
 import chrome from "./feedChrome.module.css";
 import deckStyles from "./feedViewport.module.css";
@@ -26,7 +27,11 @@ export function FeedChrome({
       data-feed-chrome
       aria-label={topic.title}
     >
-      {showBrand && <p className={chrome.brand}>Questolin</p>}
+      {showBrand && (
+        <Link href="/" className={`${chrome.brand} link link-hover`}>
+          Questolin
+        </Link>
+      )}
       <h1 className={chrome.title}>{topic.title}</h1>
       <p className={chrome.metaRow}>
         <span>
