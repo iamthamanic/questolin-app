@@ -3,6 +3,8 @@
  * Location: components/slides/SlideShell.tsx
  */
 
+"use client";
+
 import type { ReactNode } from "react";
 import type { Slide } from "@/lib/content/types";
 import { MarkdownBody } from "./MarkdownBody";

@@ -5,7 +5,7 @@
 
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { Level, Topic } from "@/lib/content/types";
 import { computeLevelProgress, type LevelProgress } from "@/lib/progress/levelProgress";
 import { getUserLevel } from "@/lib/progress/storage";
@@ -19,7 +19,12 @@ interface LevelBadgeProps {
 
 export function LevelBadge({ levels, topics }: LevelBadgeProps) {
   const [open, setOpen] = useState(false);
-  const userLevel = getUserLevel();
+  const [userLevel, setUserLevel] = useState(0);
+
+  useEffect(() => {
+    setUserLevel(getUserLevel());
+  }, []);
+
   const currentLevel = levels.find((l) => l.index === userLevel);
   const progress: LevelProgress[] = computeLevelProgress(levels, topics);
   const current = progress.find((p) => p.level.index === userLevel);
