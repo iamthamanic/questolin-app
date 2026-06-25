@@ -6,13 +6,15 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo } from "react";
-import type { Collection, Level } from "@/lib/content/types";
+import { useEffect, useMemo, useState } from "react";
+import type { Collection, Level, Topic } from "@/lib/content/types";
 import { getResumeSnapshot } from "@/lib/progress/resume";
 import { getUserLevel } from "@/lib/progress/storage";
+import { LevelBadge } from "./LevelBadge";
 
 interface HomeScreenProps {
   levels: Level[];
+  topics: Topic[];
   collections: Collection[];
   topicTitles: Record<string, string>;
   topicSlideCounts: Record<string, number>;
@@ -20,6 +22,7 @@ interface HomeScreenProps {
 
 export function HomeScreen({
   levels,
+  topics,
   collections,
   topicTitles,
   topicSlideCounts,
@@ -29,12 +32,27 @@ export function HomeScreen({
     [topicSlideCounts],
   );
 
+  const [userLevel, setUserLevel] = useState(0);
+  useEffect(() => {
+    const sync = () => setUserLevel(getUserLevel());
+    sync();
+    window.addEventListener("storage", sync);
+    window.addEventListener("questolin:level-changed", sync);
+    return () => {
+      window.removeEventListener("storage", sync);
+      window.removeEventListener("questolin:level-changed", sync);
+    };
+  }, []);
+
   const resumeTitle = resume ? topicTitles[resume.topicId] : null;
-  const userLevel = getUserLevel();
   const currentLevel = levels.find((l) => l.index === userLevel);
 
   return (
     <main className="min-h-[100dvh] flex flex-col items-center justify-center px-4 py-8 bg-base-100">
+      <div className="fixed top-0 right-0 p-2 z-50">
+        <LevelBadge levels={levels} topics={topics} />
+      </div>
+
       <div className="w-full max-w-lg flex flex-col gap-6">
         <header className="text-center">
           <p className="text-primary font-semibold text-sm">Questolin</p>

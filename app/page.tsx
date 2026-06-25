@@ -32,6 +32,7 @@ export default async function HomePage({ searchParams }: HomePageProps) {
       levels={levels}
       homeProps={{
         levels,
+        topics,
         collections,
         topicTitles,
         topicSlideCounts,

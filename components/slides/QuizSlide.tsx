@@ -37,6 +37,11 @@ function optionClass(
   return `${base} btn-ghost opacity-50`;
 }
 
+/** A question stays interactive until the user picks the correct answer. */
+function isQuestionLocked(state: QuestionState): boolean {
+  return state.correct === true;
+}
+
 function QuestionView({
   question,
   index,
@@ -46,7 +51,6 @@ function QuestionView({
   onNext,
   isLast,
   correctCount,
-  totalAnswered,
 }: {
   question: QuizQuestion;
   index: number;
@@ -56,7 +60,6 @@ function QuestionView({
   onNext: () => void;
   isLast: boolean;
   correctCount: number;
-  totalAnswered: number;
 }) {
   const feedback =
     state.answered &&
@@ -74,7 +77,7 @@ function QuestionView({
             key={option}
             type="button"
             className={optionClass(option, state, question.correctAnswer)}
-            disabled={state.answered}
+            disabled={isQuestionLocked(state)}
             onClick={() => onSelect(option)}
           >
             {option}
@@ -91,14 +94,14 @@ function QuestionView({
           {feedback}
         </div>
       )}
-      {state.answered && !isLast && (
+      {state.correct && !isLast && (
         <button type="button" className="btn btn-primary btn-block mt-4" onClick={onNext}>
           Nächste Frage
         </button>
       )}
-      {state.answered && isLast && (
+      {state.correct && isLast && (
         <p className={styles.quizSummary}>
-          {totalAnswered} / {total} beantwortet · {correctCount} richtig
+          {correctCount} / {total} richtig beantwortet
         </p>
       )}
     </div>
@@ -128,7 +131,6 @@ export function QuizSlide({ slide, topicTitle }: SlideComponentProps) {
     }));
   };
 
-  const answeredCount = Object.values(answers).filter((a) => a.answered).length;
   const correctCount = Object.values(answers).filter((a) => a.correct).length;
   const quizCtx = useSlideQuiz();
   const currentQuestion = content.questions[questionIndex];
@@ -136,12 +138,12 @@ export function QuizSlide({ slide, topicTitle }: SlideComponentProps) {
   useEffect(() => {
     if (
       quizCtx &&
-      answeredCount === content.questions.length &&
+      correctCount === content.questions.length &&
       content.questions.length > 0
     ) {
       quizCtx.markQuizCompleted(slide.id);
     }
-  }, [answeredCount, content.questions.length, quizCtx, slide.id]);
+  }, [correctCount, content.questions.length, quizCtx, slide.id]);
 
   if (!currentQuestion) return null;
 
@@ -155,7 +157,6 @@ export function QuizSlide({ slide, topicTitle }: SlideComponentProps) {
       onNext={() => setQuestionIndex((i) => Math.min(i + 1, content.questions.length - 1))}
       isLast={questionIndex === content.questions.length - 1}
       correctCount={correctCount}
-      totalAnswered={answeredCount}
     />
   );
 
