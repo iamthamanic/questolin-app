@@ -22,7 +22,14 @@ export function LevelBadge({ levels, topics }: LevelBadgeProps) {
   const [userLevel, setUserLevel] = useState(0);
 
   useEffect(() => {
-    setUserLevel(getUserLevel());
+    const sync = () => setUserLevel(getUserLevel());
+    sync();
+    window.addEventListener("storage", sync);
+    window.addEventListener("questolin:level-changed", sync);
+    return () => {
+      window.removeEventListener("storage", sync);
+      window.removeEventListener("questolin:level-changed", sync);
+    };
   }, []);
 
   const currentLevel = levels.find((l) => l.index === userLevel);
